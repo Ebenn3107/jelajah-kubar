@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\FasilitasController as AdminFasilitasController;
 use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
 use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
 use App\Http\Controllers\Admin\WisataController as AdminWisataController;
+use App\Http\Controllers\FavoritController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WisataController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('fasilitas', AdminFasilitasController::class)->parameter('fasilitas', 'fasilitas')->except('show');
         Route::post('wisata/{wisata}/generate-content', [AiContentController::class, 'generate'])->name('wisata.generate-content');
     });
+});
+
+// Auth — review & favorit (login required, no email verification needed)
+Route::middleware(['auth'])->group(function () {
+    Route::post('wisata/{wisata}/review', [ReviewController::class, 'store'])->name('review.store');
+    Route::put('review/{review}', [ReviewController::class, 'update'])->name('review.update');
+    Route::delete('review/{review}', [ReviewController::class, 'destroy'])->name('review.destroy');
+
+    Route::post('wisata/{wisata}/favorit', [FavoritController::class, 'toggle'])->name('favorit.toggle');
+    Route::get('favorit', [FavoritController::class, 'index'])->name('favorit.index');
 });
 
 require __DIR__.'/settings.php';

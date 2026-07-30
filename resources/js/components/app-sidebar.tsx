@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Compass, FolderGit2, FolderTree, ImageIcon, LayoutDashboard, MapPin, Sofa } from 'lucide-react';
+import { BookOpen, Compass, FolderGit2, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Sofa } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -29,6 +29,11 @@ const mainNavItems: NavItem[] = [
         title: 'Jelajahi Wisata',
         href: '/wisata',
         icon: Compass,
+    },
+    {
+        title: 'Favorit',
+        href: '/favorit',
+        icon: Heart,
     },
 ];
 

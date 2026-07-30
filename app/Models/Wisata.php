@@ -78,4 +78,9 @@ class Wisata extends Model
     {
         return $this->belongsToMany(User::class, 'wisata_user_favorit');
     }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
 }

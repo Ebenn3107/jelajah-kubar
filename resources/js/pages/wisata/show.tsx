@@ -1,7 +1,9 @@
-import { Head } from '@inertiajs/react';
-import { Clock, ImageIcon, MapPin, Phone, Star, Ticket } from 'lucide-react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Clock, ImageIcon, MapPin, MessageSquare, Phone, Star, Ticket } from 'lucide-react';
+import { useState } from 'react';
 import { WisataMap } from '@/components/wisata-map';
 import { WisataPlanCard } from '@/components/wisata-plan-card';
+import type { Auth } from '@/types';
 
 interface GaleriItem {
     id: number;
@@ -14,6 +16,14 @@ interface GaleriItem {
 interface FasilitasItem {
     id: number;
     nama_fasilitas: string;
+}
+
+interface ReviewItem {
+    id: number;
+    rating: number;
+    komentar: string | null;
+    user: { id: number; name: string };
+    created_at: string;
 }
 
 interface WisataDetail {
@@ -33,15 +43,69 @@ interface WisataDetail {
     kontak: string | null;
     galeris: GaleriItem[];
     fasilitas: FasilitasItem[];
+    reviews: ReviewItem[];
 }
 
 interface Props {
     wisata: WisataDetail;
+    userReview: ReviewItem | null;
+    isFavorited: boolean;
 }
 
-export default function WisataShow({ wisata }: Props) {
+function StarRating({ rating, onChange, readonly = false }: { rating: number; onChange?: (n: number) => void; readonly?: boolean }) {
+    return (
+        <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                    key={n}
+                    type="button"
+                    disabled={readonly}
+                    onClick={() => onChange?.(n)}
+                    className={`transition-colors ${readonly ? 'cursor-default' : 'cursor-pointer hover:scale-110'}`}
+                >
+                    <Star className={`size-6 ${n <= rating ? 'fill-amber-400 text-amber-400' : 'text-zinc-300'}`} />
+                </button>
+            ))}
+        </div>
+    );
+}
+
+export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
+    const { auth } = usePage<{ auth: Auth }>().props;
     const primaryFoto = wisata.galeris?.find((g) => g.is_primary)?.foto_url || wisata.foto_url;
     const galeris = wisata.galeris || [];
+    const reviews = wisata.reviews || [];
+
+    const [reviewRating, setReviewRating] = useState(userReview?.rating || 5);
+    const [reviewKomentar, setReviewKomentar] = useState(userReview?.komentar || '');
+    const [editing, setEditing] = useState(false);
+
+    const avgRating = reviews.length > 0 ? Math.round(reviews.reduce((s, r) => s + r.rating, 0) / reviews.length * 10) / 10 : 0;
+
+    const handleFavorit = () => {
+        if (!auth.user) {
+            router.visit('/login');
+            return;
+        }
+        router.post(`/wisata/${wisata.id}/favorit`);
+    };
+
+    const handleReviewSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.post(`/wisata/${wisata.id}/review`, { rating: reviewRating, komentar: reviewKomentar }, { preserveScroll: true });
+    };
+
+    const handleReviewUpdate = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!userReview) return;
+        router.put(`/review/${userReview.id}`, { rating: reviewRating, komentar: reviewKomentar }, { preserveScroll: true });
+        setEditing(false);
+    };
+
+    const handleReviewDelete = () => {
+        if (!userReview || !confirm('Hapus review ini?')) return;
+        router.delete(`/review/${userReview.id}`, { preserveScroll: true });
+    };
 
     return (
         <>
@@ -74,7 +138,7 @@ export default function WisataShow({ wisata }: Props) {
                         </div>
                         <div className="flex items-center gap-1 rounded-full bg-[#00685f]/40 px-3 py-1 text-sm text-white backdrop-blur-md">
                             <Star className="size-4 fill-white" />
-                            4.8 <span className="text-white/70">(120 Reviews)</span>
+                            {avgRating > 0 ? avgRating : '—'} <span className="text-white/70">({reviews.length} Reviews)</span>
                         </div>
                     </div>
                 </div>
@@ -169,11 +233,82 @@ export default function WisataShow({ wisata }: Props) {
                             </div>
                         )}
                     </div>
+
+                    {/* Reviews Section */}
+                    <div className="mb-8">
+                        <h3 className="mb-4 text-xl font-semibold text-neutral-900 flex items-center gap-2">
+                            <MessageSquare className="size-5" />
+                            Reviews ({reviews.length})
+                        </h3>
+
+                        {/* Review Form */}
+                        {auth.user ? (
+                            userReview && !editing ? (
+                                <div className="mb-6 rounded-xl border border-[#00685f]/20 bg-[#eff4ff] p-5">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <p className="text-sm font-semibold text-neutral-900">Your Review</p>
+                                            <StarRating rating={userReview.rating} readonly />
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button onClick={() => { setEditing(true); setReviewRating(userReview.rating); setReviewKomentar(userReview.komentar || ''); }} className="text-xs font-semibold text-[#00685f] hover:underline">Edit</button>
+                                            <button onClick={handleReviewDelete} className="text-xs font-semibold text-red-500 hover:underline">Delete</button>
+                                        </div>
+                                    </div>
+                                    {userReview.komentar && <p className="mt-2 text-sm text-neutral-700">{userReview.komentar}</p>}
+                                </div>
+                            ) : (
+                                <form onSubmit={editing ? handleReviewUpdate : handleReviewSubmit} className="mb-6 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+                                    <p className="mb-2 text-sm font-semibold text-neutral-900">{editing ? 'Edit Review' : 'Write a Review'}</p>
+                                    <StarRating rating={reviewRating} onChange={setReviewRating} />
+                                    <textarea
+                                        value={reviewKomentar}
+                                        onChange={(e) => setReviewKomentar(e.target.value)}
+                                        rows={3}
+                                        placeholder="Share your experience..."
+                                        className="mt-3 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                                    />
+                                    <div className="mt-3 flex gap-2">
+                                        <button type="submit" className="rounded-lg bg-[#00685f] px-5 py-2 text-sm font-semibold text-white hover:opacity-90">
+                                            {editing ? 'Update' : 'Submit'}
+                                        </button>
+                                        {editing && <button type="button" onClick={() => setEditing(false)} className="rounded-lg border border-neutral-300 px-5 py-2 text-sm font-semibold text-neutral-600 hover:bg-neutral-50">Cancel</button>}
+                                    </div>
+                                </form>
+                            )
+                        ) : (
+                            <div className="mb-6 rounded-xl border border-neutral-200 bg-neutral-50 p-5 text-center">
+                                <p className="text-sm text-neutral-500"><Link href="/login" className="font-semibold text-[#00685f] hover:underline">Login</Link> to write a review.</p>
+                            </div>
+                        )}
+
+                        {/* Reviews List */}
+                        {reviews.filter((r) => !userReview || r.id !== userReview.id).length === 0 && !userReview ? (
+                            <p className="text-sm text-neutral-400">No reviews yet.</p>
+                        ) : (
+                            <div className="space-y-4">
+                                {reviews.filter((r) => !userReview || r.id !== userReview.id).map((r) => (
+                                    <div key={r.id} className="rounded-xl border border-neutral-100 bg-white p-4 shadow-sm">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-sm font-semibold text-neutral-900">{r.user.name}</p>
+                                            <StarRating rating={r.rating} readonly />
+                                        </div>
+                                        {r.komentar && <p className="mt-2 text-sm text-neutral-600">{r.komentar}</p>}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
+                {/* Right Column — Sidebar */}
                 <div className="lg:col-span-4">
                     <div className="sticky top-24 flex flex-col gap-6">
-                        <WisataPlanCard />
+                        <WisataPlanCard
+                            isFavorited={isFavorited}
+                            isLoggedIn={!!auth.user}
+                            onFavoritToggle={handleFavorit}
+                        />
                     </div>
                 </div>
             </section>

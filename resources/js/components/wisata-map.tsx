@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import L from 'leaflet';
 
 interface WisataMapProps {
     latitude: number;
@@ -10,10 +9,15 @@ interface WisataMapProps {
 
 export function WisataMap({ latitude, longitude, nama, className }: WisataMapProps) {
     const mapRef = useRef<HTMLDivElement>(null);
-    const instanceRef = useRef<L.Map | null>(null);
+    const instanceRef = useRef<{ remove: () => void } | null>(null);
 
     useEffect(() => {
-        if (mapRef.current && !instanceRef.current) {
+        // Dynamic import — Leaflet hanya di-load di browser, bukan SSR
+        let destroyed = false;
+
+        import('leaflet').then((L) => {
+            if (destroyed || !mapRef.current || instanceRef.current) return;
+
             const map = L.map(mapRef.current, {
                 center: [latitude, longitude],
                 zoom: 14,
@@ -31,7 +35,6 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
 
             instanceRef.current = map;
 
-            // Enable scroll on click/focus
             map.on('click', () => {
                 if (map.scrollWheelZoom) {
                     map.scrollWheelZoom.enable();
@@ -43,9 +46,10 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
                     map.scrollWheelZoom.disable();
                 }
             });
-        }
+        });
 
         return () => {
+            destroyed = true;
             instanceRef.current?.remove();
             instanceRef.current = null;
         };
@@ -55,6 +59,7 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
         <div
             ref={mapRef}
             className={className ?? 'h-[400px] w-full rounded-2xl overflow-hidden border border-neutral-200/30 shadow-sm'}
+            style={{ position: 'relative', zIndex: 0, isolation: 'isolate' }}
         />
     );
 }

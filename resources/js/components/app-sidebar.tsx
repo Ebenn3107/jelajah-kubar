@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Compass, FolderGit2, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Sofa } from 'lucide-react';
+import { Activity, BookOpen, Bot, ClipboardList, Compass, FolderGit2, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Route, Sofa } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,15 +16,9 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useCurrentUrl } from '@/hooks/use-current-url';
-import { dashboard } from '@/routes/admin';
 import type { Auth, NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutDashboard,
-    },
     {
         title: 'Jelajahi Wisata',
         href: '/wisata',
@@ -34,6 +28,21 @@ const mainNavItems: NavItem[] = [
         title: 'Favorit',
         href: '/favorit',
         icon: Heart,
+    },
+    {
+        title: 'Travel Planner',
+        href: '/travel-planner',
+        icon: Route,
+    },
+    {
+        title: 'My Plans',
+        href: '/saved-plans',
+        icon: ClipboardList,
+    },
+    {
+        title: 'Local Guide',
+        href: '/local-guide',
+        icon: Bot,
     },
 ];
 
@@ -76,11 +85,17 @@ const adminNavItems: NavItem[] = [
         href: '/admin/fasilitas',
         icon: Sofa,
     },
+    {
+        title: 'AI Logs',
+        href: '/admin/ai-logs',
+        icon: Activity,
+    },
 ];
 
 export function AppSidebar() {
     const { auth } = usePage<{ auth: Auth }>().props;
     const { isCurrentUrl } = useCurrentUrl();
+    const isAdmin = !!(auth.user as Record<string, unknown>)?.is_admin;
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -88,7 +103,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href="/wisata" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
@@ -99,7 +114,7 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
 
-                {auth.user && (
+                {isAdmin && (
                     <SidebarGroup className="px-2 py-0">
                         <SidebarGroupLabel>Admin</SidebarGroupLabel>
                         <SidebarMenu>

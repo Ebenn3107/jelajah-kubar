@@ -9,12 +9,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        if (!User::where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
                 'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        }
+                'password' => bcrypt('password'),
+                'is_admin' => true,
+            ],
+        );
 
         $this->call([
             KategoriSeeder::class,

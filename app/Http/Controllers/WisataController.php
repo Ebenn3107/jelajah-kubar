@@ -41,7 +41,6 @@ class WisataController extends Controller
                         ->orWhereHas('fasilitas', fn ($f) => $f->whereRaw('LOWER(nama_fasilitas) LIKE ?', ['%' . strtolower($search) . '%']));
                 });
 
-                // Exact match first, then prefix, then partial
                 $q->orderByRaw('
                     CASE
                         WHEN LOWER(nama_wisata) = ? THEN 0
@@ -55,12 +54,20 @@ class WisataController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::withCount('wisatas')->get();
+
+        // Foto hero dari wisata pertama yang punya foto
+        $heroWisata = Wisata::where('is_active', true)
+            ->whereNotNull('foto')
+            ->first();
 
         return Inertia::render('wisata/index', [
             'wisatas' => $wisatas,
             'kategoris' => $kategoris,
             'filters' => $request->only(['search', 'kategori']),
+            'heroFoto' => $heroWisata?->foto_url,
+            'totalWisata' => Wisata::where('is_active', true)->count(),
+            'totalKategori' => Kategori::count(),
         ]);
     }
 

@@ -20,7 +20,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['alam'],
             'alamat' => 'Sekolaq Darat, Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'Spanning over 5,000 hectares, Kersik Luway is a protected nature reserve famous for its unique sandy soil and being the primary habitat of the rare Coelogyne pandurata, the Black Orchid.',
-            'foto' => 'kersik-luway.jpg',
+
             'latitude' => -0.416667,
             'longitude' => 115.916667,
             'harga_tiket' => 'Rp 15.000 / Domestic, Rp 50.000 / International',
@@ -37,7 +37,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['air-terjun'],
             'alamat' => 'Sandas, Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'A majestic 30-meter waterfall surrounded by lush tropical greenery, perfect for nature photography.',
-            'foto' => 'jantur-inar.jpg',
+
             'latitude' => -0.433333,
             'longitude' => 115.883333,
             'harga_tiket' => 'Rp 10.000',
@@ -54,7 +54,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['danau'],
             'alamat' => 'Jempang, Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'The largest lake in the region, famous for its incredible birdlife and unique floating houses.',
-            'foto' => 'lake-jempang.jpg',
+
             'latitude' => -0.383333,
             'longitude' => 116.000000,
             'harga_tiket' => 'Gratis',
@@ -71,7 +71,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['budaya'],
             'alamat' => 'Barong Tongkok, Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'Experience the rich Dayak culture and stay in traditional Luuq longhouses with local families.',
-            'foto' => 'barong-tongkok.jpg',
+
             'latitude' => -0.450000,
             'longitude' => 115.933333,
             'harga_tiket' => 'Rp 25.000 (donasi budaya)',
@@ -88,7 +88,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['petualangan'],
             'alamat' => 'Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'A popular destination for hikers offering panoramic, 360-degree views of the Bornean rainforest.',
-            'foto' => 'mount-kelam.jpg',
+
             'latitude' => -0.366667,
             'longitude' => 115.850000,
             'harga_tiket' => 'Rp 20.000',
@@ -105,7 +105,7 @@ class WisataSeeder extends Seeder
             'kategori_id' => $kategoris['petualangan'],
             'alamat' => 'Mahakam River, Kutai Barat, Kalimantan Timur',
             'deskripsi' => 'Scenic boat rides along the historic Mahakam River to spot rare Irrawaddy dolphins and river life.',
-            'foto' => 'mahakam-river.jpg',
+
             'latitude' => -0.466667,
             'longitude' => 115.900000,
             'harga_tiket' => 'Rp 100.000 - Rp 500.000 (sewa perahu)',

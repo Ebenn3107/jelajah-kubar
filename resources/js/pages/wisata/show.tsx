@@ -1,6 +1,7 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Clock, ImageIcon, MapPin, MessageSquare, Phone, Star, Ticket } from 'lucide-react';
 import { useState } from 'react';
+import { GaleriLightbox } from '@/components/galeri-lightbox';
 import { WisataMap } from '@/components/wisata-map';
 import { WisataPlanCard } from '@/components/wisata-plan-card';
 import type { Auth } from '@/types';
@@ -44,6 +45,7 @@ interface WisataDetail {
     galeris: GaleriItem[];
     fasilitas: FasilitasItem[];
     reviews: ReviewItem[];
+    review_summary?: string | null;
 }
 
 interface Props {
@@ -76,6 +78,8 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
     const galeris = wisata.galeris || [];
     const reviews = wisata.reviews || [];
 
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
     const [reviewRating, setReviewRating] = useState(userReview?.rating || 5);
     const [reviewKomentar, setReviewKomentar] = useState(userReview?.komentar || '');
     const [editing, setEditing] = useState(false);
@@ -204,8 +208,12 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                         <div className="mb-8">
                             <h3 className="mb-4 text-xl font-semibold text-neutral-900">Gallery</h3>
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                {galeris.map((g) => (
-                                    <div key={g.id} className="group aspect-square cursor-zoom-in overflow-hidden rounded-2xl">
+                                {galeris.map((g, i) => (
+                                    <button
+                                        key={g.id}
+                                        onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}
+                                        className="group aspect-square overflow-hidden rounded-2xl"
+                                    >
                                         {g.foto_url ? (
                                             <img src={g.foto_url} alt={g.caption || ''} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                         ) : (
@@ -213,11 +221,17 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                                                 <ImageIcon className="size-12 text-[#00685f]/20" />
                                             </div>
                                         )}
-                                    </div>
+                                    </button>
                                 ))}
                             </div>
                         </div>
                     )}
+                    <GaleriLightbox
+                        images={galeris}
+                        startIndex={lightboxIndex}
+                        open={lightboxOpen}
+                        onOpenChange={setLightboxOpen}
+                    />
 
                     {/* Map */}
                     <div className="mb-8">
@@ -233,6 +247,17 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                             </div>
                         )}
                     </div>
+
+                    {/* AI Review Summary */}
+                    {wisata.review_summary && (
+                        <div className="mb-6 rounded-xl border border-teal-100 bg-teal-50 p-5">
+                            <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-teal-800">
+                                <MessageSquare className="size-4" />
+                                AI Review Summary
+                            </h3>
+                            <p className="text-sm leading-relaxed text-teal-700">{wisata.review_summary}</p>
+                        </div>
+                    )}
 
                     {/* Reviews Section */}
                     <div className="mb-8">
@@ -322,4 +347,3 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
     );
 }
 
-WisataShow.layout = null;

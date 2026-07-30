@@ -26,6 +26,7 @@ class Wisata extends Model
         'jam_tutup',
         'kontak',
         'is_active',
+        'review_summary',
     ];
 
     protected function casts(): array

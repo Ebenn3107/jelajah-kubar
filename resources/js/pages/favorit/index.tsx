@@ -57,4 +57,3 @@ export default function FavoritIndex({ wisatas }: Props) {
     );
 }
 
-FavoritIndex.layout = null;

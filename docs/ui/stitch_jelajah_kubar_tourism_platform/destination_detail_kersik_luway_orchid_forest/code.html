@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kersik Luway Orchid Forest | Jelajah Kubar</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#00685f",
+                    "background": "#f8f9ff",
+                    "surface-bright": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "surface-container": "#e6eeff",
+                    "on-secondary-fixed": "#2a1700",
+                    "surface-container-highest": "#d9e3f6",
+                    "tertiary-container": "#b05e3d",
+                    "surface-container-high": "#dee9fc",
+                    "on-primary-fixed": "#00201d",
+                    "primary-container": "#008378",
+                    "primary-fixed-dim": "#6bd8cb",
+                    "surface-tint": "#006a61",
+                    "on-background": "#121c2a",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#ffb59a",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "outline-variant": "#bcc9c6",
+                    "tertiary": "#924628",
+                    "on-primary-container": "#f4fffc",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#370e00",
+                    "on-secondary-container": "#684000",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#6bd8cb",
+                    "secondary": "#855300",
+                    "tertiary-fixed": "#ffdbce",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "surface-dim": "#d0dbed",
+                    "surface-variant": "#d9e3f6",
+                    "on-surface": "#121c2a",
+                    "on-tertiary-fixed-variant": "#773215",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#89f5e7",
+                    "secondary-container": "#fea619",
+                    "inverse-surface": "#27313f",
+                    "on-primary-fixed-variant": "#005049",
+                    "outline": "#6d7a77",
+                    "secondary-fixed": "#ffddb8",
+                    "on-surface-variant": "#3d4947"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "stack-xl": "64px",
+                    "margin-mobile": "20px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "caption": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: linear-gradient(to top, rgba(18, 28, 42, 0.8) 0%, rgba(18, 28, 42, 0) 50%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface-container-lowest shadow-sm">
+<nav class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md text-primary tracking-tight cursor-pointer">Jelajah Kubar</div>
+<div class="hidden md:flex items-center space-x-stack-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Home</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-bold font-body-md text-body-md" href="#">Destinations</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">About</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">search</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-label-md text-label-md hover:opacity-80 transition-all active:scale-95">Sign In</button>
+</div>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
+<div class="absolute inset-0 w-full h-full" data-alt="A macro close-up of a rare black orchid, Coelogyne pandurata, blooming in the heart of a lush Indonesian jungle. The lighting is soft and ethereal, filtering through the dense green canopy above. The composition is artistic and editorial, with a shallow depth of field highlighting the delicate velvety textures of the orchid's black and lime-green petals. The overall mood is mysterious, premium, and serene, reflecting the untamed beauty of Kutai Barat." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDAHcWhPOZT-axg3qscVOGt7DUXw4NAGVBOen1IJUS-Q7LuBzosH7RP3wgjiGqboA2WtoS6Fd_Hv42_eKYuStwGGA9hgBfENVUyZezk52TrJ1fopR7K0zaXp1Kbyx656mTYB0xeZI7GnPq_CWHzYP7oerp-j-dHNSEXNThLYBAcGiVj4S0mVLl00l8Qq5wER5k9AwUaeU-LRNEYVazuLI7I6OAxjOMt5yDjOubtzKPB9e3Glsmgeh4')"></div>
+<div class="absolute inset-0 hero-gradient"></div>
+<div class="absolute bottom-0 left-0 w-full px-margin-mobile md:px-margin-desktop pb-stack-xl max-w-container-max mx-auto right-0 flex flex-col justify-end h-full">
+<nav class="flex items-center space-x-2 text-white/80 font-caption text-caption mb-stack-sm">
+<a class="hover:text-white" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-white" href="#">Destinations</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-white">Kersik Luway Orchid Forest</span>
+</nav>
+<h1 class="text-white font-display-lg-mobile md:text-display-lg md:font-display-lg max-w-2xl">Kersik Luway Orchid Forest</h1>
+<div class="flex flex-wrap items-center gap-stack-md mt-stack-md">
+<div class="flex items-center text-white/90 font-label-md text-label-md">
+<span class="material-symbols-outlined mr-1">location_on</span>
+                        Sekolaq Darat, Kutai Barat
+                    </div>
+<div class="flex items-center text-white bg-primary/40 backdrop-blur-md px-3 py-1 rounded-full font-label-md text-label-md">
+<span class="material-symbols-outlined mr-1 text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        4.8 (120 Reviews)
+                    </div>
+</div>
+</div>
+</section>
+<!-- Main Content -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Details -->
+<div class="lg:col-span-8">
+<div class="mb-stack-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-md">About the Forest</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        Spanning over 5,000 hectares, Kersik Luway is a protected nature reserve famous for its unique sandy soil and being the primary habitat of the rare <span class="italic font-medium">Coelogyne pandurata</span>, the Black Orchid. This ecological wonder offers a surreal landscape where white silica sands meet dense tropical vegetation.
+                    </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-stack-md leading-relaxed">
+                        Visitors can walk along guided paths to witness the blooming season and diverse epiphytic plants. Beyond the famed black orchid, the reserve is home to over 50 species of orchids and various endemic wildlife of Borneo, making it a sanctuary for botanists and nature lovers alike.
+                    </p>
+</div>
+<!-- Info Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-stack-xl">
+<div class="bg-surface-container-low p-stack-lg rounded-xl border border-outline-variant/30 transition-all hover:shadow-lg hover:shadow-primary/5">
+<div class="flex items-center gap-stack-md mb-stack-sm text-primary">
+<span class="material-symbols-outlined">schedule</span>
+<span class="font-label-md text-label-md">Opening Hours</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface">08:00 AM - 05:00 PM</p>
+<p class="font-caption text-caption text-on-surface-variant mt-1">Open daily including public holidays</p>
+</div>
+<div class="bg-surface-container-low p-stack-lg rounded-xl border border-outline-variant/30 transition-all hover:shadow-lg hover:shadow-primary/5">
+<div class="flex items-center gap-stack-md mb-stack-sm text-primary">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Entrance Fee</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Rp 15,000 <span class="text-body-md font-normal text-on-surface-variant">/ Domestic</span></p>
+<p class="font-headline-sm text-headline-sm text-on-surface">Rp 50,000 <span class="text-body-md font-normal text-on-surface-variant">/ Int'l</span></p>
+</div>
+<div class="bg-surface-container-low p-stack-lg rounded-xl border border-outline-variant/30 md:col-span-2">
+<div class="flex items-center gap-stack-md mb-stack-md text-primary">
+<span class="material-symbols-outlined">business_center</span>
+<span class="font-label-md text-label-md">Facilities</span>
+</div>
+<div class="flex flex-wrap gap-stack-md">
+<span class="px-4 py-2 bg-surface-bright rounded-full text-on-surface font-body-md border border-outline-variant/50">Guided Trails</span>
+<span class="px-4 py-2 bg-surface-bright rounded-full text-on-surface font-body-md border border-outline-variant/50">Parking</span>
+<span class="px-4 py-2 bg-surface-bright rounded-full text-on-surface font-body-md border border-outline-variant/50">Restrooms</span>
+<span class="px-4 py-2 bg-surface-bright rounded-full text-on-surface font-body-md border border-outline-variant/50">Information Center</span>
+</div>
+</div>
+</div>
+<!-- Gallery -->
+<div class="mb-stack-xl">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">Gallery</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="aspect-square rounded-2xl overflow-hidden cursor-zoom-in group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A vibrant cluster of exotic orchids hanging from a tree branch in the Kersik Luway Orchid Forest. Sunlight filters through the tropical canopy, creating sharp rays of light. The image style is professional nature photography with a clean, minimalist aesthetic and high color contrast between the orchids and the deep green background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAznhm2jNhl3_gK5xP5G9mBNgu7arX_6z_GJi27FCR4K8DYfud29aNMHLKHtTSWPye0tw0Fl0y1l_NcVltC9_t7ACQHBAcsoFOm_XEinVLp0r8cPnWmrPemUh6gx0g6z2botWkPzjoz4gr6tG0PCKNdVPVboHhWerRU23dHUicRIOWhme0B_iLb-qzN8w_2BFMC28p7Xhy2WnREEXH_Z0hlhDIiXwwJQdNU5Md8EvDkr4Kxz733gCc"/>
+</div>
+<div class="aspect-square rounded-2xl overflow-hidden cursor-zoom-in group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="The unique white sandy soil of the Kersik Luway nature reserve in Kutai Barat. Low angle shot showing small shrubs and rare flora growing directly out of the fine silica sand. The lighting is bright and clear, emphasizing the stark contrast of the white earth against the deep blue Borneo sky. Modern editorial travel style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxVE4Fn_1VWhyS34x-roK7gQEoac_UMzGPOgjldsc1fqWGdpP3yFLzF23MILrd5-2gKhqfgE4Pg8HamTP710NyUSM5nHbJFJyRUQuKlhDM_0_jEApw4Qo_UXE3yaT2QMCFncgNbHRBL4SxeRr3kf2tVcsXkwXeFKZpqVjhXonbtvWOdEtCnhUCDFYmSAPZqMzTbFBsp6NpZAYFMLZ0CHD7cF1bAj88V96fe7pwCFlPfoAVKITtuPY"/>
+</div>
+<div class="aspect-square rounded-2xl overflow-hidden cursor-zoom-in group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A wooden boardwalk path winding through the dense vegetation of an orchid forest. The path is dappled with sunlight and shadow. Tropical mist clings to the distant trees, creating a sense of depth and mystery. High-end architectural and landscape photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtLfC8YzZv77gJXrX47EhddYwHEs1Klv56e35D4qgwJ5TqS2A3yuqGSO5pnSJYiCx0Nog6yJF47ZTIbtRYhl4OhRR7jEAdZiZO5wwOAVW_E596qfAaOnIt0jj-hyZWNaLgXvSKsUa13ERdwflsdmrUYlRMUkU5EWaaTha0E4viIyisogWFvf2eFJktFxS_uAsfnI-HlgY1jOiAz04GnNgzEE7D7IvysM9iV-ouB9slbdEHr1XFuw0"/>
+</div>
+<div class="aspect-square rounded-2xl overflow-hidden cursor-zoom-in group">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close up of a rare epiphytic plant species in Borneo. Detailed textures of the leaves and intricate root systems are visible. Soft morning light creates a warm, inviting atmosphere. Minimalist nature art style for a premium travel application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABx18hUbUII7kJHEgn_KRgLI_hhObHdWM8SnHnBjDeLaFGXV9p6qNVv3xVF6fDImO70NGPt1UvglrpEoK7dI7AEzCuvKnWmsLMVJ84baF-XLDV4i7I_n6yXWGhizsnl3E3h4krz1OL82GIQJU53e9qzfbFGuxZeq7slMZcvLt5zqSKy9PzjNe9NbViZ1pjrXYaOeqAiSiC-WiY9UICvZzLCKmJLuXI44lej7CAZuFnmF716yoYL6E"/>
+</div>
+</div>
+</div>
+<!-- Map -->
+<div class="mb-stack-xl">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">Location</h3>
+<div class="w-full h-[400px] rounded-2xl overflow-hidden bg-surface-container-highest border border-outline-variant shadow-sm relative">
+<div class="absolute inset-0 bg-cover bg-center grayscale opacity-50" data-location="Kutai Barat" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDWO7dFGUxH2A5f-5Liw-VTOxA7lMv23EDVmDv1udmybOVNAe7EkFOP87-KASMocx608qX5qFoHFl6mgd5XTUKUkumHXYS42GTNkxVuz6b7YTJMyGuT4DVN_glztRTYl5wgk2xhQjm201KMYX7rTvEzreUJoPsvhIo-0zrp2-q__LEcVli-NMH13uQpv3hYy86eq-D7on0kAv_ohwPnd3eGn7lJvhPCA7y7szPcUiJrhOfbiU1gIxE')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white p-4 rounded-xl shadow-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[32px]">location_on</span>
+<div>
+<p class="font-bold text-on-surface">Kersik Luway</p>
+<p class="text-caption text-on-surface-variant">Sekolaq Darat, Kutai Barat</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Interaction Card (Sticky) -->
+<div class="sticky top-24">
+<div class="bg-white p-stack-lg rounded-[24px] shadow-sm border border-outline-variant/30">
+<h4 class="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">Plan Your Visit</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">Connect with a certified local guide to experience the best of the black orchid blooming season.</p>
+<div class="space-y-stack-md mb-stack-lg">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Best Season</p>
+<p class="font-caption text-caption text-on-surface-variant">May - September</p>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">eco</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Tour Length</p>
+<p class="font-caption text-caption text-on-surface-variant">2 - 3 Hours</p>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold font-headline-sm hover:opacity-90 transition-all active:scale-[0.98] shadow-md shadow-primary/20 mb-stack-md">
+                            Book a Guided Tour
+                        </button>
+<button class="w-full border border-primary text-primary py-4 rounded-xl font-bold font-headline-sm hover:bg-primary/5 transition-all">
+                            Save to Wishlist
+                        </button>
+</div>
+<!-- Nearby Destinations -->
+<div class="mt-stack-xl">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-stack-md">Nearby Destinations</h4>
+<div class="space-y-stack-md">
+<div class="flex items-center gap-stack-md bg-surface-container-lowest p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-110" data-alt="A powerful tropical waterfall cascading down a sheer rock face into a clear pool, surrounded by dense jungle ferns and mossy rocks in Kutai Barat. Moody, editorial atmosphere with soft diffused lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ8kpsXj1SbIirZCD7Hy5AcEoWazuL-8QhYOg7mTI4YI_iIpBf4tqEFHQeFjsG8R3s4myHVI-4CqYJo7X1fQLvJWhQIgSH-43YXY9hZlwYFmW7GVs-Jpd30uAdIed7JyDLjHFipMzjvY_iO_l8Qq7S8DzCK7KfKza99cYDQRsoFJKYijCvdByTU-LWKC4p8x4o9EO5gBXNdseUmhvjLOpz9w8we_9ZRejbWQDtj_bSRPROMxNtOCw"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Jantur Inar Waterfall</p>
+<p class="font-caption text-caption text-on-surface-variant">12.5 km away</p>
+<div class="flex items-center text-primary mt-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] ml-1">4.7</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-stack-md bg-surface-container-lowest p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover transition-transform group-hover:scale-110" data-alt="Traditional Dayak longhouse architecture with intricate wood carvings and vibrant cultural decorations in a sunny clearing of a Borneo village. Bright, colorful, and welcoming atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDySuGv7YSOBt51c-zbgY8rPbZ76deQy3js5it0XnFYL8sRpGFS0U-vL6NmbVdURcRd1F5-jV934S-XcN-VFU9YuFAtGbLQujBunugr9jMpkMCFKhEb0fE0jh3elUNN9QFQx7Z6FNYNZtEUJjbLaUBsS7pls5zmE67NlYfV-GRu1b50DgyvC5-Jzu0idHdMf6eKJXpss9aZ_xb1PYfwuRGECH_TPfN1EPsQhCJf2bK2uK41n3pzI7Q"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Barong Tongkok Village</p>
+<p class="font-caption text-caption text-on-surface-variant">8.2 km away</p>
+<div class="flex items-center text-primary mt-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] ml-1">4.9</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl mt-stack-xl bg-surface-container-low">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="md:col-span-2">
+<div class="font-headline-sm text-headline-sm text-primary mb-stack-md">Jelajah Kubar</div>
+<p class="text-on-surface-variant font-body-md text-body-md max-w-md">
+                    Empowering local communities and preserving the natural heritage of Kutai Barat through sustainable and authentic tourism experiences.
+                </p>
+<div class="mt-stack-lg flex space-x-4">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">public</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">share</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary">mail</span>
+</div>
+</div>
+<div>
+<h5 class="font-label-md text-label-md text-primary mb-stack-md">Explore</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Destinations</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Culture</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Planning</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md text-label-md text-primary mb-stack-md">Contact</h5>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Contact Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary hover:underline transition-all" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-stack-xl pt-stack-md border-t border-outline-variant/20">
+<p class="text-on-surface-variant font-caption text-caption text-center md:text-left">
+                © 2024 Jelajah Kubar. Discover the Heart of Borneo.
+            </p>
+</div>
+</footer>
+<!-- Mobile Navigation Bar (Fixed Bottom) -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-card border-t border-outline-variant/10 px-stack-lg py-3 flex justify-around items-center">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px]">Explore</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px]">Saved</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.p-stack-lg, .rounded-2xl').forEach(el => {
+                el.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-10');
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>

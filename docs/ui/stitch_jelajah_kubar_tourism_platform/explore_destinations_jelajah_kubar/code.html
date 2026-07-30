@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Explore Destinations - Jelajah Kubar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-search {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+        }
+        /* Custom scrollbar for minimalist feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8f9ff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bcc9c6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00685f;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#00685f",
+                        "background": "#f8f9ff",
+                        "surface-bright": "#f8f9ff",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e6eeff",
+                        "on-secondary-fixed": "#2a1700",
+                        "surface-container-highest": "#d9e3f6",
+                        "tertiary-container": "#b05e3d",
+                        "surface-container-high": "#dee9fc",
+                        "on-primary-fixed": "#00201d",
+                        "primary-container": "#008378",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-tint": "#006a61",
+                        "on-background": "#121c2a",
+                        "error-container": "#ffdad6",
+                        "surface": "#f8f9ff",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "outline-variant": "#bcc9c6",
+                        "tertiary": "#924628",
+                        "on-primary-container": "#f4fffc",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-secondary-container": "#684000",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#6bd8cb",
+                        "secondary": "#855300",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "surface-dim": "#d0dbed",
+                        "surface-variant": "#d9e3f6",
+                        "on-surface": "#121c2a",
+                        "on-tertiary-fixed-variant": "#773215",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#89f5e7",
+                        "secondary-container": "#fea619",
+                        "inverse-surface": "#27313f",
+                        "on-primary-fixed-variant": "#005049",
+                        "outline": "#6d7a77",
+                        "secondary-fixed": "#ffddb8",
+                        "on-surface-variant": "#3d4947"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "container-max": "1280px",
+                        "margin-desktop": "64px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "stack-xl": "64px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest dark:bg-surface-dim w-full top-0 sticky z-50 shadow-sm dark:shadow-none transition-all duration-300">
+<nav class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-2 cursor-pointer transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-primary text-3xl">nature_people</span>
+<span class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim tracking-tight">Jelajah Kubar</span>
+</div>
+<!-- Desktop Navigation -->
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Home</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim pb-1 font-bold cursor-pointer" href="#">Destinations</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">About</a>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md hover:opacity-80 transition-opacity active:scale-95">Sign In</button>
+</div>
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full h-[70vh] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-[10000ms] hover:scale-110" data-alt="A breathtaking cinematic aerial shot of the dense, emerald-green tropical rainforest of Kutai Barat, Borneo. A wide, misty river winds through the ancient trees under a soft, golden sunrise. The atmosphere is serene and majestic, with subtle sunbeams piercing through the canopy. The lighting is high-end and editorial, emphasizing the rich textures of the Bornean wilderness in a clean, professional travel photography style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDoB9ZKMpiWLq1POIiLZlkpaUqWBKNHFesyn-C00iyoHy8EZPoMIRABZusFI6Xtl0U2U-B74mwFSifbJxfETCJ1IDCROCO-4HASrMn1aScccK4KYn0OFkkDUCrLGvO6I6_k4L3s45g-XBYUDGE4yf4XnFvJAKIkPCKL5FU-ZrhibeQzif-mgqxdTdA-BfCibAFEukHjTypzNiwQklc630I7ezDh-YM4feuopYpV2ARpjrys6naF7w')">
+</div>
+<div class="absolute inset-0 bg-black/30"></div>
+</div>
+<div class="relative z-10 w-full max-w-4xl px-margin-mobile text-center">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-stack-lg drop-shadow-lg">
+                    Discover the Beauty of <br class="hidden md:block"/> Kutai Barat
+                </h1>
+<!-- Centered Search Bar -->
+<div class="glass-search max-w-2xl mx-auto rounded-full flex items-center p-2 shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-transform hover:scale-[1.02]">
+<div class="pl-6 pr-3 flex items-center text-outline">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex-grow bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline font-body-md py-4" placeholder="Search for waterfall, lake, or village..." type="text"/>
+<button class="bg-primary text-white px-8 py-3 rounded-full font-label-md hover:opacity-90 transition-all active:scale-95 hidden sm:block">
+                        Search
+                    </button>
+</div>
+</div>
+</section>
+<!-- Category Chips -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop -mt-8 relative z-20">
+<div class="flex flex-wrap justify-center gap-3">
+<button class="px-6 py-2.5 rounded-full bg-primary text-white shadow-md font-label-md transition-all active:scale-95">All</button>
+<button class="px-6 py-2.5 rounded-full bg-white text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-all font-label-md shadow-sm active:scale-95">Waterfalls</button>
+<button class="px-6 py-2.5 rounded-full bg-white text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-all font-label-md shadow-sm active:scale-95">Lakes</button>
+<button class="px-6 py-2.5 rounded-full bg-white text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-all font-label-md shadow-sm active:scale-95">Culture</button>
+<button class="px-6 py-2.5 rounded-full bg-white text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-all font-label-md shadow-sm active:scale-95">Nature</button>
+<button class="px-6 py-2.5 rounded-full bg-white text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-all font-label-md shadow-sm active:scale-95">Adventure</button>
+</div>
+</section>
+<!-- Destination Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A close-up, high-detail macro shot of the rare black orchid (Coelogyne pandurata) blooming in the dappled sunlight of Kersik Luway Forest. The orchid's striking black center contrasts beautifully with its lime-green petals. The background is a soft, blurred bokeh of tropical foliage and ancient trees, creating a professional, editorial nature magazine look with soft, natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4o6sxCKWkNWRUxTxkeh6tYb12rj8UcNI-Y0UnqLmL_UwEmxruQvRmCDwFeb60tQy3Dwt53xJQhN7_4OQxmV0FXgQOCKhJfN8KKa3VYrNdH4YbXCwLU61pzo2yJfyZKg9bhHsnkb857ReF3tnKj4YJ1AQLKrHecAZXpl_MRjx8QGVGDwypgCE53ojIAbm1V76os4DiLeppZVD3SV0Pc44fElaUukaO2aVeX4XJQYig6tSAkTdQJYA"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.8</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Sekolaq Darat</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Kersik Luway Orchid Forest</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">Home to the rare black orchid (Coelogyne pandurata) and diverse flora in a unique ecosystem.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="The majestic Jantur Inar Waterfall in Kutai Barat, dropping 30 meters into a crystal clear pool below. Massive mossy rocks and vibrant green ferns frame the water. A light mist hangs in the air, caught by sunbeams filtering through the dense jungle canopy. Clean, crisp travel photography style with high-key lighting and a peaceful, refreshing atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCODhByKpGC5VdMfLu7fIbm0uzo-XOBDqUs73g_OoHwTh3VERxasfxaJpw5PU75DyJukGntPNJ9cwQ4bDRKJ0fCRHhqrx4CRP1YpajU-XUx3ODGA7jLQ3VVSvHrPRFqwlWa7h6qBRBH-6atlJJu40GGDHHmpB8y-2wJHBi7NKpyfysHAec1x26x3HK-qQDlbCQb9ojYjdYtQhamXK6RxL1jutbhg2nHBBjPJyC33jxkp7CsknJURoo"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.7</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Sandas</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Jantur Inar Waterfall</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">A majestic 30-meter waterfall surrounded by lush tropical greenery, perfect for nature photography.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A wide-angle landscape of Lake Jempang during sunset. Traditional wooden boats with colorful details rest on the calm water, reflecting the purple and orange sky. In the distance, floating wooden houses of the local fishing community can be seen. The style is serene and wide, evoking a sense of peaceful remote exploration in Borneo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmeElE1DTfso4bSDF-LqOW-d6k8RbyiNU-zLJs_yC_OGWHyCT1cHMJIPr7KBzcy-Nt9AQEioq8RyMqmYHsZLbB86ekanfnnnPBkUjGwR9FWjCW3Tk18b3NkMO2K42PVNxwN-7plT5g333XkSxGsoQJYFoeZt_tX6Y6Mpwo9H2JxR0mAUdnjRKbM_enGgntpJGavKnPhHX74Qg59Hos92q4rQo_pRWBUwYvcUJdVtq7UymPmHCNeTM"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.6</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Jempang</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Lake Jempang</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">The largest lake in the region, famous for its incredible birdlife and unique floating houses.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A grand Dayak Luuq longhouse in Barong Tongkok Cultural Village. The wooden structure features intricate tribal carvings on its pillars and traditional thatched roofing. Local elders in traditional ceremonial attire are seen in the distance on the porch. The image is captured in bright daylight, highlighting the cultural richness and architectural craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx7pjh---nCbu8EqajuU4UWMJjdUvQQxyBvZZoWjXJyEU83gWr63rSWwmdkiQ_fyi-_vcaJKpBQxBrN16hyi4z3SKaSxqR3IccvTgXAYNwA0VyQlsEIqdq6MyY9DR-eY58Hc5p0mRfjTkh5d37h2D4H5uoPDwigYjOebgr--Gp49gzG6Bl5b1ewGrD_B6g2bL-jiBVgJCXwa6g5u3hkP_xNEdQMZRKKfjz-QW1CWYraz6AzSdwY7E"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.9</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Barong Tongkok</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Barong Tongkok Village</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">Experience the rich Dayak culture and stay in traditional Luuq longhouses with local families.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="The monolithic granite dome of Mount Kelam rising above the vast tropical rainforest of Kutai Barat. Wisps of white clouds cling to the mountain peak. The view is from a high-altitude perspective, showing the scale of the rock face against the endless green canopy. The lighting is bright and clear, conveying a sense of high-altitude adventure and fresh air." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMJlWNrRLtWzw8o32Hwrf86kcPlQDyh-iepA0uLljwOtCi_TcUm43GoHEvDLVM0yeVyXHw-Kox00xWc2XjaG7SYNA_yGLQsWSUQpl-dbO5HKRxdMIdk4v9nM4lmVvbdLlH6VTMWhXjfVmRosvk_Hu3DFuTbT4BcrrZnByFnFi-X1YsAQUgYJneqwD0qjmI9l5-ptsRE-hKBhmIoykUmX8Mbc77KFoz9cLDhvY_JI5tcH7nMIG5hLU"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.5</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Kutai Barat</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Mount Kelam</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">A popular destination for hikers offering panoramic, 360-degree views of the Bornean rainforest.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="group bg-white rounded-[24px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)] transition-all duration-300 flex flex-col h-full border border-surface-container">
+<div class="relative h-64 overflow-hidden rounded-t-[24px]">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A traditional river boat cruising along the wide, historic Mahakam River. The water is glassy and reflects the blue sky. In the foreground, the snout of a rare Irrawaddy dolphin is visible as it breaches the surface. The riverbanks are lined with lush trees and stilt houses. The style is an authentic, documentary-style travel photograph with warm, natural afternoon light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM6YdI_SbcgxRd7FZOPabmyMAFLt50FyCIJGn7ZNdXD4hbVEflJTFf1qJ5HLaI3EA2xxgEG4NdwAOPu66XFSFDn-tEI78pbASNo6M3b23OuDJdtD8SfWk7AXZhFQJyYlnYsGpcLd85NL4wiuWO5Y5_coszsGYbuJ7todYW7qT42YG6-5yOali0r_tBK4RVZK_A7gmk68p5Pfz2J5SdLIZWjygkTd3KEDxIa41YCfAUPkY8I9ou5sQ"/>
+<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-caption text-caption text-on-surface">4.7</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex items-center gap-1 text-primary mb-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-caption text-caption">Mahakam</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Mahakam River Tour</h3>
+<p class="font-body-md text-on-surface-variant flex-grow mb-6">Scenic boat rides along the historic Mahakam River to spot rare Irrawaddy dolphins and river life.</p>
+<button class="w-full py-3 rounded-xl border border-primary text-primary font-label-md hover:bg-primary hover:text-white transition-all active:scale-[0.98]">View Details</button>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="mt-stack-xl text-center">
+<button class="px-10 py-4 bg-surface-container text-primary font-label-md rounded-full hover:bg-primary hover:text-white transition-all active:scale-95 shadow-sm">
+                    Discover More Destinations
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-dim w-full py-stack-xl mt-stack-xl">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">nature_people</span>
+<span class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim">Jelajah Kubar</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                    © 2024 Jelajah Kubar. Discover the Heart of Borneo. Unforgettable cultural experiences and breathtaking natural wonders.
+                </p>
+<div class="flex gap-4">
+<a class="text-primary hover:opacity-70 transition-opacity" href="#"><span class="material-symbols-outlined">qr_code_2</span></a>
+<a class="text-primary hover:opacity-70 transition-opacity" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a class="text-primary hover:opacity-70 transition-opacity" href="#"><span class="material-symbols-outlined">movie</span></a>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-wider">Quick Links</h4>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all cursor-pointer" href="#">Destinations</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all cursor-pointer text-primary dark:text-primary-fixed-dim font-bold" href="#">Culture</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all cursor-pointer" href="#">Planning</a>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-wider">Support</h4>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all cursor-pointer" href="#">Contact</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline hover:text-primary dark:hover:text-primary-fixed-dim hover:underline transition-all cursor-pointer" href="#">Privacy Policy</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2 uppercase tracking-wider">Newsletter</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Stay updated with travel tips and new locations.</p>
+<div class="flex items-center bg-white rounded-full p-1 shadow-sm border border-outline-variant">
+<input class="bg-transparent border-none focus:ring-0 text-sm px-4 flex-grow" placeholder="Email address" type="email"/>
+<button class="bg-primary text-white p-2 rounded-full hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for category chips
+        const chips = document.querySelectorAll('button.rounded-full');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // If it's a category chip (not search button)
+                if (chip.classList.contains('bg-white') || chip.classList.contains('bg-primary')) {
+                    chips.forEach(c => {
+                        if (c.classList.contains('bg-primary') && !c.innerText.includes('Search')) {
+                            c.classList.remove('bg-primary', 'text-white', 'shadow-md');
+                            c.classList.add('bg-white', 'text-on-surface-variant', 'shadow-sm');
+                        }
+                    });
+                    chip.classList.remove('bg-white', 'text-on-surface-variant', 'shadow-sm');
+                    chip.classList.add('bg-primary', 'text-white', 'shadow-md');
+                }
+            });
+        });
+
+        // Sticky nav scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('py-2', 'bg-white/95', 'backdrop-blur-md');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.remove('py-2', 'bg-white/95', 'backdrop-blur-md');
+                header.classList.add('py-4');
+            }
+        });
+    </script>
+</body></html>

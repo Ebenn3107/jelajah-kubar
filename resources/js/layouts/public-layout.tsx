@@ -56,7 +56,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
                                         <span className="hidden lg:inline">{auth.user.name}</span>
                                     </button>
                                     <div className="invisible absolute right-0 top-full z-50 mt-2 w-48 origin-top-right scale-95 rounded-xl border border-zinc-200 bg-white py-2 opacity-0 shadow-lg transition-all group-hover:visible group-hover:scale-100 group-hover:opacity-100">
-                                        {auth.user.is_admin && (
+                                        {Boolean((auth.user as Record<string, unknown>).is_admin) && (
                                             <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 hover:bg-teal-50 hover:text-[#00685f]">
                                                 <Settings className="size-4" /> Admin Dashboard
                                             </Link>

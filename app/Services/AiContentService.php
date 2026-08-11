@@ -13,12 +13,123 @@ class AiContentService
     const MAX_USER_CONTENT_CHARS = 12000;
     const MAX_SYSTEM_PROMPT_CHARS = 4000;
 
+    /** Router — pilih provider berdasarkan runtime config (AiProviderService) */
+    private function callAi(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
+    {
+        $providerService = app(AiProviderService::class);
+        $provider = $providerService->getProvider();
+
+        // Local dimatikan → langsung DeepSeek, apapun modenya
+        if (! $providerService->isLocalEnabled()) {
+            return $this->callDeepSeek($systemPrompt, $userContent, $type, $userId);
+        }
+
+        if ($provider === 'deepseek') {
+            return $this->callDeepSeek($systemPrompt, $userContent, $type, $userId);
+        }
+
+        if ($provider === 'auto') {
+            $result = $this->callOllama($systemPrompt, $userContent, $type, $userId);
+            if (empty($result)) {
+                $result = $this->callDeepSeek($systemPrompt, $userContent, $type, $userId);
+            }
+            return $result;
+        }
+
+        // default: local only
+        return $this->callOllama($systemPrompt, $userContent, $type, $userId);
+    }
+
+    private function callOllama(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
+    {
+        $baseUrl = rtrim((string) config('ai.ollama.base_url'), '/');
+        $model = config('ai.ollama.model');
+        $startTime = hrtime(true);
+
+        try {
+            $response = Http::timeout(120)
+                ->post($baseUrl . '/api/chat', [
+                    'model' => $model,
+                    'messages' => [
+                        ['role' => 'system', 'content' => $systemPrompt],
+                        ['role' => 'user', 'content' => $userContent],
+                    ],
+                    'stream' => false,
+                    'format' => 'json',
+                    'options' => [
+                        'temperature' => config('ai.ollama.temperature', 0.7),
+                    ],
+                ]);
+
+            $elapsed = hrtime(true) - $startTime;
+            $responseTimeMs = (int) ($elapsed / 1_000_000);
+
+            if ($response->failed()) {
+                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+                return [];
+            }
+
+            $content = $response->json('message.content');
+
+            if (empty($content)) {
+                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
+                return [];
+            }
+
+            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
+
+            return $this->parseJsonTolerant($content);
+        } catch (\Exception $e) {
+            $elapsed = hrtime(true) - $startTime;
+            $responseTimeMs = (int) ($elapsed / 1_000_000);
+            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
+
+            return [];
+        }
+    }
+
+    /** Parsing JSON toleran — model kecil sering output JSON dengan teks di sekitarnya */
+    private function parseJsonTolerant(string $content): array
+    {
+        // 1. Coba decode langsung
+        $decoded = json_decode($content, true);
+        if (is_array($decoded)) {
+            return $decoded;
+        }
+
+        // 2. Strip code fences ```json ... ```
+        $stripped = preg_replace('/```(?:json)?\s*/i', '', $content);
+        $stripped = preg_replace('/```/', '', $stripped ?? '');
+        $decoded = json_decode(trim($stripped ?? ''), true);
+        if (is_array($decoded)) {
+            return $decoded;
+        }
+
+        // 3. Cari blok {...} pertama
+        if (preg_match('/\{.*\}/s', $content, $matches)) {
+            $decoded = json_decode($matches[0], true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        // 4. Cari blok [...] pertama
+        if (preg_match('/\[.*\]/s', $content, $matches)) {
+            $decoded = json_decode($matches[0], true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return [];
+    }
+
     public function generate(Wisata $wisata): array
     {
         $factualData = $this->buildFactualData($wisata);
 
-        $narrative = $this->callDeepSeek($this->narrativePrompt(), $factualData, 'ai_content_generate');
-        $metadata = $this->callDeepSeek($this->metadataPrompt(), $factualData, 'ai_content_generate');
+        $narrative = $this->callAi($this->narrativePrompt(), $factualData, 'ai_content_generate');
+        $metadata = $this->callAi($this->metadataPrompt(), $factualData, 'ai_content_generate');
 
         return [
             'deskripsi' => $narrative['deskripsi'] ?? $wisata->deskripsi,
@@ -57,7 +168,7 @@ Respond dengan JSON:
 {"summary": "..."}
 PROMPT;
 
-        $result = $this->callDeepSeek($prompt, $reviewText, 'review_summary', $userId);
+        $result = $this->callAi($prompt, $reviewText, 'review_summary', $userId);
 
         return $result['summary'] ?? null;
     }
@@ -68,11 +179,16 @@ PROMPT;
             return 'Maaf, saya tidak menemukan data wisata yang relevan dengan pertanyaan Anda di database Jelajah Kubar. Coba tanyakan dengan kata kunci yang berbeda.';
         }
 
+        // Metadata statistik — LLM tahu total destinasi, gak bakal salah hitung
+        $metadata = app(LocalGuideService::class)->buildMetadata();
+
         $context = '';
+        $contextNames = [];
         foreach ($wisatas as $w) {
             $fas = $w['fasilitas'] ?? [];
             $fasList = is_array($fas) ? implode(', ', array_column($fas, 'nama_fasilitas')) : '';
             $kat = $w['kategori']['nama_kategori'] ?? 'Umum';
+            $contextNames[] = strtolower($w['nama_wisata']);
 
             $context .= "- {$w['nama_wisata']} ({$kat})\n";
             $context .= "  Alamat: {$w['alamat']}\n";
@@ -85,46 +201,188 @@ PROMPT;
         $prompt = <<<PROMPT
 Kamu adalah Local Guide AI untuk Jelajah Kubar — asisten wisata yang membantu pengunjung menemukan informasi tentang destinasi di Kutai Barat, Kalimantan Timur.
 
-ATURAN:
-1. Jawab pertanyaan pengguna HANYA berdasarkan data yang diberikan di bawah ini
-2. JANGAN menambahkan fakta, sejarah, harga, atau informasi apapun yang tidak ada di data
-3. Jika informasi tidak tersedia untuk menjawab pertanyaan, katakan "Informasi belum tersedia"
-4. Gunakan bahasa Indonesia yang ramah dan natural
-5. Jika relevan, sebutkan nama spesifik destinasi
+INFORMASI STATISTIK DATABASE (fakta, jangan dikoreksi):
+{$metadata}
+
+ATURAN KETAT:
+1. Jawab pertanyaan HANYA berdasarkan data wisata di bawah ini
+2. JANGAN menyebutkan nama destinasi APAPUN yang tidak ada di daftar "DAFTAR DESTINASI TERSEDIA"
+3. JANGAN menambahkan fakta, sejarah, harga, atau informasi yang tidak ada di data
+4. Jika data tidak cukup untuk menjawab, katakan "Informasi belum tersedia" lalu berhenti
+5. Gunakan bahasa Indonesia yang ramah dan natural
+6. Sebutkan maksimal 3 destinasi yang paling relevan dengan pertanyaan
+7. Jika pertanyaan menanyakan JUMLAH/TOTAL destinasi, gunakan TOTAL_DESTINASI_TERSEDIA dari INFORMASI STATISTIK — jangan menghitung dari daftar di bawah (daftar hanya sebagian)
+
+DAFTAR DESTINASI TERSEDIA (sebagian — hanya yang relevan):
+{$context}
 
 Pertanyaan pengguna: {$question}
-
-Data wisata yang tersedia:
-{$context}
 
 Respond dengan JSON:
 {"answer": "..."}
 PROMPT;
 
-        $result = $this->callDeepSeek($prompt, $question, 'local_guide');
+        $result = $this->callAi($prompt, $question, 'local_guide');
 
         return $result['answer'] ?? 'Maaf, saya belum bisa menjawab pertanyaan itu. Coba tanyakan hal lain tentang wisata di Kutai Barat.';
     }
 
+    /** Validasi respons — hapus nama destinasi yang tidak ada di context */
+    public function validateLocalGuideAnswer(?string $answer, $wisatas): string
+    {
+        if (! $answer) {
+            return 'Maaf, saya belum bisa menjawab pertanyaan itu. Coba tanyakan hal lain tentang wisata di Kutai Barat.';
+        }
+
+        $allowedNames = collect($wisatas)
+            ->map(fn ($w) => strtolower($w['nama_wisata'] ?? $w->nama_wisata))
+            ->unique()
+            ->values();
+
+        // Ambil semua potongan nama panjang dulu (misal "Kersik Luway Orchid Forest")
+        $suspicious = [];
+        foreach ($allowedNames as $name) {
+            // Nama yang ADA di context — aman
+            if (str_contains(strtolower($answer), $name)) {
+                continue;
+            }
+        }
+
+        // Cek kata benda asing: pecah jawaban jadi kalimat, cari kalimat yang menyebut nama
+        // yang mirip tapi bukan nama yang diizinkan (hallucination check ringan)
+        $answerLower = strtolower($answer);
+
+        foreach ($allowedNames as $name) {
+            $nameParts = explode(' ', $name);
+            if (count($nameParts) >= 2) {
+                // Cek apakah ada bagian nama yang muncul tapi nama lengkap tidak
+                // contoh: "Pantai Benangaq" disebut tapi hanya "Pantai" di context
+                foreach ($nameParts as $part) {
+                    if (strlen($part) >= 5 && str_contains($answerLower, $part)) {
+                        // Bagian nama ini ada di jawaban — ok karena bagian dari nama yang diizinkan
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Hapus kalimat yang menyebut kata "wisata"/"tempat" + angka yang tidak masuk akal
+        // (heuristic sederhana — cukup untuk Qwen 1.5B)
+        $sentences = preg_split('/(?<=[.!?])\s+/', $answer);
+        $filtered = array_filter($sentences, function ($sentence) use ($allowedNames) {
+            $sentenceLower = strtolower($sentence);
+
+            // Jika kalimat menyebut nama yang tidak diizinkan → buang
+            preg_match_all('/\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,3})\b/', $sentence, $matches);
+            foreach ($matches[1] ?? [] as $candidate) {
+                $candidateLower = strtolower(trim($candidate));
+                // Skip kata umum
+                if (in_array($candidateLower, ['saya', 'anda', 'kamu', 'yang', 'untuk', 'dengan', 'akan', 'bisa', 'dari', 'kepada', 'seperti', 'selamat', 'ada', 'info', 'informasi', 'harga', 'tiket', 'lokasi', 'alamat', 'wisata', 'kutai', 'barat', 'kalimantan', 'timur'])) {
+                    continue;
+                }
+                // Nama dengan huruf kapital yang bukan bagian dari allowed → curiga
+                $isAllowed = $allowedNames->contains(fn ($n) => str_contains($candidateLower, $n) || str_contains($n, $candidateLower));
+                if (! $isAllowed && strlen($candidateLower) > 5) {
+                    return false; // buang kalimat ini
+                }
+            }
+
+            return true;
+        });
+
+        $result = implode(' ', $filtered);
+
+        return trim($result) !== '' ? $result : $answer;
+    }
+
     public function travelPlan(array $wisatas, int $durasi, string $budget, string $minat): ?string
+    {
+        // Batasi jumlah destinasi yang dikirim ke model (hemat token),
+        // dan utamakan yang relevan dengan minat pengguna.
+        $maxDestinations = min(12, 4 + $durasi * 2);
+        $wisatas = $this->selectRelevantDestinations($wisatas, $minat, $maxDestinations);
+        $prompt = $this->buildTravelPlanPrompt($wisatas, $durasi, $budget, $minat);
+
+        // Jaring pengaman: jika prompt masih melebihi batas system prompt,
+        // kurangi daftar destinasi sampai muat — instruksi JSON tidak boleh terpotong.
+        while (mb_strlen($prompt) > self::MAX_SYSTEM_PROMPT_CHARS && count($wisatas) > 1) {
+            array_pop($wisatas);
+            $prompt = $this->buildTravelPlanPrompt($wisatas, $durasi, $budget, $minat);
+        }
+
+        $result = $this->callAi($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner');
+
+        return $result ? json_encode($result) : null;
+    }
+
+    /**
+     * Pilih destinasi paling relevan dengan minat pengguna.
+     * Jika tidak ada kata kunci yang cocok, ambil destinasi pertama sejumlah limit.
+     */
+    private function selectRelevantDestinations(array $wisatas, string $minat, int $limit): array
+    {
+        if (count($wisatas) <= $limit) {
+            return array_values($wisatas);
+        }
+
+        $keywords = array_values(array_filter(
+            array_map('mb_strtolower', preg_split('/[\s,;.]+/u', trim($minat)) ?: []),
+            fn ($keyword) => mb_strlen($keyword) >= 3,
+        ));
+
+        if ($keywords === []) {
+            return array_slice($wisatas, 0, $limit);
+        }
+
+        $scored = [];
+        foreach ($wisatas as $wisata) {
+            $haystack = mb_strtolower(implode(' ', [
+                $wisata['nama_wisata'] ?? '',
+                $wisata['kategori']['nama_kategori'] ?? '',
+                $wisata['alamat'] ?? '',
+                mb_substr($wisata['deskripsi'] ?? '', 0, 300),
+            ]));
+
+            $score = 0;
+            foreach ($keywords as $keyword) {
+                if (str_contains($haystack, $keyword)) {
+                    $score++;
+                }
+            }
+            $scored[] = ['wisata' => $wisata, 'score' => $score];
+        }
+
+        usort($scored, fn ($a, $b) => $b['score'] <=> $a['score']);
+
+        if (($scored[0]['score'] ?? 0) === 0) {
+            return array_slice($wisatas, 0, $limit);
+        }
+
+        return array_slice(array_map(fn ($item) => $item['wisata'], $scored), 0, $limit);
+    }
+
+    private function buildTravelPlanPrompt(array $wisatas, int $durasi, string $budget, string $minat): string
     {
         $wisataText = '';
         foreach ($wisatas as $w) {
             $fasilitas = $w['fasilitas'] ?? [];
-            $fasilitasList = is_array($fasilitas) ? implode(', ', array_column($fasilitas, 'nama_fasilitas')) : '';
+            $fasilitasList = is_array($fasilitas)
+                ? implode(', ', array_slice(array_column($fasilitas, 'nama_fasilitas'), 0, 4))
+                : '';
             $kategori = $w['kategori']['nama_kategori'] ?? 'Umum';
+            $harga = $w['harga_tiket'] ?: 'Informasi belum tersedia';
 
-            $wisataText .= "- {$w['nama_wisata']} ({$kategori})\n";
-            $wisataText .= "  Alamat: {$w['alamat']}\n";
-            $wisataText .= "  Harga: " . ($w['harga_tiket'] ?: 'Informasi belum tersedia') . "\n";
-            $wisataText .= "  Jam: {$w['jam_buka']} - {$w['jam_tutup']}\n";
-            $wisataText .= "  Fasilitas: " . ($fasilitasList ?: 'Informasi belum tersedia') . "\n\n";
+            $wisataText .= "- {$w['nama_wisata']} ({$kategori}) | Tiket: {$harga}";
+            if ($fasilitasList !== '') {
+                $wisataText .= " | Fasilitas: {$fasilitasList}";
+            }
+            $wisataText .= "\n";
         }
 
-        $prompt = <<<PROMPT
+        return <<<PROMPT
 Kamu adalah asisten perencana perjalanan wisata untuk Jelajah Kubar (Kutai Barat, Kalimantan Timur).
 
-Berdasarkan daftar destinasi wisata berikut, buat rencana perjalanan (itinerary) selama {$durasi} hari dengan budget {$budget}.
+Buat rencana perjalanan (itinerary) selama {$durasi} hari dengan budget {$budget}.
 Minat pengguna: {$minat}
 
 Aturan:
@@ -137,10 +395,7 @@ Aturan:
 7. Gunakan bahasa Indonesia
 8. HANYA gunakan data dari daftar berikut — jangan tambah destinasi lain
 
-Daftar destinasi:
-{$wisataText}
-
-Respond dengan JSON:
+Respond dengan JSON dengan format berikut:
 {
   "days": [
     {
@@ -160,11 +415,10 @@ Respond dengan JSON:
   "total_budget_estimate": "Estimasi total biaya",
   "tips": "Tips perjalanan"
 }
+
+Daftar destinasi:
+{$wisataText}
 PROMPT;
-
-        $result = $this->callDeepSeek($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner');
-
-        return $result ? json_encode($result) : null;
     }
 
     private function buildFactualData(Wisata $wisata): string

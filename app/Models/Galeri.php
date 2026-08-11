@@ -21,7 +21,9 @@ class Galeri extends Model
 
     protected function fotoUrl(): Attribute
     {
-        return Attribute::get(fn () => $this->foto ? Storage::url($this->foto) : null);
+        return Attribute::get(fn () => $this->foto
+            ? (str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto))
+            : null);
     }
 
     public function wisata(): BelongsTo

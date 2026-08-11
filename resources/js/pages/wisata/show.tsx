@@ -159,25 +159,23 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
 
                     {/* Info Grid */}
                     <div className="mb-8 grid gap-6 md:grid-cols-2">
-                        {wisata.jam_buka && (
-                            <div className="rounded-xl border border-neutral-200/30 bg-[#eff4ff] p-6 transition-all hover:shadow-lg hover:shadow-[#00685f]/5">
-                                <div className="mb-2 flex items-center gap-4 text-[#00685f]">
-                                    <Clock className="size-5" />
-                                    <span className="text-sm font-semibold">Opening Hours</span>
-                                </div>
-                                <p className="text-xl font-semibold text-neutral-900">{wisata.jam_buka}</p>
-                                {wisata.jam_tutup && <p className="mt-1 text-xs text-neutral-500">Until {wisata.jam_tutup}</p>}
+                        <div className="rounded-xl border border-neutral-200/30 bg-[#eff4ff] p-6 transition-all hover:shadow-lg hover:shadow-[#00685f]/5">
+                            <div className="mb-2 flex items-center gap-4 text-[#00685f]">
+                                <Clock className="size-5" />
+                                <span className="text-sm font-semibold">Opening Hours</span>
                             </div>
-                        )}
-                        {wisata.harga_tiket && (
-                            <div className="rounded-xl border border-neutral-200/30 bg-[#eff4ff] p-6 transition-all hover:shadow-lg hover:shadow-[#00685f]/5">
-                                <div className="mb-2 flex items-center gap-4 text-[#00685f]">
-                                    <Ticket className="size-5" />
-                                    <span className="text-sm font-semibold">Entrance Fee</span>
-                                </div>
-                                <p className="text-xl font-semibold text-neutral-900">{wisata.harga_tiket}</p>
+                            <p className="text-xl font-semibold text-neutral-900">
+                                {wisata.jam_buka ? (wisata.jam_tutup ? `${wisata.jam_buka} - ${wisata.jam_tutup}` : wisata.jam_buka) : '24 Jam'}
+                            </p>
+                            {wisata.jam_buka && wisata.jam_tutup && <p className="mt-1 text-xs text-neutral-500">Open daily</p>}
+                        </div>
+                        <div className="rounded-xl border border-neutral-200/30 bg-[#eff4ff] p-6 transition-all hover:shadow-lg hover:shadow-[#00685f]/5">
+                            <div className="mb-2 flex items-center gap-4 text-[#00685f]">
+                                <Ticket className="size-5" />
+                                <span className="text-sm font-semibold">Entrance Fee</span>
                             </div>
-                        )}
+                            <p className="text-xl font-semibold text-neutral-900">{wisata.harga_tiket || 'Gratis / Sukarela'}</p>
+                        </div>
                         {wisata.kontak && (
                             <div className="rounded-xl border border-neutral-200/30 bg-[#eff4ff] p-6 transition-all hover:shadow-lg hover:shadow-[#00685f]/5">
                                 <div className="mb-2 flex items-center gap-4 text-[#00685f]">
@@ -291,7 +289,7 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                                         onChange={(e) => setReviewKomentar(e.target.value)}
                                         rows={3}
                                         placeholder="Share your experience..."
-                                        className="mt-3 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                                        className="mt-3 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
                                     />
                                     <div className="mt-3 flex gap-2">
                                         <button type="submit" className="rounded-lg bg-[#00685f] px-5 py-2 text-sm font-semibold text-white hover:opacity-90">

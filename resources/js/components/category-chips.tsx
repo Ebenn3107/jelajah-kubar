@@ -14,11 +14,16 @@ const categoryIcons: Record<string, string> = {
     'Air Terjun': '💧',
     'Danau': '🏞️',
     'Petualangan': '🧗',
+    'Pantai': '🏖️',
+    'Religi': '⛪',
+    'Sejarah': '🏰',
+    'Kuliner': '🍲',
+    'Hiburan': '🎭',
 };
 
 export function CategoryChips({ categories, activeCategory, onSelect, counts }: CategoryChipsProps) {
     return (
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+        <div className="flex gap-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
             {categories.map((category) => {
                 const isActive = category === activeCategory;
                 const icon = categoryIcons[category] || '';

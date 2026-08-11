@@ -52,7 +52,7 @@ export function SearchHero({ placeholder = 'Search destinations...', onSearch, l
                         ref={inputRef}
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        className="flex-grow border-none bg-transparent text-base shadow-none focus-visible:ring-0 placeholder:text-neutral-400"
+                        className="flex-grow border-none bg-transparent text-base font-medium text-neutral-900 shadow-none caret-[#00685f] focus-visible:ring-0 placeholder:font-normal placeholder:text-neutral-400"
                         placeholder={placeholder}
                         onKeyDown={handleKeyDown}
                     />
@@ -66,12 +66,30 @@ export function SearchHero({ placeholder = 'Search destinations...', onSearch, l
                         </button>
                     )}
                     <Button
-                        className="hidden shrink-0 rounded-full px-8 py-6 text-sm font-semibold sm:block"
-                        onClick={() => onSearch?.(value)}
-                        disabled={loading}
-                    >
-                        {loading ? 'Searching...' : 'Search'}
-                    </Button>
+    onClick={() => onSearch?.(value)}
+    disabled={loading}
+    className="
+        hidden
+        sm:flex
+        items-center
+        justify-center
+        shrink-0
+        rounded-full
+        bg-emerald-600
+        hover:bg-emerald-700
+        active:bg-emerald-800
+        text-white
+        font-semibold
+        px-8
+        h-14
+        shadow-lg
+        hover:shadow-xl
+        transition-all
+        duration-200
+    "
+>
+    {loading ? "Searching..." : "Search"}
+</Button>
                 </div>
 
                 {/* Stats */}

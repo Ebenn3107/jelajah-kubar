@@ -36,6 +36,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('fasilitas', AdminFasilitasController::class)->parameter('fasilitas', 'fasilitas')->except('show');
         Route::post('wisata/{wisata}/generate-content', [AiContentController::class, 'generate'])->name('wisata.generate-content')->middleware('throttle:ai');
         Route::get('ai-logs', [AiLogController::class, 'index'])->name('ai-logs.index');
+        Route::post('ai-logs/provider', [AiLogController::class, 'updateProvider'])->name('ai-logs.provider');
+        Route::post('ai-logs/toggle-local', [AiLogController::class, 'toggleLocal'])->name('ai-logs.toggle-local');
     });
 });
 

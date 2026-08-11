@@ -1,0 +1,401 @@
+{
+    "wisata": [
+        {
+            "nama_wisata": "Kersik Luway Orchid Forest",
+            "slug": null,
+            "kategori": "Alam",
+            "alamat": "Sekolaq Darat, Kec. Sekolaq Darat, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Cagar alam seluas lebih dari 5.000 hektar yang menjadi habitat asli dan utama dari anggrek hitam (Coelogyne pandurata) yang langka di tanah berpasir putih.",
+            "latitude": -0.416667,
+            "longitude": 115.916667,
+            "harga_tiket": "Rp 10.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "16:00",
+            "kontak": "081231415104",
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Papan Informasi",
+                "Pemandu Wisata"
+            ]
+        },
+        {
+            "nama_wisata": "Jantur Inar Waterfall",
+            "slug": null,
+            "kategori": "Air Terjun",
+            "alamat": "Terajuk, Kec. Nyuatan, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Air terjun megah berketinggian sekitar 30 meter dengan pemandangan tebing batu alam dan hutan tropis yang sejuk.",
+            "latitude": -0.433333,
+            "longitude": 115.883333,
+            "harga_tiket": "Rp 10.000",
+            "jam_buka": "07:00",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Spot Foto",
+                "Warung Makan",
+                "Gazebo"
+            ]
+        },
+        {
+            "nama_wisata": "Lake Jempang",
+            "slug": null,
+            "kategori": "Danau",
+            "alamat": "Tj. Isuy, Kec. Jempang, Kabupaten Kutai Barat, Kalimantan Timur 75773",
+            "deskripsi": "Danau terbesar di Kutai Barat yang terhubung langsung dengan aliran Sungai Mahakam, menjadi rumah bagi berbagai fauna air dan kehidupan terapung suku Dayak.",
+            "latitude": -0.383333,
+            "longitude": 116.0,
+            "harga_tiket": "Gratis",
+            "jam_buka": "24 jam",
+            "jam_tutup": "24 jam",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Warung Makan",
+                "Spot Foto",
+                "Gazebo"
+            ]
+        },
+        {
+            "nama_wisata": "Taman Budaya Sendawar",
+            "slug": null,
+            "kategori": "Budaya",
+            "alamat": "Jl. Sendawar Raya, Barong Tongkok, Kec. Barong Tongkok, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Kompleks pelestarian kebudayaan enam suku besar Dayak di Kutai Barat lengkap dengan miniatur rumah lamin tradisional tiap etnis.",
+            "latitude": -0.228131,
+            "longitude": 115.702758,
+            "harga_tiket": "Rp 5.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "18:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Spot Foto",
+                "Toilet Umum",
+                "Papan Informasi"
+            ]
+        },
+        {
+            "nama_wisata": "Gunung S",
+            "slug": null,
+            "kategori": "Petualangan",
+            "alamat": "Tutung, Kec. Linggang Bigung, Kabupaten Kutai Barat, Kalimantan Timur 75776",
+            "deskripsi": "Destinasi dataran tinggi menyerupai bukit yang menyajikan pemandangan kabut tebal pagi hari bak negeri di atas awan.",
+            "latitude": -0.211415,
+            "longitude": 115.684122,
+            "harga_tiket": "Gratis",
+            "jam_buka": "24 jam",
+            "jam_tutup": "24 jam",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Area Camping"
+            ]
+        },
+        {
+            "nama_wisata": "Danau Aco",
+            "slug": null,
+            "kategori": "Danau",
+            "alamat": "Linggang Melapeh, Kec. Linggang Bigung, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Danau alami berair tenang jernih di atas puncak perbukitan, dikelilingi vegetasi hutan Kalimantan yang asri.",
+            "latitude": -0.215562,
+            "longitude": 115.691234,
+            "harga_tiket": "Rp 5.000",
+            "jam_buka": "24 jam",
+            "jam_tutup": "24 jam",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Gazebo",
+                "Pemandu Wisata"
+            ]
+        },
+        {
+            "nama_wisata": "Mapan Waterfall",
+            "slug": null,
+            "kategori": "Air Terjun",
+            "alamat": "Jalan Sengkereaq Lacaaq, Linggang Mapan, Kec. Linggang Bigung, Kabupaten Kutai Barat, Kalimantan Timur 75776",
+            "deskripsi": "Air terjun landai bertingkat yang lokasinya sangat strategis di tepi jalan poros utama Kutai Barat.",
+            "latitude": -0.219444,
+            "longitude": 115.688889,
+            "harga_tiket": "Gratis",
+            "jam_buka": "07:30",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Warung Makan"
+            ]
+        },
+        {
+            "nama_wisata": "Jantur Dora",
+            "slug": null,
+            "kategori": "Air Terjun",
+            "alamat": "Kampung Juhan Asa, Kec. Barong Tongkok, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Destinasi air terjun rekreasi populer bagi masyarakat lokal yang dikelilingi hutan lindung dengan aliran air sejuk jernih.",
+            "latitude": -0.231234,
+            "longitude": 115.714321,
+            "harga_tiket": "Gratis",
+            "jam_buka": "08:00",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Spot Foto"
+            ]
+        },
+        {
+            "nama_wisata": "Lamin Rumah Betang Mancong",
+            "slug": null,
+            "kategori": "Budaya",
+            "alamat": "Kampung Mancong, Kec. Jempang, Kabupaten Kutai Barat, Kalimantan Timur 75773",
+            "deskripsi": "Rumah panjang bersejarah Suku Dayak Benuaq dengan struktur ukiran kayu ulin raksasa berumur ratusan tahun.",
+            "latitude": -0.523456,
+            "longitude": 116.123456,
+            "harga_tiket": "Rp 15.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Toilet Umum",
+                "Papan Informasi",
+                "Pemandu Wisata",
+                "Homestay"
+            ]
+        },
+        {
+            "nama_wisata": "Hutan Hemaq Beniung",
+            "slug": null,
+            "kategori": "Alam",
+            "alamat": "Kampung Juaq Asa, Kec. Barong Tongkok, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Kawasan hutan adat dan pelestarian flora eksotis Kalimantan, difungsikan sebagai lokasi ekowisata berbasis edukasi lingkungan.",
+            "latitude": -0.245112,
+            "longitude": 115.698451,
+            "harga_tiket": "Rp 5.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Toilet Umum",
+                "Papan Informasi"
+            ]
+        },
+        {
+            "nama_wisata": "Bumi Perkemahan Batuq Bura",
+            "slug": null,
+            "kategori": "Petualangan",
+            "alamat": "Kampung Lakan Bilem, Kec. Nyuatan, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Area luar ruangan di tepi sungai berbatu jeram yang ideal untuk aktivitas berkemah, outbound, dan tracking rimba.",
+            "latitude": -0.281145,
+            "longitude": 115.654122,
+            "harga_tiket": "Rp 10.000",
+            "jam_buka": "24 jam",
+            "jam_tutup": "24 jam",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Area Camping",
+                "Toilet Umum"
+            ]
+        },
+        {
+            "nama_wisata": "Desa Wisata Tanjung Isuy",
+            "slug": null,
+            "kategori": "Budaya",
+            "alamat": "Kampung Tanjung Isuy, Kec. Jempang, Kabupaten Kutai Barat, Kalimantan Timur 75773",
+            "deskripsi": "Kampung budaya pesisir danau legendaris yang menyajikan pembuatan kerajinan tenun asli Ulap Doyo serta upacara tarian adat penyambutan.",
+            "latitude": -0.421254,
+            "longitude": 116.012458,
+            "harga_tiket": "Rp 10.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "17:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Toilet Umum",
+                "Pemandu Wisata",
+                "Papan Informasi",
+                "Homestay",
+                "Pusat Suvenir"
+            ]
+        },
+        {
+            "nama_wisata": "Islamic Center Kutai Barat",
+            "slug": null,
+            "kategori": "Religi",
+            "alamat": "Jl. Pattimura, Melak Ulu, Kec. Melak, Kabupaten Kutai Barat, Kalimantan Timur 75775",
+            "deskripsi": "Pusat peribadatan dan wisata religi umat Islam di Kutai Barat dengan arsitektur kubah megah bergaya modern di dekat pesisir Mahakam.",
+            "latitude": -0.231458,
+            "longitude": 115.798124,
+            "harga_tiket": "Gratis",
+            "jam_buka": "24 jam",
+            "jam_tutup": "24 jam",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Toilet Umum",
+                "Musholla"
+            ]
+        },
+        {
+            "nama_wisata": "Catholic Center Santo Thomas Aquinas",
+            "slug": null,
+            "kategori": "Religi",
+            "alamat": "Jl. Sendawar Raya, Barong Tongkok, Kec. Barong Tongkok, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Kompleks pusat keagamaan Katolik yang megah di ibu kota kabupaten, menjadi landmark arsitektur religi yang sering dikunjungi pelancong.",
+            "latitude": -0.224158,
+            "longitude": 115.704125,
+            "harga_tiket": "Gratis",
+            "jam_buka": "06:00",
+            "jam_tutup": "21:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Toilet Umum"
+            ]
+        },
+        {
+            "nama_wisata": "Agrowisata Kopi robusta Linggang Melapeh",
+            "slug": null,
+            "kategori": "Agrowisata",
+            "alamat": "Kampung Linggang Melapeh, Kec. Linggang Bigung, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Kawasan perkebunan kopi lokal terintegrasi yang menawarkan pengalaman memetik biji kopi robusta langsung serta edukasi pengolahannya.",
+            "latitude": -0.205124,
+            "longitude": 115.694856,
+            "harga_tiket": "Rp 5.000",
+            "jam_buka": "08:00",
+            "jam_tutup": "16:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Warung Makan",
+                "Pusat Suvenir",
+                "Pemandu Wisata"
+            ]
+        },
+        {
+            "nama_wisata": "Situs Sendawar Kuno",
+            "slug": null,
+            "kategori": "Sejarah",
+            "alamat": "Kecamatan Barong Tongkok, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Situs purbakala arkeologis pelestarian tiang ulin kuno dan bekas pemukiman mula-mula masyarakat adat Sendawar kuno.",
+            "latitude": -0.241584,
+            "longitude": 115.731425,
+            "harga_tiket": "Gratis",
+            "jam_buka": "08:00",
+            "jam_tutup": "16:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Papan Informasi"
+            ]
+        },
+        {
+            "nama_wisata": "Pusat Kuliner Dermaga Melak",
+            "slug": null,
+            "kategori": "Kuliner",
+            "alamat": "Pesisir Sungai Mahakam, Kec. Melak, Kabupaten Kutai Barat, Kalimantan Timur 75775",
+            "deskripsi": "Sentra kuliner malam tepi sungai yang menyajikan berbagai makanan olahan ikan tawar Mahakam segar seperti patin dan jelawat.",
+            "latitude": -0.229145,
+            "longitude": 115.805124,
+            "harga_tiket": "Gratis",
+            "jam_buka": "16:00",
+            "jam_tutup": "23:00",
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir",
+                "Warung Makan",
+                "Dermaga Perahu"
+            ]
+        },
+        {
+            "nama_wisata": "Jantur Inru",
+            "slug": null,
+            "kategori": "Air Terjun",
+            "alamat": "Kecamatan Nyuatan, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Air terjun alami berundak tersembunyi jauh di dalam kawasan hutan lindung Nyuatan, menawarkan jeram bening murni.",
+            "latitude": null,
+            "longitude": null,
+            "harga_tiket": null,
+            "jam_buka": null,
+            "jam_tutup": null,
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": [
+                "Parkir"
+            ]
+        },
+        {
+            "nama_wisata": "Jantur Mukuuq",
+            "slug": null,
+            "kategori": "Air Terjun",
+            "alamat": "Kecamatan Damai, Kabupaten Kutai Barat, Kalimantan Timur 75777",
+            "deskripsi": "Air terjun eksotis berkarakter dinding tebing kars yang belum terkelola resmi komersial, sangat alami dan menantang.",
+            "latitude": null,
+            "longitude": null,
+            "harga_tiket": null,
+            "jam_buka": null,
+            "jam_tutup": null,
+            "kontak": null,
+            "is_active": true,
+            "foto": null,
+            "galeri": [],
+            "fasilitas": []
+        }
+    ]
+}

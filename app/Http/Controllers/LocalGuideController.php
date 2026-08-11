@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Wisata;
 use App\Services\AiContentService;
+use App\Services\LocalGuideService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -26,29 +26,50 @@ class LocalGuideController extends Controller
 
         $question = $validated['question'];
 
-        // Cari wisata relevan dari DB berdasarkan keyword di pertanyaan
-        $keywords = explode(' ', $question);
-        $wisatas = Wisata::with(['kategori', 'fasilitas'])
-            ->where('is_active', true)
-            ->where(function ($q) use ($keywords) {
-                foreach ($keywords as $word) {
-                    if (strlen($word) < 3) continue;
-                    $q->orWhereRaw('LOWER(nama_wisata) LIKE ?', ['%' . strtolower($word) . '%'])
-                      ->orWhereRaw('LOWER(deskripsi) LIKE ?', ['%' . strtolower($word) . '%'])
-                      ->orWhereRaw('LOWER(alamat) LIKE ?', ['%' . strtolower($word) . '%'])
-                      ->orWhereHas('kategori', fn ($k) => $k->whereRaw('LOWER(nama_kategori) LIKE ?', ['%' . strtolower($word) . '%']))
-                      ->orWhereHas('fasilitas', fn ($f) => $f->whereRaw('LOWER(nama_fasilitas) LIKE ?', ['%' . strtolower($word) . '%']));
-                }
-            })
-            ->get();
+        $guide = app(LocalGuideService::class);
 
+        // 1. Deteksi intent
+        $intents = $guide->detectIntent($question);
+
+        // 2. LAYER FAKTUAL — jawab langsung dari DB tanpa LLM (count, daftar)
+        if ($guide->isFactual($question, $intents)) {
+            $factual = $guide->answerFactual($question, $intents);
+
+            return Inertia::render('local-guide/index', [
+                'answer' => $factual,
+                'question' => $question,
+                'relatedWisatas' => [],
+                'intents' => $intents,
+            ]);
+        }
+
+        // 3. Retrieval berdasarkan intent (bukan semua data)
+        $wisatas = $guide->retrieve($question, $intents);
+
+        // 4. Ranking + Top-K
+        $ranked = $guide->rank($question, $intents, $wisatas);
+
+        if ($ranked->isEmpty()) {
+            return Inertia::render('local-guide/index', [
+                'answer' => 'Maaf, saya tidak menemukan data wisata yang relevan dengan pertanyaan Anda di database Jelajah Kubar. Coba tanyakan dengan kata kunci yang berbeda.',
+                'question' => $question,
+                'relatedWisatas' => [],
+                'intents' => $intents,
+            ]);
+        }
+
+        // 5. Generate jawaban dari Top-K + metadata statistik
         $service = app(AiContentService::class);
-        $answer = $service->localGuideAnswer($question, $wisatas->toArray());
+        $answer = $service->localGuideAnswer($question, $ranked->toArray());
+
+        // 6. Validasi respons — pastikan destinasi yang disebut ada di context
+        $answer = $service->validateLocalGuideAnswer($answer, $ranked);
 
         return Inertia::render('local-guide/index', [
             'answer' => $answer,
             'question' => $question,
-            'relatedWisatas' => $wisatas->map(fn ($w) => ['slug' => $w->slug, 'nama' => $w->nama_wisata]),
+            'relatedWisatas' => $ranked->map(fn ($w) => ['slug' => $w->slug, 'nama' => $w->nama_wisata]),
+            'intents' => $intents,
         ]);
     }
 }

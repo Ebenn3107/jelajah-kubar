@@ -27,8 +27,13 @@ export default function Welcome({ featured, totalWisata }: Props) {
             <Head title="" />
 
             {/* Hero */}
-            <section className="relative flex h-[70vh] items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#00685f]/80 to-[#003d38]" />
+            <section
+    className="relative flex h-[70vh] items-center justify-center overflow-hidden bg-cover bg-bottom"
+    style={{
+        backgroundImage: "url('/images/backgrounds/search-bg.webp')",
+    }}
+>
+                
                 <div className="relative z-10 w-full max-w-4xl px-5 text-center">
                     <h1 className="mb-4 text-4xl font-bold leading-tight text-white drop-shadow-lg md:text-5xl">
                         Discover the Beauty of <br className="hidden md:block" /> Kutai Barat

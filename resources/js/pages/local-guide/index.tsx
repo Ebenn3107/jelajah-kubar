@@ -105,7 +105,7 @@ export default function LocalGuideIndex({ answer, question, relatedWisatas }: Pr
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type your question..."
-                            className="flex-1 rounded-xl border border-neutral-300 px-5 py-3 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                            className="flex-1 rounded-xl border border-neutral-300 px-5 py-3 text-sm text-neutral-900 focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
                             disabled={loading}
                         />
                         <Button

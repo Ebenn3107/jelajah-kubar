@@ -125,7 +125,7 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
                                     <input
                                         type="number" min={1} max={14} value={durasi}
                                         onChange={(e) => setDurasi(Number(e.target.value))}
-                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
                                     />
                                 </div>
                                 <div>
@@ -135,7 +135,7 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
                                         onChange={(e) => setBudget(e.target.value)}
                                         placeholder="Rp 500.000"
                                         required
-                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
                                     />
                                 </div>
                                 <div>
@@ -144,7 +144,7 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
                                         value={minat} rows={3}
                                         onChange={(e) => setMinat(e.target.value)}
                                         placeholder="Waterfalls, culture, hiking, photography..."
-                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
+                                        className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus:border-[#00685f] focus:outline-none focus:ring-1 focus:ring-[#00685f]"
                                     />
                                 </div>
                                 <Button

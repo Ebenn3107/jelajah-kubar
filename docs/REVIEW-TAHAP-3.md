@@ -30,7 +30,9 @@ composer test              # BELUM pernah dijalankan (lihat "Belum diverifikasi"
 
 Komponen baru: `components/page-header.tsx`, `components/search-bar.tsx`. Token warna baru ada di `resources/css/app.css` (blok `@theme`), diambil dari `docs/ui/.../DESIGN.md`.
 
-## Keputusan desain yang perlu Anda setujui
+## Keputusan desain (disetujui pemilik 2026-10-02)
+Keputusan 1, 2, dan 3 diterima; untuk 3, tata letak admin **tidak dirombak**.
+
 1. **Tidak mengikuti layar Stitch persis.** Palet dan tipografi dari `DESIGN.md` dipakai, struktur halaman dirancang ulang (hero foto besar di `/wisata` dan detail dibuang karena mendorong konten ke bawah dan menduplikasi beranda).
 2. **Emoji di chips kategori dibuang.**
 3. **Footer admin sidebar:** "Repository"/"Documentation" (sisa starter kit Laravel) diganti "Lihat situs"; logo Laravel diganti ikon pohon.

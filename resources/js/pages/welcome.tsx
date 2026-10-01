@@ -59,7 +59,9 @@ export default function Welcome({ featured, totalWisata, totalKategori, totalFas
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSearch();
+                                if (e.key === 'Enter') {
+handleSearch();
+}
                             }}
                         />
                         <button

@@ -108,8 +108,10 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
     const handleFavorit = () => {
         if (!auth.user) {
             router.visit('/login');
+
             return;
         }
+
         router.post(`/wisata/${wisata.id}/favorit`, {}, { preserveScroll: true });
     };
 
@@ -120,12 +122,19 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
 
     const handleReviewUpdate = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!userReview) return;
+
+        if (!userReview) {
+return;
+}
+
         router.put(`/review/${userReview.id}`, { rating: reviewRating, komentar: reviewKomentar }, reviewOptions(() => setEditing(false)));
     };
 
     const handleReviewDelete = () => {
-        if (!userReview || !confirm('Hapus review ini?')) return;
+        if (!userReview || !confirm('Hapus review ini?')) {
+return;
+}
+
         router.delete(`/review/${userReview.id}`, { preserveScroll: true });
     };
 
@@ -228,7 +237,9 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                                     <button
                                         key={g.id}
                                         type="button"
-                                        onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}
+                                        onClick={() => {
+ setLightboxIndex(i); setLightboxOpen(true); 
+}}
                                         aria-label={g.caption ? `Perbesar foto: ${g.caption}` : `Perbesar foto ${i + 1}`}
                                         className="group aspect-square overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-brand"
                                     >
@@ -294,7 +305,9 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
                                             <StarRating rating={userReview.rating} readonly />
                                         </div>
                                         <div className="flex gap-2">
-                                            <button onClick={() => { setEditing(true); setReviewRating(userReview.rating); setReviewKomentar(userReview.komentar || ''); }} className="text-xs font-semibold text-brand hover:underline">Ubah</button>
+                                            <button onClick={() => {
+ setEditing(true); setReviewRating(userReview.rating); setReviewKomentar(userReview.komentar || ''); 
+}} className="text-xs font-semibold text-brand hover:underline">Ubah</button>
                                             <button type="button" onClick={handleReviewDelete} className="text-xs font-semibold text-red-600 hover:underline">Hapus</button>
                                         </div>
                                     </div>

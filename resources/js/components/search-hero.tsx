@@ -20,7 +20,10 @@ export function SearchHero({ placeholder = 'Cari destinasi...', onSearch, initia
     const handleClear = () => {
         setValue('');
         inputRef.current?.focus();
-        if (onSearch) onSearch('');
+
+        if (onSearch) {
+onSearch('');
+}
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

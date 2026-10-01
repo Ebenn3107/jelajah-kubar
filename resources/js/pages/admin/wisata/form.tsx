@@ -64,7 +64,10 @@ export default function AdminWisataForm({ wisata, kategoris, ai_content: initial
     };
 
     const handleGenerate = () => {
-        if (!wisata) return;
+        if (!wisata) {
+return;
+}
+
         setLoading(true);
         router.visit(`/admin/wisata/${wisata.id}/generate-content`, {
             method: 'post',
@@ -82,14 +85,23 @@ export default function AdminWisataForm({ wisata, kategoris, ai_content: initial
     };
 
     const handleApplyAll = () => {
-        if (!preview) return;
+        if (!preview) {
+return;
+}
+
         const form = formRef.current;
-        if (!form) return;
+
+        if (!form) {
+return;
+}
 
         // Hanya deskripsi yang punya kolom di database; pakai versi yang sudah diedit di panel AI
         const ai = form.elements.namedItem('ai_deskripsi') as HTMLTextAreaElement | null;
         const target = form.elements.namedItem('deskripsi') as HTMLTextAreaElement | null;
-        if (target) target.value = ai?.value ?? preview.deskripsi;
+
+        if (target) {
+target.value = ai?.value ?? preview.deskripsi;
+}
 
         setPreview(null);
     };

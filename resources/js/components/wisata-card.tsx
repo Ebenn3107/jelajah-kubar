@@ -3,7 +3,9 @@ import { ImageIcon, MapPin, Star } from 'lucide-react';
 import { useState } from 'react';
 
 function highlightText(text: string, query: string | undefined): React.ReactNode {
-    if (!query || query.length < 2) return text;
+    if (!query || query.length < 2) {
+return text;
+}
 
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const parts = text.split(new RegExp(`(${escaped})`, 'gi'));

@@ -101,7 +101,9 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
                                                 <span className="rounded-full bg-teal-100 dark:bg-teal-900/50 px-2.5 py-0.5 text-xs font-medium text-teal-600 dark:text-teal-400">{k.wisatas_count}</span>
                                             </td>
                                             <td className="flex gap-2 px-4 py-3">
-                                                <button onClick={() => { setEditingId(k.id); setEditNama(k.nama_kategori); setEditDeskripsi(k.deskripsi || ''); }} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-teal-600 dark:hover:text-teal-400">
+                                                <button onClick={() => {
+ setEditingId(k.id); setEditNama(k.nama_kategori); setEditDeskripsi(k.deskripsi || ''); 
+}} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-teal-600 dark:hover:text-teal-400">
                                                     <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                                 </button>
                                                 <button onClick={() => handleDelete(k.id, k.nama_kategori)} className="rounded-md p-1.5 text-muted-foreground hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400">

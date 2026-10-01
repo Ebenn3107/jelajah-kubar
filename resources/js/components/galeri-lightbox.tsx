@@ -12,7 +12,9 @@ interface GaleriLightboxProps {
 export function GaleriLightbox({ images, startIndex, open, onOpenChange }: GaleriLightboxProps) {
     const [idx, setIdx] = useState(startIndex);
 
-    useEffect(() => { setIdx(startIndex); }, [startIndex]);
+    useEffect(() => {
+ setIdx(startIndex); 
+}, [startIndex]);
 
     const count = Math.max(images.length, 1);
     const prev = () => setIdx((idx - 1 + count) % count);

@@ -1,5 +1,5 @@
+import { Upload, X } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { ImageIcon, Upload, X } from 'lucide-react';
 
 interface FileUploadProps {
     accept?: string;
@@ -17,19 +17,23 @@ export function FileUpload({ accept = 'image/*', maxSize = 5 * 1024 * 1024, prev
 
     const handleFile = (file: File | null) => {
         setError(null);
+
         if (!file) {
             setSelected(null);
             onFileSelect(null);
+
             return;
         }
 
         if (!file.type.startsWith('image/')) {
             setError('Hanya file gambar yang diizinkan.');
+
             return;
         }
 
         if (file.size > maxSize) {
             setError(`Maksimal ${Math.round(maxSize / 1024 / 1024)}MB.`);
+
             return;
         }
 
@@ -51,7 +55,10 @@ export function FileUpload({ accept = 'image/*', maxSize = 5 * 1024 * 1024, prev
     const clear = () => {
         setSelected(null);
         onFileSelect(null);
-        if (inputRef.current) inputRef.current.value = '';
+
+        if (inputRef.current) {
+inputRef.current.value = '';
+}
     };
 
     const previewUrl = selected?.url || preview;
@@ -61,7 +68,9 @@ export function FileUpload({ accept = 'image/*', maxSize = 5 * 1024 * 1024, prev
             {label && <label className="block text-sm font-medium text-foreground">{label}</label>}
 
             <div
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                onDragOver={(e) => {
+ e.preventDefault(); setDragOver(true); 
+}}
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
                 onClick={() => inputRef.current?.click()}
@@ -75,7 +84,9 @@ export function FileUpload({ accept = 'image/*', maxSize = 5 * 1024 * 1024, prev
                     <div className="relative w-full">
                         <img src={previewUrl} alt="preview" className="mx-auto max-h-48 rounded-lg object-contain" />
                         {selected && (
-                            <button type="button" onClick={(e) => { e.stopPropagation(); clear(); }} className="absolute -right-2 -top-2 rounded-full bg-red-600 p-1 text-white hover:bg-red-700">
+                            <button type="button" onClick={(e) => {
+ e.stopPropagation(); clear(); 
+}} className="absolute -right-2 -top-2 rounded-full bg-red-600 p-1 text-white hover:bg-red-700">
                                 <X className="size-4" />
                             </button>
                         )}

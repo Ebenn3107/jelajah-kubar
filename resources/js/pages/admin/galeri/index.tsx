@@ -25,12 +25,18 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!filters.wisata_id || !file) return;
+
+        if (!filters.wisata_id || !file) {
+return;
+}
 
         const formData = new FormData();
         formData.append('wisata_id', filters.wisata_id);
         formData.append('foto', file);
-        if (caption) formData.append('caption', caption);
+
+        if (caption) {
+formData.append('caption', caption);
+}
 
         router.post('/admin/galeri', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },

@@ -1,9 +1,9 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { Heart, LogOut, Menu, Settings, Trees, User as UserIcon, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import type { Auth } from '@/types';
 import { login, register } from '@/routes';
 import { edit } from '@/routes/profile';
-import type { Auth } from '@/types';
 
 interface PublicLayoutProps {
     children: React.ReactNode;

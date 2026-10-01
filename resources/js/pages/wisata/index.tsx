@@ -1,11 +1,11 @@
 import { Head, router } from '@inertiajs/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { SearchX } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CategoryChips } from '@/components/category-chips';
 import { Pagination } from '@/components/pagination';
 import { SearchHero } from '@/components/search-hero';
-import { WisataCard } from '@/components/wisata-card';
 import { Button } from '@/components/ui/button';
+import { WisataCard } from '@/components/wisata-card';
 import type { PaginatedData } from '@/types/pagination';
 
 interface Kategori {
@@ -83,8 +83,14 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
     };
 
     const handleSearch = useCallback((query: string) => {
-        if (searchTimer.current) clearTimeout(searchTimer.current);
-        if (query.length > 0 && query.length < 2) return;
+        if (searchTimer.current) {
+clearTimeout(searchTimer.current);
+}
+
+        if (query.length > 0 && query.length < 2) {
+return;
+}
+
         setSearching(true);
         searchTimer.current = setTimeout(() => {
             navigate({ search: query, kategori: filters.kategori || '' });
@@ -92,7 +98,11 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
     }, [navigate, filters.kategori]);
 
     useEffect(() => {
-        return () => { if (searchTimer.current) clearTimeout(searchTimer.current); };
+        return () => {
+ if (searchTimer.current) {
+clearTimeout(searchTimer.current);
+} 
+};
     }, []);
 
     const suggestions = kategoris.length > 0

@@ -21,7 +21,9 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
             import('leaflet/dist/images/marker-icon-2x.png'),
             import('leaflet/dist/images/marker-shadow.png'),
         ]).then(([L, icon, icon2x, shadow]) => {
-            if (destroyed || !mapRef.current || instanceRef.current) return;
+            if (destroyed || !mapRef.current || instanceRef.current) {
+return;
+}
 
             // Vite tidak men-resolve path ikon default Leaflet → arahkan ke asset hasil bundle
             delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;

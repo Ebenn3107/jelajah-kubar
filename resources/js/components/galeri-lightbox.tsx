@@ -11,10 +11,16 @@ interface GaleriLightboxProps {
 
 export function GaleriLightbox({ images, startIndex, open, onOpenChange }: GaleriLightboxProps) {
     const [idx, setIdx] = useState(startIndex);
+    const [wasOpen, setWasOpen] = useState(open);
 
-    useEffect(() => {
- setIdx(startIndex); 
-}, [startIndex]);
+    // Setiap kali dibuka, mulai dari foto yang diklik (reset saat render, bukan di effect)
+    if (open !== wasOpen) {
+        setWasOpen(open);
+
+        if (open) {
+            setIdx(startIndex);
+        }
+    }
 
     const count = Math.max(images.length, 1);
     const prev = () => setIdx((idx - 1 + count) % count);

@@ -5,6 +5,7 @@ import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { authButton, authInput, authLabel } from '@/lib/auth-styles';
 import {
     index as confirmOptions,
     store as confirmStore,
@@ -14,29 +15,30 @@ import { store } from '@/routes/password/confirm';
 export default function ConfirmPassword() {
     return (
         <>
-            <Head title="Confirm password" />
+            <Head title="Konfirmasi kata sandi" />
 
             <PasskeyVerify
                 routes={{
                     options: confirmOptions(),
                     submit: confirmStore(),
                 }}
-                label="Confirm with passkey"
-                loadingLabel="Confirming..."
-                separator="Or confirm with password"
+                label="Konfirmasi dengan passkey"
+                loadingLabel="Mengonfirmasi..."
+                separator="Atau konfirmasi dengan kata sandi"
             />
 
             <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
                     <div className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password" className={authLabel}>Kata sandi</Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
-                                placeholder="Password"
+                                placeholder="••••••••"
                                 autoComplete="current-password"
                                 autoFocus
+                                className={authInput}
                             />
 
                             <InputError message={errors.password} />
@@ -44,12 +46,12 @@ export default function ConfirmPassword() {
 
                         <div className="flex items-center">
                             <Button
-                                className="w-full"
+                                className={authButton}
                                 disabled={processing}
                                 data-test="confirm-password-button"
                             >
                                 {processing && <Spinner />}
-                                Confirm password
+                                Konfirmasi
                             </Button>
                         </div>
                     </div>
@@ -60,7 +62,7 @@ export default function ConfirmPassword() {
 }
 
 ConfirmPassword.layout = {
-    title: 'Confirm password',
+    title: 'Konfirmasi kata sandi',
     description:
-        'This is a secure area of the application. Please confirm your password before continuing.',
+        'Ini area yang dilindungi. Konfirmasi kata sandi Anda sebelum melanjutkan.',
 };

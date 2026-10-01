@@ -58,7 +58,7 @@ formData.append('caption', caption);
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-background p-4">
                 <div>
                     <h1 className="text-2xl font-bold text-foreground">Kelola Galeri</h1>
-                    <p className="text-sm text-muted-foreground">Manage destination photos</p>
+                    <p className="text-sm text-muted-foreground">Kelola foto destinasi</p>
                 </div>
 
                 {/* Select Wisata */}
@@ -67,7 +67,7 @@ formData.append('caption', caption);
                     <select
                         value={filters.wisata_id || ''}
                         onChange={(e) => router.get('/admin/galeri', { wisata_id: e.target.value })}
-                        className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                     >
                         <option value="" className="bg-background">— Pilih —</option>
                         {wisatas.map((w) => (
@@ -96,14 +96,14 @@ formData.append('caption', caption);
                                         <input
                                             value={caption}
                                             onChange={(e) => setCaption(e.target.value)}
-                                            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none"
+                                            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none"
                                             placeholder="Deskripsi foto"
                                         />
                                     </div>
                                     <button
                                         type="submit"
                                         disabled={!file}
-                                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover disabled:opacity-50"
                                     >
                                         Upload
                                     </button>
@@ -136,7 +136,7 @@ formData.append('caption', caption);
                                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
                                             <p className="text-xs text-white/80">{g.caption || '—'}</p>
                                             {g.is_primary && (
-                                                <span className="mt-1 inline-flex items-center gap-1 rounded bg-teal-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                                                <span className="mt-1 inline-flex items-center gap-1 rounded bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-white">
                                                     <Star className="size-2.5" /> Primary
                                                 </span>
                                             )}

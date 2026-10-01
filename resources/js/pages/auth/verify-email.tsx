@@ -3,34 +3,34 @@ import { Form, Head } from '@inertiajs/react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { authButton } from '@/lib/auth-styles';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     return (
         <>
-            <Head title="Email verification" />
+            <Head title="Verifikasi email" />
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    A new verification link has been sent to the email address
-                    you provided during registration.
+                <div className="mb-4 text-center rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+                    Tautan verifikasi baru sudah dikirim ke email yang Anda daftarkan.
                 </div>
             )}
 
             <Form {...send.form()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
-                        <Button disabled={processing} variant="secondary">
+                        <Button disabled={processing} className={authButton}>
                             {processing && <Spinner />}
-                            Resend verification email
+                            Kirim ulang email verifikasi
                         </Button>
 
                         <TextLink
                             href={logout()}
                             className="mx-auto block text-sm"
                         >
-                            Log out
+                            Keluar
                         </TextLink>
                     </>
                 )}
@@ -40,7 +40,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
 }
 
 VerifyEmail.layout = {
-    title: 'Email verification',
+    title: 'Verifikasi email',
     description:
-        'Please verify your email address by clicking on the link we just emailed to you.',
+        'Klik tautan yang baru kami kirim ke email Anda untuk memverifikasi alamat email.',
 };

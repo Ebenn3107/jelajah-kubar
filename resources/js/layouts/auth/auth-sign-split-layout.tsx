@@ -14,8 +14,8 @@ export default function AuthSignSplitLayout({
     title,
     description,
     image = '',
-    sideTitle = 'Discover the Heart of Borneo.',
-    sideDescription = 'Immerse yourself in authentic cultural experiences and breathtaking landscapes.',
+    sideTitle = 'Temukan Jantung Borneo.',
+    sideDescription = 'Rasakan budaya yang autentik dan lanskap alam yang memukau.',
 }: AuthSignSplitLayoutProps) {
     return (
         <div className="flex min-h-svh flex-col bg-white md:flex-row">

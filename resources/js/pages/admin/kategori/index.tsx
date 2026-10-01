@@ -53,13 +53,13 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
                 <form onSubmit={handleCreate} className="flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card p-4 shadow-sm shadow-black/20">
                     <div className="flex-1">
                         <label className="mb-1 block text-xs font-medium text-foreground">Nama Kategori</label>
-                        <input value={nama} onChange={(e) => setNama(e.target.value)} required className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
+                        <input value={nama} onChange={(e) => setNama(e.target.value)} required className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand" />
                     </div>
                     <div className="flex-1">
                         <label className="mb-1 block text-xs font-medium text-foreground">Deskripsi</label>
-                        <input value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
+                        <input value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand" />
                     </div>
-                    <button type="submit" className="rounded-lg bg-teal-600 px-5 py-2 text-sm font-semibold text-white hover:bg-teal-700">Tambah</button>
+                    <button type="submit" className="rounded-lg bg-brand px-5 py-2 text-sm font-semibold text-white hover:bg-brand-hover">Tambah</button>
                 </form>
 
                 {/* Table */}
@@ -80,15 +80,15 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
                                     {editingId === k.id ? (
                                         <>
                                             <td className="px-4 py-2">
-                                                <input value={editNama} onChange={(e) => setEditNama(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-teal-500 focus:outline-none" />
+                                                <input value={editNama} onChange={(e) => setEditNama(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-brand focus:outline-none" />
                                             </td>
                                             <td className="px-4 py-2 text-muted-foreground">{k.slug}</td>
                                             <td className="px-4 py-2">
-                                                <input value={editDeskripsi} onChange={(e) => setEditDeskripsi(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-teal-500 focus:outline-none" />
+                                                <input value={editDeskripsi} onChange={(e) => setEditDeskripsi(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-brand focus:outline-none" />
                                             </td>
                                             <td className="px-4 py-2 text-muted-foreground">{k.wisatas_count}</td>
                                             <td className="flex gap-2 px-4 py-2">
-                                                <button onClick={() => handleUpdate(k.id)} className="rounded bg-teal-600 px-2 py-1 text-xs font-medium text-white hover:bg-teal-700">Simpan</button>
+                                                <button onClick={() => handleUpdate(k.id)} className="rounded bg-brand px-2 py-1 text-xs font-medium text-white hover:bg-brand-hover">Simpan</button>
                                                 <button onClick={() => setEditingId(null)} className="rounded border border-input px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-accent">Batal</button>
                                             </td>
                                         </>
@@ -98,7 +98,7 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
                                             <td className="px-4 py-3 text-muted-foreground">{k.slug}</td>
                                             <td className="max-w-xs truncate px-4 py-3 text-muted-foreground">{k.deskripsi || '—'}</td>
                                             <td className="px-4 py-3">
-                                                <span className="rounded-full bg-teal-100 dark:bg-teal-900/50 px-2.5 py-0.5 text-xs font-medium text-teal-600 dark:text-teal-400">{k.wisatas_count}</span>
+                                                <span className="rounded-full bg-teal-100 dark:bg-teal-900/50 px-2.5 py-0.5 text-xs font-medium text-brand dark:text-brand-soft">{k.wisatas_count}</span>
                                             </td>
                                             <td className="flex gap-2 px-4 py-3">
                                                 <button onClick={() => {

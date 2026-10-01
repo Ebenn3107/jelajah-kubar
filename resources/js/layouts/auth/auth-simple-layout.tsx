@@ -1,36 +1,21 @@
 import { Link } from '@inertiajs/react';
-import AppLogoIcon from '@/components/app-logo-icon';
+import { Trees } from 'lucide-react';
 import type { AuthLayoutProps } from '@/types';
 import { home } from '@/routes';
 
-export default function AuthSimpleLayout({
-    children,
-    title,
-    description,
-}: AuthLayoutProps) {
+export default function AuthSimpleLayout({ children, title, description }: AuthLayoutProps) {
     return (
-        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
-            <div className="w-full max-w-sm">
-                <div className="flex flex-col gap-8">
-                    <div className="flex flex-col items-center gap-4">
-                        <Link
-                            href={home()}
-                            className="flex flex-col items-center gap-2 font-medium"
-                        >
-                            <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
-                            </div>
-                            <span className="sr-only">{title}</span>
-                        </Link>
+        <div className="public-light flex min-h-svh flex-col items-center justify-center bg-surface px-5 py-10">
+            <div className="w-full max-w-md">
+                <Link href={home()} className="mb-10 flex w-fit items-center gap-2 text-brand focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+                    <Trees className="size-7" aria-hidden="true" />
+                    <span className="text-xl font-semibold tracking-tight">Jelajah Kubar</span>
+                </Link>
 
-                        <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">{title}</h1>
-                            <p className="text-center text-sm text-muted-foreground">
-                                {description}
-                            </p>
-                        </div>
-                    </div>
-                    {children}
+                <div className="rounded-3xl bg-white p-6 shadow-[0_4px_20px_rgba(18,28,42,0.06)] sm:p-10">
+                    <h1 className="text-2xl font-bold tracking-tight text-ink">{title}</h1>
+                    {description && <p className="mt-2 leading-relaxed text-ink-muted">{description}</p>}
+                    <div className="mt-8">{children}</div>
                 </div>
             </div>
         </div>

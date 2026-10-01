@@ -56,7 +56,7 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
     };
 
     const statsCards = [
-        { label: 'Total Calls', value: summary.total_calls, icon: Brain, color: 'text-teal-600 dark:text-teal-400 bg-teal-100 dark:bg-teal-900/50' },
+        { label: 'Total Calls', value: summary.total_calls, icon: Brain, color: 'text-brand dark:text-brand-soft bg-teal-100 dark:bg-teal-900/50' },
         { label: 'Successful', value: summary.successful, icon: CheckCircle, color: 'text-emerald-400 bg-emerald-900/50' },
         { label: 'Failed', value: summary.failed, icon: XCircle, color: summary.failed > 0 ? 'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/50' : 'text-muted-foreground bg-muted' },
         { label: 'Total Tokens', value: summary.total_tokens.toLocaleString(), icon: Clock, color: 'text-blue-400 bg-blue-900/50' },
@@ -66,19 +66,19 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
 
     return (
         <>
-            <Head title="AI Logs" />
+            <Head title="Log AI" />
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-background p-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">AI Usage Logs</h1>
-                    <p className="text-sm text-muted-foreground">Monitor AI API usage, token consumption, and costs</p>
+                    <h1 className="text-2xl font-bold text-foreground">Log Penggunaan AI</h1>
+                    <p className="text-sm text-muted-foreground">Pantau pemakaian API AI, konsumsi token, dan biaya</p>
                 </div>
 
                 {/* Provider Control Panel */}
                 <div className="rounded-xl border border-border bg-card p-5 shadow-sm shadow-black/20">
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                         <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
-                            <Cpu className="size-4 text-teal-600 dark:text-teal-400" />
+                            <Cpu className="size-4 text-brand dark:text-brand-soft" />
                             AI Provider Control
                         </h2>
                         <span className={`rounded-full px-3 py-1 text-xs font-medium ${localOn ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400' : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400'}`}>
@@ -89,7 +89,7 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
                     <div className="grid gap-4 md:grid-cols-[1fr_auto]">
                         {/* Mode selector */}
                         <div>
-                            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Provider Mode</label>
+                            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Mode penyedia</label>
                             <div className="grid gap-2 sm:grid-cols-3">
                                 {(['local', 'deepseek', 'auto'] as const).map((mode) => (
                                     <button
@@ -125,7 +125,7 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
                             </button>
                             <button
                                 onClick={handleSaveProvider}
-                                className="rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-teal-700"
+                                className="rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover"
                             >
                                 Simpan Provider
                             </button>
@@ -156,13 +156,13 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
                     <table className="w-full text-left text-sm">
                         <thead className="bg-card text-muted-foreground">
                             <tr>
-                                <th className="px-4 py-3 font-semibold">Type</th>
-                                <th className="px-4 py-3 font-semibold">User</th>
-                                <th className="px-4 py-3 font-semibold">Tokens</th>
-                                <th className="px-4 py-3 font-semibold">Cost</th>
-                                <th className="px-4 py-3 font-semibold">Time</th>
+                                <th className="px-4 py-3 font-semibold">Jenis</th>
+                                <th className="px-4 py-3 font-semibold">Pengguna</th>
+                                <th className="px-4 py-3 font-semibold">Token</th>
+                                <th className="px-4 py-3 font-semibold">Biaya</th>
+                                <th className="px-4 py-3 font-semibold">Waktu</th>
                                 <th className="px-4 py-3 font-semibold">Status</th>
-                                <th className="px-4 py-3 font-semibold">Date</th>
+                                <th className="px-4 py-3 font-semibold">Tanggal</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
@@ -201,6 +201,6 @@ export default function AdminAiLogs({ logs, summary, currentProvider, localEnabl
 AdminAiLogs.layout = {
     breadcrumbs: [
         { title: 'Dashboard', href: '/admin/dashboard' },
-        { title: 'AI Logs', href: '/admin/ai-logs' },
+        { title: 'Log AI', href: '/admin/ai-logs' },
     ],
 };

@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, BookOpen, Bot, ClipboardList, Compass, FolderGit2, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Route, Sofa } from 'lucide-react';
+import { Activity, Bot, ClipboardList, Compass, Globe, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Route, Sofa } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -30,17 +30,17 @@ const mainNavItems: NavItem[] = [
         icon: Heart,
     },
     {
-        title: 'Travel Planner',
+        title: 'Perencana Perjalanan',
         href: '/travel-planner',
         icon: Route,
     },
     {
-        title: 'My Plans',
+        title: 'Rencana Saya',
         href: '/saved-plans',
         icon: ClipboardList,
     },
     {
-        title: 'Local Guide',
+        title: 'Pemandu Lokal',
         href: '/local-guide',
         icon: Bot,
     },
@@ -48,14 +48,9 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Lihat situs',
+        href: '/',
+        icon: Globe,
     },
 ];
 
@@ -86,7 +81,7 @@ const adminNavItems: NavItem[] = [
         icon: Sofa,
     },
     {
-        title: 'AI Logs',
+        title: 'Log AI',
         href: '/admin/ai-logs',
         icon: Activity,
     },

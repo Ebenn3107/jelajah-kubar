@@ -29,7 +29,7 @@ export default function AdminWisataIndex({ wisatas, filters }: Props) {
                         <h1 className="text-2xl font-bold text-foreground">Kelola Wisata</h1>
                         <p className="text-sm text-muted-foreground">{wisatas.total} destinasi</p>
                     </div>
-                    <Link href="/admin/wisata/create" className="inline-flex items-center gap-2 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700">
+                    <Link href="/admin/wisata/create" className="inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover">
                         <Plus className="size-4" /> Tambah Wisata
                     </Link>
                 </div>
@@ -38,7 +38,7 @@ export default function AdminWisataIndex({ wisatas, filters }: Props) {
                 <div className="relative max-w-sm">
                     <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <input
-                        className="w-full rounded-lg border border-input bg-background py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="w-full rounded-lg border border-input bg-background py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                         placeholder="Cari wisata..."
                         aria-label="Cari wisata"
                         defaultValue={filters.search || ''}

@@ -1,5 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Calendar, DollarSign, Download, Trash2 } from 'lucide-react';
+import { Calendar, Download, Trash2, Wallet } from 'lucide-react';
+import { PageHeader } from '@/components/page-header';
 import { PlanView } from '@/components/plan-view';
 import { downloadItinerary } from '@/lib/itinerary';
 import type { PlanResult } from '@/types/plan';
@@ -33,33 +34,37 @@ export default function SavedPlansShow({ plan }: { plan: SavedPlanData }) {
         <>
             <Head title={plan.title} />
 
-            <div className="mx-auto max-w-7xl px-5 py-8 md:px-16">
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                        <Link href="/saved-plans" className="text-sm text-brand hover:underline">← Rencana Saya</Link>
-                        <h1 className="mt-1 text-2xl font-bold text-neutral-900">{plan.title}</h1>
-                        <div className="mt-1 flex flex-wrap items-center gap-4 text-sm text-neutral-600">
-                            <span className="flex items-center gap-1"><Calendar className="size-3.5" aria-hidden="true" /> {plan.durasi} hari</span>
-                            <span className="flex items-center gap-1"><DollarSign className="size-3.5" aria-hidden="true" /> {plan.budget}</span>
+            <div className="mx-auto max-w-4xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
+                <Link href="/saved-plans" className="mb-6 inline-block text-sm font-semibold text-brand hover:text-brand-hover">← Rencana Saya</Link>
+
+                <PageHeader
+                    eyebrow="Rencana perjalanan"
+                    title={plan.title}
+                    description={
+                        <span className="flex flex-wrap items-center gap-x-5 gap-y-1 text-base">
+                            <span className="flex items-center gap-1.5"><Calendar className="size-4" aria-hidden="true" /> {plan.durasi} hari</span>
+                            <span className="flex items-center gap-1.5"><Wallet className="size-4" aria-hidden="true" /> {plan.budget}</span>
                             {plan.minat && <span>Minat: {plan.minat}</span>}
-                        </div>
-                    </div>
-                    <div className="flex gap-3">
-                        {result && (
-                            <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 active:scale-[0.98]">
-                                <Download className="size-4" /> Unduh
+                        </span>
+                    }
+                    actions={
+                        <>
+                            {result && (
+                                <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-full border border-brand px-6 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+                                    <Download className="size-4" aria-hidden="true" /> Unduh
+                                </button>
+                            )}
+                            <button type="button" onClick={handleDelete} className="inline-flex items-center gap-2 rounded-full border border-red-200 px-6 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+                                <Trash2 className="size-4" aria-hidden="true" /> Hapus
                             </button>
-                        )}
-                        <button type="button" onClick={handleDelete} className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-white px-5 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 active:scale-[0.98]">
-                            <Trash2 className="size-4" /> Hapus
-                        </button>
-                    </div>
-                </div>
+                        </>
+                    }
+                />
 
                 {result ? (
                     <PlanView plan={result} />
                 ) : (
-                    <p className="rounded-2xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">Isi rencana ini tidak tersedia.</p>
+                    <p className="rounded-3xl bg-surface-low p-6 text-ink-muted">Isi rencana ini tidak tersedia.</p>
                 )}
             </div>
         </>

@@ -1,8 +1,8 @@
 import { Head, router, usePage } from '@inertiajs/react';
 import { Compass, Download, Loader2, Save } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import { PageHeader } from '@/components/page-header';
 import { PlanView } from '@/components/plan-view';
-import { Button } from '@/components/ui/button';
 import { downloadItinerary } from '@/lib/itinerary';
 import type { Auth } from '@/types';
 import type { PlanResult } from '@/types/plan';
@@ -13,7 +13,7 @@ interface Props {
     input?: { durasi: number; budget: string; minat: string } | null;
 }
 
-const fieldClass = 'w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm text-neutral-900 focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-brand';
+const fieldClass = 'w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-outline focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15';
 
 export default function TravelPlannerIndex({ result, error, input }: Props) {
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -65,67 +65,76 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
 
     const errorMessage = error ?? (parseFailed ? 'Hasil rencana tidak dapat dibaca. Coba buat ulang.' : null);
 
+    const steps = [
+        { title: 'Isi detail', text: 'Durasi, anggaran, dan minat perjalananmu.' },
+        { title: 'Asisten menyusun', text: 'Itinerari per hari dari data destinasi Jelajah Kubar.' },
+        { title: 'Simpan atau unduh', text: 'Simpan ke akunmu atau unduh sebagai teks.' },
+    ];
+
     return (
         <>
             <Head title="Perencana Perjalanan" />
 
-            <div className="mx-auto max-w-7xl px-5 py-8 md:px-16">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-neutral-900">Perencana Perjalanan AI</h1>
-                    <p className="mt-1 text-neutral-600">Susun itinerari perjalananmu ke Kutai Barat dengan bantuan AI</p>
-                </div>
+            <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
+                <PageHeader
+                    eyebrow="Perencana Perjalanan"
+                    title="Susun itinerari ke Kutai Barat"
+                    description="Beri tahu berapa hari dan berapa anggaranmu. Asisten menyusun rencana per hari dari destinasi yang ada."
+                />
 
-                <div className="grid gap-8 lg:grid-cols-12">
+                <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-12">
                     <div className="lg:col-span-4">
-                        <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm lg:sticky lg:top-24">
-                            <h2 className="mb-4 text-lg font-semibold text-neutral-900">Detail Perjalanan</h2>
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
-                                    <label htmlFor="durasi" className="mb-1 block text-sm font-medium text-neutral-700">Durasi (hari)</label>
-                                    <input id="durasi" type="number" min={1} max={14} value={durasi} onChange={(e) => setDurasi(Number(e.target.value))} className={fieldClass} />
-                                </div>
-                                <div>
-                                    <label htmlFor="budget" className="mb-1 block text-sm font-medium text-neutral-700">Anggaran</label>
-                                    <input id="budget" type="text" maxLength={255} value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="Rp 500.000" required className={fieldClass} />
-                                </div>
-                                <div>
-                                    <label htmlFor="minat" className="mb-1 block text-sm font-medium text-neutral-700">Minat</label>
-                                    <textarea id="minat" maxLength={255} value={minat} rows={3} onChange={(e) => setMinat(e.target.value)} placeholder="Air terjun, budaya, hiking, fotografi..." className={fieldClass} />
-                                </div>
-                                <Button type="submit" disabled={loading} className="w-full rounded-xl bg-brand py-6 text-base font-bold hover:bg-brand-hover disabled:opacity-50">
-                                    {loading ? (
-                                        <><Loader2 className="mr-2 size-5 animate-spin" /> Menyusun rencana...</>
-                                    ) : (
-                                        <><Compass className="mr-2 size-5" /> {auth.user ? 'Buat Rencana' : 'Masuk untuk Membuat Rencana'}</>
-                                    )}
-                                </Button>
-                            </form>
-                        </div>
+                        <form onSubmit={handleSubmit} className="space-y-5 rounded-3xl bg-surface-low p-6 md:p-8 lg:sticky lg:top-28">
+                            <h2 className="text-xl font-bold tracking-tight text-ink">Detail perjalanan</h2>
+                            <div>
+                                <label htmlFor="durasi" className="mb-2 block text-sm font-semibold text-ink">Durasi (hari)</label>
+                                <input id="durasi" type="number" min={1} max={14} value={durasi} onChange={(e) => setDurasi(Number(e.target.value))} className={fieldClass} />
+                            </div>
+                            <div>
+                                <label htmlFor="budget" className="mb-2 block text-sm font-semibold text-ink">Anggaran</label>
+                                <input id="budget" type="text" maxLength={255} value={budget} onChange={(e) => setBudget(e.target.value)} placeholder="mis. Rp 500.000" required className={fieldClass} />
+                            </div>
+                            <div>
+                                <label htmlFor="minat" className="mb-2 block text-sm font-semibold text-ink">Minat <span className="font-normal text-ink-muted">(opsional)</span></label>
+                                <textarea id="minat" maxLength={255} value={minat} rows={3} onChange={(e) => setMinat(e.target.value)} placeholder="Air terjun, budaya, fotografi" className={fieldClass} />
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-4 py-3.5 whitespace-nowrap font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-60"
+                            >
+                                {loading ? (
+                                    <><Loader2 className="size-5 animate-spin" aria-hidden="true" /> Menyusun rencana...</>
+                                ) : (
+                                    <><Compass className="size-5" aria-hidden="true" /> {auth.user ? 'Buat rencana' : 'Masuk untuk membuat'}</>
+                                )}
+                            </button>
+                        </form>
                     </div>
 
-                    <div className="lg:col-span-8" aria-live="polite" aria-busy={loading}>
+                    <div className="min-w-0 lg:col-span-8" aria-live="polite" aria-busy={loading}>
                         {loading ? (
                             <div className="animate-pulse space-y-4" role="status">
-                                <span className="sr-only">AI sedang menyusun rencana perjalanan, ini bisa memakan waktu beberapa detik.</span>
-                                <div className="h-20 rounded-2xl bg-neutral-200" />
-                                <div className="h-48 rounded-2xl bg-neutral-200" />
-                                <div className="h-48 rounded-2xl bg-neutral-100" />
+                                <span className="sr-only">Asisten sedang menyusun rencana perjalanan, ini bisa memakan waktu beberapa detik.</span>
+                                <div className="h-24 rounded-3xl bg-surface-high" />
+                                <div className="h-48 rounded-3xl bg-surface-high" />
+                                <div className="h-48 rounded-3xl bg-surface-low" />
                             </div>
                         ) : (
                             <>
                                 {errorMessage && (
-                                    <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">{errorMessage}</div>
+                                    <div role="alert" className="rounded-3xl bg-red-50 p-6 text-red-700">{errorMessage}</div>
                                 )}
 
                                 {plan && !errorMessage && (
-                                    <div className="space-y-6">
+                                    <div className="space-y-8">
                                         <div className="flex flex-wrap gap-3">
-                                            <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-xl border border-neutral-300 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 transition-all hover:bg-neutral-50 active:scale-[0.98]">
-                                                <Download className="size-4" /> Unduh .txt
+                                            <button type="button" onClick={handleDownload} className="inline-flex items-center gap-2 rounded-full border border-brand px-6 py-2.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+                                                <Download className="size-4" aria-hidden="true" /> Unduh .txt
                                             </button>
                                             {auth.user && (
-                                                <button type="button" onClick={handleSave} disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-brand-hover disabled:opacity-50 active:scale-[0.98]">
-                                                    <Save className="size-4" /> {saving ? 'Menyimpan...' : 'Simpan Rencana'}
+                                                <button type="button" onClick={handleSave} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-60">
+                                                    <Save className="size-4" aria-hidden="true" /> {saving ? 'Menyimpan...' : 'Simpan rencana'}
                                                 </button>
                                             )}
                                         </div>
@@ -134,12 +143,19 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
                                 )}
 
                                 {!plan && !errorMessage && (
-                                    <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-neutral-200 py-24 text-center">
-                                        <Compass className="size-16 text-neutral-300" aria-hidden="true" />
-                                        <h3 className="mt-4 text-lg font-semibold text-neutral-600">Rencanakan Petualanganmu</h3>
-                                        <p className="mt-1 max-w-md text-sm text-neutral-600">
-                                            Isi durasi, anggaran, dan minatmu — AI akan menyusun itinerari yang sesuai.
-                                        </p>
+                                    <div>
+                                        <h2 className="mb-6 text-2xl font-bold tracking-tight text-ink">Begini caranya</h2>
+                                        <ol className="space-y-6">
+                                            {steps.map((step, i) => (
+                                                <li key={step.title} className="flex gap-5">
+                                                    <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-amber-soft text-base font-bold text-copper">{i + 1}</span>
+                                                    <div>
+                                                        <p className="text-lg font-semibold text-ink">{step.title}</p>
+                                                        <p className="mt-1 leading-relaxed text-ink-muted">{step.text}</p>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ol>
                                     </div>
                                 )}
                             </>

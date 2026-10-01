@@ -1,7 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Bot, Loader2, MessageSquare, Send, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Loader2, Send, Sparkles } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/page-header';
 
 interface RelatedWisata {
     slug: string;
@@ -46,102 +46,99 @@ export default function LocalGuideIndex({ answer, question, relatedWisatas }: Pr
 
     return (
         <>
-            <Head title="Pemandu Lokal AI" />
+            <Head title="Pemandu Lokal" />
 
-            <div className="mx-auto max-w-4xl px-5 py-8 md:px-16">
-                <div className="mb-8 text-center">
-                    <div className="mb-3 inline-flex rounded-full bg-brand/10 p-3">
-                        <Bot className="size-8 text-brand" aria-hidden="true" />
-                    </div>
-                    <h1 className="text-3xl font-bold text-neutral-900">Pemandu Lokal AI</h1>
-                    <p className="mt-1 text-neutral-600">Tanyakan apa saja tentang destinasi di Kutai Barat</p>
-                </div>
+            <div className="mx-auto max-w-4xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
+                <PageHeader
+                    eyebrow="Pemandu Lokal"
+                    title="Tanya apa saja soal Kutai Barat"
+                    description="Harga tiket, fasilitas, atau tempat yang cocok untuk keluarga. Jawabannya diambil dari data destinasi Jelajah Kubar."
+                />
 
-                <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-                    <div aria-live="polite" aria-busy={loading}>
-                        {question && answer && !loading && (
-                            <div className="mb-6 space-y-4">
-                                <div className="flex justify-end">
-                                    <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-brand px-5 py-3 text-sm text-white">{question}</div>
-                                </div>
-                                <div className="flex justify-start">
-                                    <div className="max-w-[80%] rounded-2xl rounded-bl-sm border border-neutral-200 bg-neutral-50 px-5 py-3 text-sm text-neutral-700">
-                                        <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-brand">
-                                            <Sparkles className="size-3.5" aria-hidden="true" /> Pemandu Lokal AI
+                <div aria-live="polite" aria-busy={loading} className="min-h-40">
+                    {question && answer && !loading && (
+                        <div className="mb-8 space-y-5">
+                            <div className="flex justify-end">
+                                <p className="max-w-[85%] rounded-3xl rounded-br-md bg-brand px-5 py-3 text-white wrap-anywhere">{question}</p>
+                            </div>
+                            <div className="flex justify-start">
+                                <div className="max-w-[92%] rounded-3xl rounded-bl-md bg-surface-low px-6 py-5 text-ink">
+                                    <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-copper">
+                                        <Sparkles className="size-3.5" aria-hidden="true" /> Pemandu Lokal
+                                    </p>
+                                    <p className="whitespace-pre-line leading-relaxed text-ink-muted">{answer}</p>
+                                    {relatedWisatas && relatedWisatas.length > 0 && (
+                                        <div className="mt-4 flex flex-wrap gap-2 border-t border-line/60 pt-4">
+                                            {relatedWisatas.map((w) => (
+                                                <Link key={w.slug} href={`/wisata/${w.slug}`} className="inline-flex items-center gap-1 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-brand">
+                                                    {w.nama} <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                                                </Link>
+                                            ))}
                                         </div>
-                                        <p className="leading-relaxed">{answer}</p>
-                                        {relatedWisatas && relatedWisatas.length > 0 && (
-                                            <div className="mt-3 flex flex-wrap gap-2 border-t border-neutral-200 pt-3">
-                                                {relatedWisatas.map((w) => (
-                                                    <Link key={w.slug} href={`/wisata/${w.slug}`} className="rounded-full border border-brand/20 bg-white px-3 py-1 text-xs font-medium text-brand hover:bg-brand/5">
-                                                        {w.nama}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
+                                    )}
                                 </div>
                             </div>
-                        )}
+                        </div>
+                    )}
 
-                        {loading && (
-                            <div className="mb-6 flex justify-start" role="status">
-                                <div className="flex items-center gap-2 rounded-2xl rounded-bl-sm border border-neutral-200 bg-neutral-50 px-5 py-3 text-sm text-neutral-600">
-                                    <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Pemandu sedang mengetik...
-                                </div>
+                    {loading && (
+                        <div className="mb-8 flex justify-start" role="status">
+                            <div className="flex items-center gap-2 rounded-3xl rounded-bl-md bg-surface-low px-6 py-4 text-ink-muted">
+                                <Loader2 className="size-4 animate-spin" aria-hidden="true" /> Pemandu sedang menjawab...
                             </div>
-                        )}
+                        </div>
+                    )}
 
-                        {!question && !answer && !loading && (
-                            <div className="flex flex-col items-center py-12">
-                                <MessageSquare className="size-16 text-neutral-300" aria-hidden="true" />
-                                <h3 className="mt-4 text-lg font-semibold text-neutral-600">Ada yang bisa dibantu?</h3>
-                                <p className="mt-1 text-sm text-neutral-600">Tanyakan tentang destinasi, fasilitas, harga, atau budaya.</p>
-                                <div className="mt-6 flex flex-wrap justify-center gap-2">
-                                    {suggestions.map((s) => (
+                    {!question && !answer && !loading && (
+                        <div className="mb-8">
+                            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-copper">Coba tanyakan</p>
+                            <ul className="grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-2">
+                                {suggestions.map((s) => (
+                                    <li key={s}>
                                         <button
-                                            key={s}
                                             type="button"
                                             onClick={() => {
                                                 setInput(s);
                                                 ask(s);
                                             }}
-                                            className="rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-xs text-neutral-600 transition-colors hover:border-brand/30 hover:text-brand"
+                                            className="flex h-full w-full items-center justify-between gap-3 rounded-2xl bg-surface-low px-5 py-4 text-left font-medium text-ink transition-colors hover:bg-surface-high focus-visible:outline-2 focus-visible:outline-brand"
                                         >
                                             {s}
+                                            <ArrowUpRight className="size-4 shrink-0 text-brand" aria-hidden="true" />
                                         </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="flex items-center gap-3">
-                        <label htmlFor="pertanyaan" className="sr-only">Pertanyaan</label>
-                        <input
-                            id="pertanyaan"
-                            ref={inputRef}
-                            type="text"
-                            value={input}
-                            maxLength={500}
-                            onChange={(e) => setInput(e.target.value)}
-                            placeholder="Ketik pertanyaanmu (min. 5 karakter)..."
-                            className="flex-1 rounded-xl border border-neutral-300 px-5 py-3 text-sm text-neutral-900 focus-visible:border-brand focus-visible:outline-2 focus-visible:outline-brand"
-                            disabled={loading}
-                        />
-                        <Button type="submit" aria-label="Kirim pertanyaan" disabled={loading || input.trim().length < 5} className="rounded-xl bg-brand px-6 py-3 hover:bg-brand-hover disabled:opacity-50">
-                            {loading ? <Loader2 className="size-5 animate-spin" /> : <Send className="size-5" />}
-                        </Button>
-                    </form>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
+                <form onSubmit={handleSubmit} className="flex items-center rounded-full border border-line bg-white p-1.5 shadow-[0_10px_30px_rgba(18,28,42,0.08)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/15">
+                    <label htmlFor="pertanyaan" className="sr-only">Pertanyaan</label>
+                    <input
+                        id="pertanyaan"
+                        ref={inputRef}
+                        type="text"
+                        value={input}
+                        maxLength={500}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Ketik pertanyaanmu (min. 5 karakter)"
+                        className="min-w-0 grow border-none bg-transparent px-5 py-3 text-base text-ink placeholder:text-outline focus:outline-none"
+                        disabled={loading}
+                    />
+                    <button
+                        type="submit"
+                        aria-label="Kirim pertanyaan"
+                        disabled={loading || input.trim().length < 5}
+                        className="flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
+                    >
+                        {loading ? <Loader2 className="size-5 animate-spin" aria-hidden="true" /> : <Send className="size-5" aria-hidden="true" />}
+                    </button>
+                </form>
+
                 {question && answer && (
-                    <div className="mt-4 text-center">
-                        <button
-                            type="button"
-                            onClick={() => router.get('/local-guide')}
-                            className="text-sm text-neutral-600 hover:text-brand"
-                        >
+                    <div className="mt-6 text-center">
+                        <button type="button" onClick={() => router.get('/local-guide')} className="text-sm font-semibold text-brand hover:text-brand-hover focus-visible:outline-2 focus-visible:outline-brand">
                             Mulai percakapan baru
                         </button>
                     </div>

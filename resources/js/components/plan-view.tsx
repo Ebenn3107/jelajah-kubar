@@ -1,54 +1,58 @@
-import { Clock, DollarSign } from 'lucide-react';
+import { Clock, Wallet } from 'lucide-react';
 import type { PlanResult } from '@/types/plan';
 
 export function PlanView({ plan }: { plan: PlanResult }) {
     return (
-        <div className="space-y-6">
-            <div className="rounded-2xl border border-teal-100 bg-teal-50 p-5">
-                <div className="flex items-center gap-3 text-teal-800">
-                    <DollarSign className="size-6" aria-hidden="true" />
-                    <div>
-                        <p className="text-sm font-semibold">Perkiraan Total Anggaran</p>
-                        <p className="text-lg font-bold">{plan.total_budget_estimate}</p>
-                    </div>
+        <div className="space-y-10">
+            <div className="flex items-center gap-4 rounded-3xl bg-amber-soft p-6">
+                <Wallet className="size-8 shrink-0 text-copper" aria-hidden="true" />
+                <div>
+                    <p className="text-sm font-semibold text-brand-deep">Perkiraan total anggaran</p>
+                    <p className="text-2xl font-bold tracking-tight text-brand-deep">{plan.total_budget_estimate}</p>
                 </div>
             </div>
 
-            {plan.days?.map((day) => (
-                <div key={day.day} className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <div className="flex size-10 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">{day.day}</div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-neutral-900">Hari {day.day}</h3>
-                                <p className="text-sm text-brand">{day.title}</p>
-                            </div>
+            <ol className="space-y-10">
+                {plan.days?.map((day) => (
+                    <li key={day.day} className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 md:grid-cols-[3rem_minmax(0,1fr)] md:gap-x-6">
+                        <div className="flex flex-col items-center">
+                            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white md:size-12 md:text-base">{day.day}</div>
+                            <div className="mt-2 w-px grow bg-line" aria-hidden="true" />
                         </div>
-                        <span className="text-sm font-semibold text-neutral-600">{day.total_cost}</span>
-                    </div>
 
-                    <div className="space-y-3">
-                        {day.activities?.map((act, i) => (
-                            <div key={i} className="rounded-xl border border-neutral-100 bg-neutral-50 p-4">
-                                <div className="flex items-center justify-between gap-3">
-                                    <p className="font-semibold text-neutral-900">{act.place}</p>
-                                    {act.estimated_cost && <span className="text-xs font-medium text-neutral-500">{act.estimated_cost}</span>}
+                        <div className="min-w-0 pb-2">
+                            <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-widest text-copper">Hari {day.day}</p>
+                                    <h3 className="text-xl font-bold tracking-tight text-ink wrap-anywhere">{day.title}</h3>
                                 </div>
-                                <div className="mt-1 flex items-center gap-2 text-xs text-neutral-500">
-                                    <Clock className="size-3" aria-hidden="true" />
-                                    {act.time}
-                                </div>
-                                <p className="mt-1 text-sm text-neutral-600">{act.description}</p>
+                                <span className="text-sm font-semibold text-ink-muted">{day.total_cost}</span>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            ))}
+
+                            <ul className="divide-y divide-line/60 rounded-3xl bg-surface-low px-5 py-1 md:px-6">
+                                {day.activities?.map((act, i) => (
+                                    <li key={i} className="py-4">
+                                        <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                                            <p className="font-semibold text-ink wrap-anywhere">{act.place}</p>
+                                            {act.estimated_cost && <span className="text-sm font-medium text-ink-muted sm:shrink-0">{act.estimated_cost}</span>}
+                                        </div>
+                                        <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-brand">
+                                            <Clock className="size-3.5" aria-hidden="true" />
+                                            {act.time}
+                                        </p>
+                                        <p className="mt-2 leading-relaxed text-ink-muted">{act.description}</p>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </li>
+                ))}
+            </ol>
 
             {plan.tips && (
-                <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-                    <h3 className="mb-2 text-lg font-semibold text-neutral-900">Tips Perjalanan</h3>
-                    <p className="text-sm leading-relaxed text-neutral-600">{plan.tips}</p>
+                <div className="rounded-3xl border border-line bg-white p-6">
+                    <h3 className="mb-2 text-lg font-bold tracking-tight text-ink">Tips perjalanan</h3>
+                    <p className="leading-relaxed text-ink-muted">{plan.tips}</p>
                 </div>
             )}
         </div>

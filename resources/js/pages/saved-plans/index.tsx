@@ -1,5 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Calendar, DollarSign, Route, Trash2 } from 'lucide-react';
+import { Calendar, Route, Trash2, Wallet } from 'lucide-react';
+import { PageHeader } from '@/components/page-header';
 
 interface PlanItem {
     id: number;
@@ -21,53 +22,51 @@ export default function SavedPlansIndex({ plans }: { plans: PlanItem[] }) {
         <>
             <Head title="Rencana Saya" />
 
-            <div className="mx-auto max-w-7xl px-5 py-8 md:px-16">
-                <div className="mb-6 flex items-center justify-between">
-                    <div>
-                        <h1 className="flex items-center gap-2 text-2xl font-bold text-neutral-900">
-                            <Route className="size-6 text-brand" aria-hidden="true" />
-                            Rencana Saya
-                        </h1>
-                        <p className="mt-1 text-sm text-neutral-600">{plans.length} itinerari tersimpan</p>
-                    </div>
-                    <Link href="/travel-planner" className="rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover">
-                        + Rencana Baru
-                    </Link>
-                </div>
+            <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
+                <PageHeader
+                    eyebrow="Rencana tersimpan"
+                    title="Rencana Saya"
+                    description={`${plans.length} itinerari tersimpan`}
+                    actions={
+                        <Link href="/travel-planner" className="inline-flex items-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
+                            Buat rencana baru
+                        </Link>
+                    }
+                />
 
                 {plans.length === 0 ? (
-                    <div className="flex flex-col items-center gap-4 py-20">
-                        <Route className="size-16 text-neutral-300" aria-hidden="true" />
-                        <p className="text-lg font-medium text-neutral-600">Belum ada rencana tersimpan</p>
-                        <p className="text-sm text-neutral-600">Buat rencana perjalanan lalu simpan di sini.</p>
-                        <Link href="/travel-planner" className="mt-2 rounded-full bg-brand px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover">
-                            Buat Rencana Perjalanan
+                    <div className="mx-auto flex max-w-lg flex-col items-center py-16 text-center">
+                        <Route className="mb-5 size-14 text-outline" aria-hidden="true" />
+                        <h2 className="text-xl font-bold text-ink">Belum ada rencana tersimpan</h2>
+                        <p className="mt-2 text-ink-muted">Buat rencana perjalanan, lalu simpan di sini agar bisa dibuka lagi kapan saja.</p>
+                        <Link href="/travel-planner" className="mt-8 rounded-full bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover">
+                            Buat rencana perjalanan
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <ul className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2 lg:grid-cols-3">
                         {plans.map((plan) => (
-                            <div key={plan.id} className="group rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-all hover:shadow-md">
-                                <Link href={`/saved-plans/${plan.id}`} className="block">
-                                    <h3 className="text-lg font-semibold text-neutral-900 group-hover:text-brand">{plan.title}</h3>
-                                    <div className="mt-3 flex flex-wrap gap-3 text-sm text-neutral-600">
-                                        <span className="flex items-center gap-1"><Calendar className="size-3.5" aria-hidden="true" /> {plan.durasi} hari</span>
-                                        <span className="flex items-center gap-1"><DollarSign className="size-3.5" aria-hidden="true" /> {plan.budget}</span>
+                            <li key={plan.id} className="group relative flex flex-col rounded-3xl bg-surface-low p-6 transition-colors hover:bg-surface-high">
+                                <Link href={`/saved-plans/${plan.id}`} className="flex grow flex-col focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+                                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-copper">Disimpan {plan.created_at}</p>
+                                    <h2 className="text-xl font-bold leading-snug tracking-tight text-ink wrap-anywhere group-hover:text-brand">{plan.title}</h2>
+                                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-ink-muted">
+                                        <span className="flex items-center gap-1.5"><Calendar className="size-4" aria-hidden="true" /> {plan.durasi} hari</span>
+                                        <span className="flex items-center gap-1.5"><Wallet className="size-4" aria-hidden="true" /> {plan.budget}</span>
                                     </div>
-                                    {plan.minat && <p className="mt-2 line-clamp-1 text-xs text-neutral-600">{plan.minat}</p>}
-                                    <p className="mt-3 text-xs text-neutral-600">Disimpan {plan.created_at}</p>
+                                    {plan.minat && <p className="mt-3 line-clamp-2 text-sm text-ink-muted">Minat: {plan.minat}</p>}
                                 </Link>
                                 <button
                                     type="button"
                                     onClick={() => handleDelete(plan.id, plan.title)}
                                     aria-label={`Hapus rencana ${plan.title}`}
-                                    className="mt-3 rounded-md p-1.5 text-neutral-500 transition-colors hover:bg-red-50 hover:text-red-500"
+                                    className="mt-4 self-start rounded-full p-2 text-ink-muted transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-2 focus-visible:outline-red-600"
                                 >
-                                    <Trash2 className="size-4" />
+                                    <Trash2 className="size-4" aria-hidden="true" />
                                 </button>
-                            </div>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 )}
             </div>
         </>

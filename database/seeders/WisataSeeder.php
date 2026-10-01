@@ -45,7 +45,8 @@ class WisataSeeder extends Seeder
             $data['foto'] = $item['foto'];
         }
 
-        $wisata = Wisata::updateOrCreate(['slug' => $slug], $data);
+        // firstOrCreate: seed ulang tidak boleh menimpa hasil edit admin
+        $wisata = Wisata::firstOrCreate(['slug' => $slug], $data);
 
         // Fasilitas
         if (! empty($item['fasilitas'])) {
@@ -59,7 +60,7 @@ class WisataSeeder extends Seeder
         if (! empty($item['galeri'])) {
             $sort = 0;
             foreach ($item['galeri'] as $g) {
-                Galeri::updateOrCreate(
+                Galeri::firstOrCreate(
                     ['wisata_id' => $wisata->id, 'foto' => $g['foto']],
                     [
                         'caption' => $g['caption'] ?? null,

@@ -54,13 +54,7 @@ class LocalGuideService
     {
         $lower = strtolower($question);
         $total = Wisata::where('is_active', true)->count();
-        $kategoriTotal = Wisata::where('is_active', true)->count();
-        $perKategori = Wisata::where('is_active', true)
-            ->with('kategori')
-            ->get()
-            ->groupBy(fn ($w) => $w->kategori?->nama_kategori ?? 'Lainnya')
-            ->map->count()
-            ->sortDesc();
+        $perKategori = $this->countPerKategori();
 
         if (in_array('count', $intents)) {
             $bagian = $perKategori->map(fn ($c, $k) => "{$k}: {$c}")->join(', ');
@@ -100,6 +94,18 @@ class LocalGuideService
         $prefix = $kategoriFilter ? "Berikut daftar wisata {$kategoriFilter} di Kutai Barat" : "Berikut daftar destinasi wisata di Kutai Barat";
 
         return $prefix . " (total {$namaList->count()}):\n- " . $namaList->join("\n- ");
+    }
+
+    /** Jumlah wisata aktif per kategori, dihitung di database (tanpa memuat model) */
+    private function countPerKategori(): Collection
+    {
+        return Wisata::where('wisatas.is_active', true)
+            ->leftJoin('kategoris', 'kategoris.id', '=', 'wisatas.kategori_id')
+            ->selectRaw("COALESCE(kategoris.nama_kategori, 'Lainnya') as nama, COUNT(*) as total")
+            ->groupByRaw("COALESCE(kategoris.nama_kategori, 'Lainnya')")
+            ->pluck('total', 'nama')
+            ->map(fn ($c) => (int) $c)
+            ->sortDesc();
     }
 
     private function escapeLike(string $v): string
@@ -194,12 +200,7 @@ class LocalGuideService
     public function buildMetadata(): string
     {
         $total = Wisata::where('is_active', true)->count();
-        $perKategori = Wisata::where('is_active', true)
-            ->with('kategori')
-            ->get()
-            ->groupBy(fn ($w) => $w->kategori?->nama_kategori ?? 'Lainnya')
-            ->map->count()
-            ->sortDesc()
+        $perKategori = $this->countPerKategori()
             ->map(fn ($c, $k) => "{$k}: {$c}")
             ->join(', ');
 

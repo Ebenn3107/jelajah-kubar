@@ -64,7 +64,7 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
     const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const counts: Record<string, number> = {
-        All: wisatas.total,
+        All: totalWisata ?? wisatas.total,
         ...Object.fromEntries(kategoris.map((k) => [k.nama_kategori, k.wisatas_count || 0])),
     };
 

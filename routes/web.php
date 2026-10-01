@@ -59,10 +59,11 @@ Route::middleware(['auth'])->group(function () {
 
 require __DIR__.'/settings.php';
 
-// Public — travel planner
+// Halaman travel planner & local guide publik; memakai AI (POST) wajib login dan terkena kuota harian
 Route::get('travel-planner', [TravelPlannerController::class, 'index'])->name('travel-planner.index');
-Route::post('travel-planner', [TravelPlannerController::class, 'plan'])->name('travel-planner.plan')->middleware('throttle:ai');
-
-// Public — local guide
 Route::get('local-guide', [LocalGuideController::class, 'index'])->name('local-guide.index');
-Route::post('local-guide', [LocalGuideController::class, 'ask'])->name('local-guide.ask')->middleware('throttle:ai');
+
+Route::middleware('auth')->group(function () {
+    Route::post('travel-planner', [TravelPlannerController::class, 'plan'])->name('travel-planner.plan')->middleware('throttle:ai');
+    Route::post('local-guide', [LocalGuideController::class, 'ask'])->name('local-guide.ask')->middleware('throttle:ai');
+});

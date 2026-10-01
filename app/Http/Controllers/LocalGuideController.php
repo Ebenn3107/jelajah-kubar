@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AiContentService;
+use App\Services\AiQuotaService;
 use App\Services\LocalGuideService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -58,9 +59,22 @@ class LocalGuideController extends Controller
             ]);
         }
 
-        // 5. Generate jawaban dari Top-K + metadata statistik
+        // 5. Cek kuota harian sebelum memanggil AI, lalu generate jawaban dari Top-K + metadata statistik
+        $userId = $request->user()->id;
+        $quotaService = app(AiQuotaService::class);
+
+        if (! $quotaService->check($userId)['allowed']) {
+            return Inertia::render('local-guide/index', [
+                'answer' => 'Kuota AI harian Anda sudah habis. Coba lagi besok.',
+                'question' => $question,
+                'relatedWisatas' => [],
+                'intents' => $intents,
+            ]);
+        }
+
         $service = app(AiContentService::class);
-        $answer = $service->localGuideAnswer($question, $ranked->toArray());
+        $answer = $service->localGuideAnswer($question, $ranked->toArray(), $userId);
+        $quotaService->clearCache($userId);
 
         // 6. Validasi respons — pastikan destinasi yang disebut ada di context
         $answer = $service->validateLocalGuideAnswer($answer, $ranked);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wisata;
 use App\Services\AiContentService;
+use App\Services\AiQuotaService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,13 +37,26 @@ class TravelPlannerController extends Controller
             ]);
         }
 
+        $userId = $request->user()->id;
+        $quotaService = app(AiQuotaService::class);
+
+        if (! $quotaService->check($userId)['allowed']) {
+            return Inertia::render('travel-planner/index', [
+                'result' => null,
+                'error' => 'Kuota AI harian Anda sudah habis. Coba lagi besok.',
+                'input' => $validated,
+            ]);
+        }
+
         $service = app(AiContentService::class);
         $result = $service->travelPlan(
             $wisatas->toArray(),
             $validated['durasi'],
             $validated['budget'],
             $validated['minat'] ?? '',
+            $userId,
         );
+        $quotaService->clearCache($userId);
 
         if (! $result) {
             return Inertia::render('travel-planner/index', [

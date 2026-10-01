@@ -32,7 +32,7 @@ Dikerjakan 2026-10-02 (sesi cloud): login/register berbahasa Indonesia, sanitasi
 **Belum diverifikasi** (sesi cloud tidak punya `vendor/`: composer diblok network policy dan PHP 8.3 < 8.4): jalankan `composer test`, `php artisan migrate`, dan cek manual `/wisata` + Local Guide + Travel Planner.
 
 Masih tersisa:
-- `AiQuotaService` belum dipakai di endpoint publik (planner/guide, `user_id` null); saat ini hanya rate limit per IP. Perlu keputusan: kuota harian per IP atau wajib login.
+- ~~Kuota AI di endpoint publik~~ selesai: `POST /travel-planner` dan `POST /local-guide` kini wajib login (`auth`, tanpa syarat verifikasi email, sama seperti review/favorit), memeriksa `AiQuotaService` sebelum memanggil AI, dan mencatat `user_id` ke `ai_logs`. Halaman GET tetap publik; tamu diarahkan ke login saat mengirim. Belum dijalankan (tes baru di `AccessControlTest`).
 - Pint (`composer lint`) belum dijalankan.
 - 3 error ESLint `react-hooks/set-state-in-effect`: `galeri-lightbox.tsx`, `public-layout.tsx`, `admin/wisata/form.tsx` (butuh perubahan perilaku, uji di browser).
 - SSR: tidak ada bug ditemukan. Plugin `@inertiajs/vite` memakai `app.tsx` sebagai entry SSR bila `ssr.tsx` tidak ada, `localStorage` hanya diakses di dalam fungsi yang dijaga, dan Leaflet di-import dinamis. Tetap perlu dicoba: `npm run build:ssr` lalu `php artisan inertia:start-ssr`.

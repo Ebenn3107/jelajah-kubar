@@ -187,7 +187,7 @@ PROMPT;
         return mb_substr(trim($text), 0, $maxLength);
     }
 
-    public function localGuideAnswer(string $question, array $wisatas): ?string
+    public function localGuideAnswer(string $question, array $wisatas, ?int $userId = null): ?string
     {
         if (empty($wisatas)) {
             return 'Maaf, saya tidak menemukan data wisata yang relevan dengan pertanyaan Anda di database Jelajah Kubar. Coba tanyakan dengan kata kunci yang berbeda.';
@@ -240,7 +240,7 @@ Respond dengan JSON:
 {"answer": "..."}
 PROMPT;
 
-        $result = $this->callAi($prompt, $question, 'local_guide');
+        $result = $this->callAi($prompt, $question, 'local_guide', $userId);
 
         return $result['answer'] ?? 'Maaf, saya belum bisa menjawab pertanyaan itu. Coba tanyakan hal lain tentang wisata di Kutai Barat.';
     }
@@ -313,7 +313,7 @@ PROMPT;
         return trim($result) !== '' ? $result : $answer;
     }
 
-    public function travelPlan(array $wisatas, int $durasi, string $budget, string $minat): ?string
+    public function travelPlan(array $wisatas, int $durasi, string $budget, string $minat, ?int $userId = null): ?string
     {
         // Batasi jumlah destinasi yang dikirim ke model (hemat token),
         // dan utamakan yang relevan dengan minat pengguna.
@@ -328,7 +328,7 @@ PROMPT;
             $prompt = $this->buildTravelPlanPrompt($wisatas, $durasi, $budget, $minat);
         }
 
-        $result = $this->callAi($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner');
+        $result = $this->callAi($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner', $userId);
 
         return $result ? json_encode($result) : null;
     }

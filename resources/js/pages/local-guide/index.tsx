@@ -1,7 +1,8 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowUpRight, Loader2, Send, Sparkles } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { PageHeader } from '@/components/page-header';
+import type { Auth } from '@/types';
 
 interface RelatedWisata {
     slug: string;
@@ -22,12 +23,19 @@ const suggestions = [
 ];
 
 export default function LocalGuideIndex({ answer, question, relatedWisatas }: Props) {
+    const { auth } = usePage<{ auth: Auth }>().props;
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const ask = (text: string) => {
         if (!text.trim() || loading) {
+            return;
+        }
+
+        if (!auth.user) {
+            router.visit('/login');
+
             return;
         }
 
@@ -135,6 +143,12 @@ export default function LocalGuideIndex({ answer, question, relatedWisatas }: Pr
                         {loading ? <Loader2 className="size-5 animate-spin" aria-hidden="true" /> : <Send className="size-5" aria-hidden="true" />}
                     </button>
                 </form>
+
+                {!auth.user && (
+                    <p className="mt-4 text-center text-sm text-ink-muted">
+                        <Link href="/login" className="font-semibold text-brand hover:underline">Masuk</Link> untuk bertanya. Pemakaian AI dibatasi kuota harian per akun.
+                    </p>
+                )}
 
                 {question && answer && (
                     <div className="mt-6 text-center">

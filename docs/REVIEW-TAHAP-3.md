@@ -47,6 +47,6 @@ Keputusan 1, 2, dan 3 diterima; untuk 3, tata letak admin **tidak dirombak**.
 - ESLint (`npx eslint resources/js`) dan `tsc` bersih; Pint belum dijalankan.
 
 ## Catatan teknis
-- Rating di kartu `/wisata` hanya tampil bila controller mengirim `rating` (belum dihitung di `WisataController@index`).
-- `components/search-hero.tsx` sudah tidak dipakai (belum dihapus).
+- Rating di kartu `/wisata` kini berasal dari `withAvg('reviews', 'rating')` di `WisataController@index` (tes baru di `tests/Feature/AccessControlTest.php`, belum pernah dijalankan). Halaman Favorit belum menghitung rating.
+- `components/search-hero.tsx` sudah dihapus (tidak dipakai lagi).
 - Warna `teal-*` untuk badge status di admin sengaja dibiarkan.

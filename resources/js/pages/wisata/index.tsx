@@ -23,7 +23,7 @@ interface WisataItem {
     deskripsi: string;
     foto: string | null;
     foto_url?: string | null;
-    rating?: number | null;
+    reviews_avg_rating?: number | string | null;
     harga_tiket?: string | null;
     kategori: { nama_kategori: string } | null;
 }
@@ -204,7 +204,7 @@ clearTimeout(searchTimer.current);
                     <>
                         <div aria-busy={searching} className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-10 transition-opacity sm:grid-cols-2 lg:grid-cols-3 ${searching ? 'opacity-60' : ''}`}>
                             {wisatas.data.map((wisata) => (
-                                <WisataCard key={wisata.id} {...wisata} searchQuery={filters.search} />
+                                <WisataCard key={wisata.id} {...wisata} rating={wisata.reviews_avg_rating ? Number(wisata.reviews_avg_rating) : null} searchQuery={filters.search} />
                             ))}
                         </div>
 

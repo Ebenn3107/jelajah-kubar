@@ -37,6 +37,7 @@ class WisataController extends Controller
         $prefix = addcslashes(strtolower((string) $search), '%_\\') . '%';
 
         $wisatas = Wisata::with('kategori')
+            ->withAvg('reviews', 'rating')
             ->where('is_active', true)
             ->when($search, function ($q) use ($search) {
                 $q->where(function ($sub) use ($search) {

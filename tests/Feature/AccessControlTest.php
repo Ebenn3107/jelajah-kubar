@@ -86,3 +86,17 @@ test('endpoint AI dibatasi per IP untuk tamu', function () {
 
     $this->post(route('local-guide.ask'), [])->assertStatus(429);
 });
+
+test('daftar wisata mengirim rata-rata rating untuk kartu', function () {
+    $wisata = makeWisata();
+    $a = User::factory()->create();
+    $b = User::factory()->create();
+    Review::create(['wisata_id' => $wisata->id, 'user_id' => $a->id, 'rating' => 5, 'komentar' => 'Bagus sekali tempatnya']);
+    Review::create(['wisata_id' => $wisata->id, 'user_id' => $b->id, 'rating' => 4, 'komentar' => 'Cukup bagus tempatnya']);
+
+    $this->get(route('wisata.index'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('wisata/index')
+            ->where('wisatas.data.0.reviews_avg_rating', fn ($v) => (float) $v === 4.5));
+});

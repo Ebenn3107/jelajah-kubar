@@ -1,10 +1,12 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpDown, Compass, SearchX } from 'lucide-react';
+import { SearchX } from 'lucide-react';
 import { CategoryChips } from '@/components/category-chips';
+import { Pagination } from '@/components/pagination';
 import { SearchHero } from '@/components/search-hero';
 import { WisataCard } from '@/components/wisata-card';
 import { Button } from '@/components/ui/button';
+import type { PaginatedData } from '@/types/pagination';
 
 interface Kategori {
     id: number;
@@ -25,18 +27,8 @@ interface WisataItem {
     kategori: { nama_kategori: string } | null;
 }
 
-interface PaginatedData {
-    data: WisataItem[];
-    current_page: number;
-    last_page: number;
-    total: number;
-    from: number;
-    to: number;
-    links: { url: string | null; label: string; active: boolean }[];
-}
-
 interface Props {
-    wisatas: PaginatedData;
+    wisatas: PaginatedData<WisataItem>;
     kategoris: Kategori[];
     filters: { search?: string; kategori?: string };
     heroFoto?: string | null;
@@ -69,7 +61,6 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
         : 'All';
 
     const [searching, setSearching] = useState(false);
-    const [sortBy, setSortBy] = useState('nama');
     const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const counts: Record<string, number> = {
@@ -114,9 +105,9 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
 
     return (
         <>
-            <Head title={filters.search ? `Search: ${filters.search}` : 'Explore Destinations'} />
+            <Head title={filters.search ? `Cari: ${filters.search}` : 'Jelajahi Destinasi'} />
 
-            <SearchHero onSearch={handleSearch} loading={searching} heroFoto={heroFoto} totalWisata={totalWisataCount} totalKategori={totalKategori} />
+            <SearchHero onSearch={handleSearch} initialValue={filters.search || ''} loading={searching} heroFoto={heroFoto} totalWisata={totalWisataCount} totalKategori={totalKategori} />
 
             <section className="relative z-20 mx-auto max-w-7xl -mt-8 px-5 md:px-16">
                 <CategoryChips categories={allCategories} activeCategory={activeCategory} onSelect={handleCategorySelect} counts={counts} />
@@ -126,29 +117,16 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
                 <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                     <div>
                         <h2 className="text-2xl font-bold text-neutral-900">
-                            {filters.search ? `Results for "${filters.search}"` : 'Explore Destinations'}
+                            {filters.search ? `Hasil untuk "${filters.search}"` : 'Jelajahi Destinasi'}
                         </h2>
                         <p className="mt-0.5 text-sm text-neutral-500">
                             {wisatas.total === 0
-                                ? 'No destinations found'
+                                ? 'Tidak ada destinasi ditemukan'
                                 : filters.search
-                                    ? `${wisatas.total} destination${wisatas.total > 1 ? 's' : ''} found`
-                                    : `Showing ${wisatas.from}–${wisatas.to} of ${wisatas.total} destinations`
+                                    ? `${wisatas.total} destinasi ditemukan`
+                                    : `Menampilkan ${wisatas.from}–${wisatas.to} dari ${wisatas.total} destinasi`
                             }
                         </p>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                        <ArrowUpDown className="size-4 text-neutral-400" />
-                        <select
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                            className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-600 focus:border-[#00685f] focus:outline-none"
-                        >
-                            <option value="nama">Name</option>
-                            <option value="rating">Rating</option>
-                            <option value="terbaru">Newest</option>
-                        </select>
                     </div>
                 </div>
 
@@ -158,10 +136,10 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
                     <div className="flex flex-col items-center py-16 text-center">
                         <SearchX className="mb-4 size-16 text-neutral-300" />
                         <p className="text-lg font-medium text-neutral-600">
-                            {filters.search ? `No results for "${filters.search}"` : 'No destinations found'}
+                            {filters.search ? `Tidak ada hasil untuk "${filters.search}"` : 'Tidak ada destinasi ditemukan'}
                         </p>
-                        <p className="mt-1 text-sm text-neutral-400">
-                            {filters.search ? 'Try different keywords or browse categories.' : 'Check back later for new destinations.'}
+                        <p className="mt-1 text-sm text-neutral-500">
+                            {filters.search ? 'Coba kata kunci lain atau telusuri kategori.' : 'Kunjungi lagi nanti untuk destinasi baru.'}
                         </p>
 
                         {suggestions.length > 0 && (
@@ -170,7 +148,7 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
                                     <button
                                         key={s}
                                         onClick={() => navigate({ search: s, kategori: '' })}
-                                        className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-600 transition-colors hover:border-[#00685f]/30 hover:text-[#00685f]"
+                                        className="rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm text-neutral-600 transition-colors hover:border-brand/30 hover:text-brand"
                                     >
                                         {s}
                                     </button>
@@ -179,40 +157,25 @@ export default function WisataIndex({ wisatas, kategoris, filters, heroFoto, tot
                         )}
 
                         <div className="mt-8 flex gap-3">
-                            <Button className="rounded-full bg-[#00685f] px-6 hover:opacity-90" onClick={() => navigate({ search: '', kategori: '' })}>
-                                Explore All Destinations
+                            <Button className="rounded-full bg-brand px-6 hover:opacity-90" onClick={() => navigate({ search: '', kategori: '' })}>
+                                Lihat Semua Destinasi
                             </Button>
                             {(filters.search || filters.kategori) && (
                                 <Button variant="outline" className="rounded-full" onClick={() => navigate({ search: '', kategori: '' })}>
-                                    Clear Filters
+                                    Hapus Filter
                                 </Button>
                             )}
                         </div>
                     </div>
                 ) : (
                     <>
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div aria-busy={searching} className={`grid gap-6 transition-opacity md:grid-cols-2 lg:grid-cols-3 ${searching ? 'opacity-60' : ''}`}>
                             {wisatas.data.map((wisata) => (
                                 <WisataCard key={wisata.id} {...wisata} searchQuery={filters.search} />
                             ))}
                         </div>
 
-                        {wisatas.last_page > 1 && (
-                            <div className="mt-12 flex justify-center gap-2">
-                                {wisatas.links.map((link, i) => (
-                                    <Link
-                                        key={i}
-                                        href={link.url || '#'}
-                                        className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                                            link.active ? 'bg-[#00685f] text-white' : link.url ? 'bg-white text-neutral-600 hover:bg-neutral-100' : 'cursor-not-allowed text-neutral-400'
-                                        }`}
-                                        preserveState
-                                        onClick={() => setSearching(true)}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
-                                    />
-                                ))}
-                            </div>
-                        )}
+                        <Pagination links={wisatas.links} />
                     </>
                 )}
             </section>

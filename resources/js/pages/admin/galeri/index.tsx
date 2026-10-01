@@ -49,26 +49,26 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
         <>
             <Head title="Kelola Galeri" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-zinc-950 p-4">
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-background p-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Kelola Galeri</h1>
-                    <p className="text-sm text-zinc-500">Manage destination photos</p>
+                    <h1 className="text-2xl font-bold text-foreground">Kelola Galeri</h1>
+                    <p className="text-sm text-muted-foreground">Manage destination photos</p>
                 </div>
 
                 {/* Select Wisata */}
                 <div className="flex flex-wrap items-center gap-3">
-                    <label className="text-sm font-medium text-zinc-200">Pilih Wisata:</label>
+                    <label className="text-sm font-medium text-foreground">Pilih Wisata:</label>
                     <select
                         value={filters.wisata_id || ''}
                         onChange={(e) => router.get('/admin/galeri', { wisata_id: e.target.value })}
-                        className="rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2 text-sm text-zinc-100 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                     >
-                        <option value="" className="bg-zinc-950">— Pilih —</option>
+                        <option value="" className="bg-background">— Pilih —</option>
                         {wisatas.map((w) => (
-                            <option key={w.id} value={w.id} className="bg-zinc-950">{w.nama_wisata}</option>
+                            <option key={w.id} value={w.id} className="bg-background">{w.nama_wisata}</option>
                         ))}
                     </select>
-                    <Link href="/admin/wisata/create" className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-zinc-800">
+                    <Link href="/admin/wisata/create" className="rounded-lg border border-input px-4 py-2 text-sm font-semibold text-foreground/80 hover:bg-accent">
                         + Buat Wisata Baru
                     </Link>
                 </div>
@@ -76,7 +76,7 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
                 {selectedWisata && (
                     <>
                         {/* Upload Form */}
-                        <form onSubmit={handleSubmit} className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-sm shadow-black/20">
+                        <form onSubmit={handleSubmit} className="rounded-xl border border-border bg-card p-6 shadow-sm shadow-black/20">
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div className="md:col-span-2">
                                     <FileUpload
@@ -86,11 +86,11 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
                                 </div>
                                 <div className="flex flex-col justify-end gap-3">
                                     <div>
-                                        <label className="mb-1 block text-xs font-medium text-zinc-200">Caption</label>
+                                        <label className="mb-1 block text-xs font-medium text-foreground">Caption</label>
                                         <input
                                             value={caption}
                                             onChange={(e) => setCaption(e.target.value)}
-                                            className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-teal-500 focus:outline-none"
+                                            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none"
                                             placeholder="Deskripsi foto"
                                         />
                                     </div>
@@ -107,18 +107,18 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
 
                         {/* Grid */}
                         {galeris.length === 0 ? (
-                            <div className="flex flex-col items-center gap-3 py-20 text-zinc-500">
-                                <ImageIcon className="size-12 text-zinc-600" />
+                            <div className="flex flex-col items-center gap-3 py-20 text-muted-foreground">
+                                <ImageIcon className="size-12 text-muted-foreground" />
                                 <p>Belum ada foto untuk "{selectedWisata.nama_wisata}"</p>
                             </div>
                         ) : (
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                                 {galeris.map((g) => (
-                                    <div key={g.id} className="group relative overflow-hidden rounded-xl border border-zinc-800">
+                                    <div key={g.id} className="group relative overflow-hidden rounded-xl border border-border">
                                         {g.foto_url ? (
                                             <img src={g.foto_url} alt={g.caption || ''} className="aspect-square w-full object-cover" />
                                         ) : (
-                                            <div className="flex aspect-square items-center justify-center bg-zinc-800 text-zinc-600">
+                                            <div className="flex aspect-square items-center justify-center bg-muted text-muted-foreground">
                                                 <ImageIcon className="size-16" />
                                             </div>
                                         )}

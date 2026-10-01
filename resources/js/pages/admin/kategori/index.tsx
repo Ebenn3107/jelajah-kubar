@@ -43,29 +43,29 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
         <>
             <Head title="Kelola Kategori" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-zinc-950 p-4">
+            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-background p-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Kelola Kategori</h1>
-                    <p className="text-sm text-zinc-500">{kategoris.length} categories</p>
+                    <h1 className="text-2xl font-bold text-foreground">Kelola Kategori</h1>
+                    <p className="text-sm text-muted-foreground">{kategoris.length} categories</p>
                 </div>
 
                 {/* Create Form */}
-                <form onSubmit={handleCreate} className="flex flex-wrap items-end gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-4 shadow-sm shadow-black/20">
+                <form onSubmit={handleCreate} className="flex flex-wrap items-end gap-3 rounded-xl border border-border bg-card p-4 shadow-sm shadow-black/20">
                     <div className="flex-1">
-                        <label className="mb-1 block text-xs font-medium text-zinc-200">Nama Kategori</label>
-                        <input value={nama} onChange={(e) => setNama(e.target.value)} required className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
+                        <label className="mb-1 block text-xs font-medium text-foreground">Nama Kategori</label>
+                        <input value={nama} onChange={(e) => setNama(e.target.value)} required className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
                     </div>
                     <div className="flex-1">
-                        <label className="mb-1 block text-xs font-medium text-zinc-200">Deskripsi</label>
-                        <input value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
+                        <label className="mb-1 block text-xs font-medium text-foreground">Deskripsi</label>
+                        <input value={deskripsi} onChange={(e) => setDeskripsi(e.target.value)} className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500" />
                     </div>
                     <button type="submit" className="rounded-lg bg-teal-600 px-5 py-2 text-sm font-semibold text-white hover:bg-teal-700">Tambah</button>
                 </form>
 
                 {/* Table */}
-                <div className="overflow-x-auto rounded-xl border border-zinc-800">
+                <div className="overflow-x-auto rounded-xl border border-border">
                     <table className="w-full text-left text-sm">
-                        <thead className="bg-zinc-900 text-zinc-400">
+                        <thead className="bg-card text-muted-foreground">
                             <tr>
                                 <th className="px-4 py-3 font-semibold">Nama</th>
                                 <th className="px-4 py-3 font-semibold">Slug</th>
@@ -74,37 +74,37 @@ export default function AdminKategoriIndex({ kategoris }: Props) {
                                 <th className="px-4 py-3 font-semibold">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800">
+                        <tbody className="divide-y divide-border">
                             {kategoris.map((k) => (
-                                <tr key={k.id} className="bg-zinc-950 hover:bg-zinc-900/50">
+                                <tr key={k.id} className="bg-background hover:bg-muted/50">
                                     {editingId === k.id ? (
                                         <>
                                             <td className="px-4 py-2">
-                                                <input value={editNama} onChange={(e) => setEditNama(e.target.value)} className="w-full rounded border border-zinc-700 bg-zinc-950 px-2 py-1 text-sm text-zinc-100 focus:border-teal-500 focus:outline-none" />
+                                                <input value={editNama} onChange={(e) => setEditNama(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-teal-500 focus:outline-none" />
                                             </td>
-                                            <td className="px-4 py-2 text-zinc-500">{k.slug}</td>
+                                            <td className="px-4 py-2 text-muted-foreground">{k.slug}</td>
                                             <td className="px-4 py-2">
-                                                <input value={editDeskripsi} onChange={(e) => setEditDeskripsi(e.target.value)} className="w-full rounded border border-zinc-700 bg-zinc-950 px-2 py-1 text-sm text-zinc-100 focus:border-teal-500 focus:outline-none" />
+                                                <input value={editDeskripsi} onChange={(e) => setEditDeskripsi(e.target.value)} className="w-full rounded border border-input bg-background px-2 py-1 text-sm text-foreground focus:border-teal-500 focus:outline-none" />
                                             </td>
-                                            <td className="px-4 py-2 text-zinc-400">{k.wisatas_count}</td>
+                                            <td className="px-4 py-2 text-muted-foreground">{k.wisatas_count}</td>
                                             <td className="flex gap-2 px-4 py-2">
-                                                <button onClick={() => handleUpdate(k.id)} className="rounded bg-teal-600 px-2 py-1 text-xs font-medium text-white hover:bg-teal-700">Save</button>
-                                                <button onClick={() => setEditingId(null)} className="rounded border border-zinc-700 px-2 py-1 text-xs font-medium text-zinc-400 hover:bg-zinc-800">Cancel</button>
+                                                <button onClick={() => handleUpdate(k.id)} className="rounded bg-teal-600 px-2 py-1 text-xs font-medium text-white hover:bg-teal-700">Simpan</button>
+                                                <button onClick={() => setEditingId(null)} className="rounded border border-input px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-accent">Batal</button>
                                             </td>
                                         </>
                                     ) : (
                                         <>
-                                            <td className="px-4 py-3 font-medium text-zinc-100">{k.nama_kategori}</td>
-                                            <td className="px-4 py-3 text-zinc-500">{k.slug}</td>
-                                            <td className="max-w-xs truncate px-4 py-3 text-zinc-400">{k.deskripsi || '—'}</td>
+                                            <td className="px-4 py-3 font-medium text-foreground">{k.nama_kategori}</td>
+                                            <td className="px-4 py-3 text-muted-foreground">{k.slug}</td>
+                                            <td className="max-w-xs truncate px-4 py-3 text-muted-foreground">{k.deskripsi || '—'}</td>
                                             <td className="px-4 py-3">
-                                                <span className="rounded-full bg-teal-900/50 px-2.5 py-0.5 text-xs font-medium text-teal-400">{k.wisatas_count}</span>
+                                                <span className="rounded-full bg-teal-100 dark:bg-teal-900/50 px-2.5 py-0.5 text-xs font-medium text-teal-600 dark:text-teal-400">{k.wisatas_count}</span>
                                             </td>
                                             <td className="flex gap-2 px-4 py-3">
-                                                <button onClick={() => { setEditingId(k.id); setEditNama(k.nama_kategori); setEditDeskripsi(k.deskripsi || ''); }} className="rounded-md p-1.5 text-zinc-500 hover:bg-zinc-800 hover:text-teal-400">
+                                                <button onClick={() => { setEditingId(k.id); setEditNama(k.nama_kategori); setEditDeskripsi(k.deskripsi || ''); }} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-teal-600 dark:hover:text-teal-400">
                                                     <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                                 </button>
-                                                <button onClick={() => handleDelete(k.id, k.nama_kategori)} className="rounded-md p-1.5 text-zinc-500 hover:bg-red-900/30 hover:text-red-400">
+                                                <button onClick={() => handleDelete(k.id, k.nama_kategori)} className="rounded-md p-1.5 text-muted-foreground hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400">
                                                     <Trash2 className="size-4" />
                                                 </button>
                                             </td>

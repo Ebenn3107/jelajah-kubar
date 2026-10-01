@@ -15,8 +15,21 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
         // Dynamic import — Leaflet hanya di-load di browser, bukan SSR
         let destroyed = false;
 
-        import('leaflet').then((L) => {
+        Promise.all([
+            import('leaflet'),
+            import('leaflet/dist/images/marker-icon.png'),
+            import('leaflet/dist/images/marker-icon-2x.png'),
+            import('leaflet/dist/images/marker-shadow.png'),
+        ]).then(([L, icon, icon2x, shadow]) => {
             if (destroyed || !mapRef.current || instanceRef.current) return;
+
+            // Vite tidak men-resolve path ikon default Leaflet → arahkan ke asset hasil bundle
+            delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
+            L.Icon.Default.mergeOptions({
+                iconUrl: icon.default,
+                iconRetinaUrl: icon2x.default,
+                shadowUrl: shadow.default,
+            });
 
             const map = L.map(mapRef.current, {
                 center: [latitude, longitude],

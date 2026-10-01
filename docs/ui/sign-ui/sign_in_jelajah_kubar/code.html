@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jelajah Kubar - Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#dee9fc",
+                        "secondary": "#855300",
+                        "on-tertiary-fixed-variant": "#773215",
+                        "surface-tint": "#006a61",
+                        "tertiary-container": "#b05e3d",
+                        "surface-container": "#e6eeff",
+                        "outline-variant": "#bcc9c6",
+                        "on-background": "#121c2a",
+                        "surface-container-low": "#eff4ff",
+                        "outline": "#6d7a77",
+                        "on-tertiary-container": "#fffbff",
+                        "inverse-primary": "#6bd8cb",
+                        "on-secondary-fixed": "#2a1700",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed": "#370e00",
+                        "surface-container-highest": "#d9e3f6",
+                        "on-primary-fixed": "#00201d",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#27313f",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "surface-variant": "#d9e3f6",
+                        "primary-fixed": "#89f5e7",
+                        "primary-container": "#008378",
+                        "secondary-fixed": "#ffddb8",
+                        "primary": "#00685f",
+                        "surface-dim": "#d0dbed",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "on-surface": "#121c2a",
+                        "tertiary": "#924628",
+                        "on-secondary-container": "#684000",
+                        "background": "#f8f9ff",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-primary-container": "#f4fffc",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "on-surface-variant": "#3d4947",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-xl": "64px",
+                        "stack-md": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "caption": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-full font-body-md text-body-md antialiased selection:bg-primary selection:text-on-primary">
+<div class="flex min-h-full flex-1">
+<!-- Left Panel: Imagery -->
+<div class="relative hidden w-0 flex-1 lg:block">
+<div class="absolute inset-0 h-full w-full bg-cover bg-center" data-alt="A breathtaking vertical photograph of a dense, misty Kutai Barat rainforest at dawn. The scene features towering, ancient tropical trees enveloped in soft, ethereal fog, with dappled, golden morning sunlight piercing through the canopy. The color palette emphasizes lush, vibrant greens, earthy browns, and soft, natural lighting, evoking a sense of tranquility, awe, and natural majesty, consistent with high-end travel journalism and premium minimalist aesthetics." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC7MSmGwauzO5QBiSAjJ3_g9XQcBBIzPYBG-BhR-8UEljcXG58nn3BpfYdS4hKEz42Xa62MAr38ElQ-u6i0lo5os4PFwEuIRgXXOqsEF-zIblu2jBz4pYen_iuxFlFMe4_NWU5LfA7527w-yYyANxOz9KcT_6-XbB-eJsZuMwME-Hu1BZb6ezij2TlhuiqEB8jyG1WhlSLII1hlskOcTJd7ien-PwDRJbdLtJYvQj4VEEhJxghjjmw');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-between p-margin-desktop">
+<div class="text-white font-headline-md text-headline-md tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined filled text-[32px]" data-icon="forest">forest</span>
+                    Jelajah Kubar
+                </div>
+<div class="text-white max-w-md">
+<p class="font-headline-sm text-headline-sm mb-4">Discover the Heart of Borneo.</p>
+<p class="font-body-md text-body-md opacity-90">Immerse yourself in authentic cultural experiences and breathtaking landscapes.</p>
+</div>
+</div>
+</div>
+<!-- Right Panel: Login Form -->
+<div class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24 bg-surface-container-lowest">
+<div class="mx-auto w-full max-w-sm lg:w-96">
+<div class="lg:hidden mb-8 flex items-center gap-2 text-primary font-headline-md text-headline-md tracking-tight">
+<span class="material-symbols-outlined filled text-[32px]" data-icon="forest">forest</span>
+                    Jelajah Kubar
+                </div>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Welcome Back</h2>
+<p class="mt-2 text-on-surface-variant font-body-md text-body-md">Sign in to your account to continue planning your journey.</p>
+</div>
+<div class="mt-10">
+<div>
+<form action="#" class="space-y-6" method="POST">
+<!-- Email Input -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface" for="email">Email address</label>
+<div class="mt-2">
+<input autocomplete="email" class="block w-full rounded-md border-outline-variant bg-surface-container-lowest py-2.5 text-on-surface shadow-sm focus:border-primary focus:ring-1 focus:ring-primary focus:ring-offset-0 sm:text-sm sm:leading-6 transition-all duration-200" id="email" name="email" required="" type="email"/>
+</div>
+</div>
+<!-- Password Input -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface" for="password">Password</label>
+<div class="mt-2">
+<input autocomplete="current-password" class="block w-full rounded-md border-outline-variant bg-surface-container-lowest py-2.5 text-on-surface shadow-sm focus:border-primary focus:ring-1 focus:ring-primary focus:ring-offset-0 sm:text-sm sm:leading-6 transition-all duration-200" id="password" name="password" required="" type="password"/>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<input class="h-4 w-4 rounded border-outline-variant text-primary focus:ring-primary" id="remember-me" name="remember-me" type="checkbox"/>
+<label class="ml-3 block font-body-md text-body-md text-on-surface-variant" for="remember-me">Remember me</label>
+</div>
+<div class="font-body-md text-body-md">
+<a class="font-label-md text-label-md text-primary hover:text-primary-container transition-colors" href="#">Forgot password?</a>
+</div>
+</div>
+<!-- Submit Button -->
+<div>
+<button class="flex w-full justify-center rounded-md bg-primary px-3 py-3 font-label-md text-label-md text-on-primary shadow-sm hover:bg-primary-container focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-colors active:scale-[0.98]" type="submit">
+                                    Sign in
+                                </button>
+</div>
+</form>
+</div>
+<div class="mt-10">
+<div class="relative">
+<div aria-hidden="true" class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<div class="relative flex justify-center text-sm font-medium leading-6">
+<span class="bg-surface-container-lowest px-6 text-on-surface-variant font-caption text-caption uppercase tracking-wider">Or continue with</span>
+</div>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<a class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors focus-visible:ring-transparent" href="#">
+<svg aria-hidden="true" class="h-5 w-5" viewbox="0 0 24 24">
+<path d="M12.0003 4.75C13.7703 4.75 15.3553 5.36002 16.6053 6.54998L20.0303 3.125C17.9502 1.19 15.2353 0 12.0003 0C7.31028 0 3.25527 2.69 1.28027 6.60998L5.27028 9.70498C6.21525 6.86002 8.87028 4.75 12.0003 4.75Z" fill="#EA4335"></path>
+<path d="M23.49 12.275C23.49 11.49 23.415 10.73 23.3 10H12V14.51H18.47C18.18 15.99 17.34 17.25 16.08 18.1L19.945 21.1C22.2 19.01 23.49 15.92 23.49 12.275Z" fill="#4285F4"></path>
+<path d="M5.26498 14.2949C5.02498 13.5699 4.88501 12.7999 4.88501 11.9999C4.88501 11.1999 5.01998 10.4299 5.26498 9.7049L1.275 6.60986C0.46 8.22986 0 10.0599 0 11.9999C0 13.9399 0.46 15.7699 1.28 17.3899L5.26498 14.2949Z" fill="#FBBC05"></path>
+<path d="M12.0004 24.0001C15.2404 24.0001 17.9654 22.935 19.9454 21.095L16.0804 18.095C15.0054 18.82 13.6204 19.245 12.0004 19.245C8.8704 19.245 6.21537 17.135 5.26538 14.29L1.27539 17.385C3.25539 21.31 7.3104 24.0001 12.0004 24.0001Z" fill="#34A853"></path>
+</svg>
+<span class="font-label-md text-label-md text-on-surface">Google</span>
+</a>
+<a class="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors focus-visible:ring-transparent" href="#">
+<svg aria-hidden="true" class="h-5 w-5 text-gray-900" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" fill-rule="evenodd"></path>
+</svg>
+<span class="font-label-md text-label-md text-on-surface">GitHub</span>
+</a>
+</div>
+</div>
+<p class="mt-10 text-center font-body-md text-body-md text-on-surface-variant">
+                        Don't have an account?
+                        <a class="font-label-md text-label-md text-primary hover:text-primary-container hover:underline transition-all" href="#">Sign up</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

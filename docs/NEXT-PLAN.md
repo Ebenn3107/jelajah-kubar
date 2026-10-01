@@ -20,12 +20,15 @@ Cara kerja:
 Keputusan yang perlu ditanyakan ke pengguna sebelum mulai: halaman mana yang paling mengganggu, dan apakah mengikuti Stitch persis atau arah baru.
 
 ## Sisa pekerjaan (kecil)
-- Terjemahkan `resources/js/pages/auth/login.tsx` dan `register.tsx` (masih Inggris). Idealnya digabung dengan redesign auth.
-- SSR: `package.json` punya `build:ssr` tapi `resources/js/ssr.tsx` tidak ada, dan `use-appearance` mengakses `localStorage` di level modul. Perbaiki jika SSR mau diaktifkan (`composer dev` menjalankan `inertia:start-ssr`).
-- Gaya kode: `pint --test` dan `eslint` melaporkan banyak pelanggaran lama di file yang tidak disentuh. Rapikan di commit terpisah (`composer lint`, `npm run lint`).
-- Respons gagal AI (`TravelPlannerController`, `LocalGuideController`, `AiContentController`) tetap HTTP 200 dengan pesan error — sengaja, karena status non-2xx memicu modal error Inertia. Ubah hanya jika frontend ikut diubah.
-- Backlog audit yang belum dikerjakan: `AiQuotaService` belum dipakai di endpoint publik (planner/guide, `user_id` null), prompt injection lewat `minat`/`question`, Local Guide menghitung kategori dengan memuat semua model (pakai `groupBy`), `wisata/index` belum meng-escape `%`/`_` di LIKE, `heroWisata` tanpa `orderBy`, indeks `ai_logs.user_id`, kolom `galeris.sort_order` bertipe tinyint (maks 255), seeder `WisataSeeder` menimpa edit admin saat di-seed ulang.
-- Label "All" di chips kategori memakai total hasil filter, bukan total keseluruhan (`wisata/index.tsx`).
+Dikerjakan 2026-10-02 (sesi cloud): login/register berbahasa Indonesia, sanitasi prompt (`sanitizeUserInput`), escape LIKE di `wisata/index`, Local Guide via GROUP BY, `heroWisata` orderBy, migrasi indeks `ai_logs(user_id, created_at)` dan `galeris.sort_order` unsigned integer, `WisataSeeder` memakai `firstOrCreate`, hitungan chips hanya wisata aktif, `eslint --fix`.
+**Belum diverifikasi** (sesi cloud tidak punya `vendor/`: composer diblok network policy dan PHP 8.3 < 8.4): jalankan `composer test`, `php artisan migrate`, dan cek manual `/wisata` + Local Guide + Travel Planner.
+
+Masih tersisa:
+- `AiQuotaService` belum dipakai di endpoint publik (planner/guide, `user_id` null); saat ini hanya rate limit per IP. Perlu keputusan: kuota harian per IP atau wajib login.
+- Pint (`composer lint`) belum dijalankan.
+- 3 error ESLint `react-hooks/set-state-in-effect`: `galeri-lightbox.tsx`, `public-layout.tsx`, `admin/wisata/form.tsx` (butuh perubahan perilaku, uji di browser).
+- SSR: tidak ada bug ditemukan. Plugin `@inertiajs/vite` memakai `app.tsx` sebagai entry SSR bila `ssr.tsx` tidak ada, `localStorage` hanya diakses di dalam fungsi yang dijaga, dan Leaflet di-import dinamis. Tetap perlu dicoba: `npm run build:ssr` lalu `php artisan inertia:start-ssr`.
+- Respons gagal AI tetap HTTP 200 dengan pesan error — sengaja (status non-2xx memicu modal error Inertia).
 
 ## Cara menjalankan lokal
 - Butuh PostgreSQL (`jelajah-kubar`) dan `.env` (lihat `.env.example`).

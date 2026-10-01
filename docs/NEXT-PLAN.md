@@ -21,7 +21,8 @@ Progres Tahap 3 (2026-10-02):
 - **Beranda selesai** (`resources/js/pages/welcome.tsx`): hero dua kolom (teks kiri, foto kanan), destinasi pilihan satu besar + dua bertumpuk, dua panel alat bantu (Perencana, Pemandu). Statistik tidak lagi jadi band sendiri, melainkan satu baris di bawah pencarian. Dicek di Chromium pada 320/375/1440 px tanpa overflow horizontal, serta kondisi tanpa destinasi unggulan.
 - Token baru di `resources/css/app.css`: `copper`, `amber`, `amber-soft`, `terra`, `surface`, `surface-low`, `surface-high`, `brand-soft`, `brand-deep`, `outline` (diambil dari `DESIGN.md` Stitch). Pakai token ini, jangan hardcode warna.
 - Keputusan sementara: `DESIGN.md` Stitch jadi dasar palet/tipografi, struktur halaman bebas. Beranda tidak punya layar Stitch. Untuk halaman yang punya (Explore, Detail, Sign-in/up), belum diputuskan apakah mengikuti persis.
-- Berikutnya: `/wisata` (hero, kartu, chips), lalu detail wisata. Navbar/footer (`public-layout.tsx`) belum disentuh.
+- **`/wisata` selesai** (arah baru, bukan mengikuti layar Stitch persis): foto hero besar dibuang (menduplikasi beranda dan mendorong hasil ke bawah), diganti header ringkas + toolbar sticky di bawah navbar (`top-20`) berisi `SearchBar` dan `CategoryChips`. Kartu `WisataCard` bergaya editorial (foto 4:3, kategori tembaga, harga tiket bila ada), emoji di chips dibuang, ada pil filter aktif + "Hapus semua filter", saran pencarian tanpa duplikat. Komponen baru: `components/search-bar.tsx`. `components/search-hero.tsx` kini tidak dipakai di mana pun (belum dihapus, tunggu persetujuan).
+- Berikutnya: detail wisata (`wisata/show.tsx`), lalu navbar/footer. Navbar/footer (`public-layout.tsx`) belum disentuh.
 - Cara cek visual tanpa backend: vite dev server sementara dengan stub `@inertiajs/react` dan CSS yang menambahkan `@source '../resources/js'`, lalu Playwright (`/opt/node-tools`). Folder harness tidak di-commit.
 
 ## Sisa pekerjaan (kecil)

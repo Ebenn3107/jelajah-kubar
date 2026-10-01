@@ -12,7 +12,7 @@ export function Pagination({ links }: { links: PaginationLink[] }) {
         return null;
     }
 
-    const base = 'rounded-lg px-4 py-2 text-sm transition-colors';
+    const base = 'rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-brand';
 
     return (
         <nav aria-label="Paginasi" className="mt-12 flex flex-wrap justify-center gap-2">
@@ -24,14 +24,14 @@ export function Pagination({ links }: { links: PaginationLink[] }) {
                         key={i}
                         href={link.url}
                         aria-current={link.active ? 'page' : undefined}
-                        className={`${base} ${link.active ? 'bg-brand text-white' : 'bg-white text-neutral-600 hover:bg-neutral-100'}`}
+                        className={`${base} ${link.active ? 'bg-brand text-white' : 'bg-surface-low text-ink-muted hover:bg-surface-high hover:text-ink'}`}
                         preserveState
                         preserveScroll
                     >
                         {label}
                     </Link>
                 ) : (
-                    <span key={i} aria-disabled="true" className={`${base} cursor-not-allowed text-neutral-500`}>
+                    <span key={i} aria-disabled="true" className={`${base} cursor-not-allowed text-outline`}>
                         {label}
                     </span>
                 );

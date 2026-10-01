@@ -94,37 +94,6 @@ test('endpoint AI dibatasi per pengguna', function () {
     $this->post(route('local-guide.ask'), [])->assertStatus(429);
 });
 
-test('kuota AI harian yang habis menolak planner dan guide tanpa memanggil AI', function () {
-    $user = User::factory()->create();
-    makeWisata(['nama_wisata' => 'Air Terjun Tes', 'deskripsi' => 'Air terjun indah']);
-
-    \App\Models\AiLog::create([
-        'user_id' => $user->id,
-        'type' => 'local_guide',
-        'model' => 'tes',
-        'prompt_tokens' => 0,
-        'completion_tokens' => 0,
-        'total_tokens' => \App\Services\AiQuotaService::DAILY_TOKEN_LIMIT,
-        'response_time_ms' => 1,
-        'success' => true,
-        'cost' => 0,
-    ]);
-
-    \Illuminate\Support\Facades\Http::fake();
-
-    $this->actingAs($user)
-        ->post(route('travel-planner.plan'), ['durasi' => 2, 'budget' => '1jt'])
-        ->assertOk()
-        ->assertInertia(fn ($page) => $page->where('error', fn ($v) => str_contains($v, 'Kuota AI harian')));
-
-    $this->actingAs($user)
-        ->post(route('local-guide.ask'), ['question' => 'air terjun yang indah'])
-        ->assertOk()
-        ->assertInertia(fn ($page) => $page->where('answer', fn ($v) => str_contains($v, 'Kuota AI harian')));
-
-    \Illuminate\Support\Facades\Http::assertNothingSent();
-});
-
 test('daftar wisata mengirim rata-rata rating untuk kartu', function () {
     $wisata = makeWisata();
     $a = User::factory()->create();

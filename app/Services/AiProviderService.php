@@ -12,7 +12,7 @@ class AiProviderService
     /** Baca provider aktif (local | deepseek | auto), fallback ke config */
     public function getProvider(): string
     {
-        return Cache::get(self::CACHE_PROVIDER, config('ai.provider', 'local'));
+        return Cache::get(self::CACHE_PROVIDER, config('ai.provider', 'deepseek'));
     }
 
     /** Set provider runtime */

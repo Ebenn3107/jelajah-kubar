@@ -11,11 +11,12 @@ interface Props {
     result: string | null;
     error: string | null;
     input?: { durasi: number; budget: string; minat: string } | null;
+    quota?: { remaining: number; limit: number } | null;
 }
 
 const fieldClass = 'w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-outline focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15';
 
-export default function TravelPlannerIndex({ result, error, input }: Props) {
+export default function TravelPlannerIndex({ result, error, input, quota }: Props) {
     const { auth } = usePage<{ auth: Auth }>().props;
     const [durasi, setDurasi] = useState(input?.durasi || 2);
     const [budget, setBudget] = useState(input?.budget || '');
@@ -109,6 +110,11 @@ export default function TravelPlannerIndex({ result, error, input }: Props) {
                                     <><Compass className="size-5" aria-hidden="true" /> {auth.user ? 'Buat rencana' : 'Masuk untuk membuat'}</>
                                 )}
                             </button>
+                            {auth.user && quota && (
+                                <p className="text-center text-sm text-ink-muted">
+                                    Sisa <strong className="font-semibold text-ink">{quota.remaining}</strong> dari {quota.limit} rencana hari ini.
+                                </p>
+                            )}
                         </form>
                     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wisata;
+use App\Services\AiCacheService;
 use App\Services\AiContentService;
 use App\Services\AiQuotaService;
 use Illuminate\Http\Request;
@@ -11,11 +12,11 @@ use Inertia\Response;
 
 class TravelPlannerController extends Controller
 {
-    public function index(): Response
+    private const FEATURE = 'travel_planner';
+
+    public function index(Request $request): Response
     {
-        return Inertia::render('travel-planner/index', [
-            'result' => null,
-        ]);
+        return $this->page($request, ['result' => null]);
     }
 
     public function plan(Request $request): Response
@@ -26,49 +27,65 @@ class TravelPlannerController extends Controller
             'minat' => 'nullable|string|max:500',
         ]);
 
+        $cache = app(AiCacheService::class);
+        $cacheParts = [
+            'durasi' => (int) $validated['durasi'],
+            'budget' => $cache->normalize($validated['budget']),
+            'minat' => $cache->normalize($validated['minat'] ?? ''),
+        ];
+
+        // Masukan identik: jawab dari cache — gratis dan tidak memakai batas harian
+        $cached = $cache->get(self::FEATURE, $cacheParts);
+
+        if ($cached) {
+            return $this->page($request, ['result' => $cached, 'error' => null, 'input' => $validated]);
+        }
+
         $wisatas = Wisata::with(['kategori', 'fasilitas'])
             ->where('is_active', true)
             ->get();
 
         if ($wisatas->isEmpty()) {
-            return Inertia::render('travel-planner/index', [
-                'result' => null,
-                'error' => 'Belum ada data wisata tersedia.',
-            ]);
+            return $this->page($request, ['result' => null, 'error' => 'Belum ada data wisata tersedia.']);
         }
 
         $userId = $request->user()->id;
         $quotaService = app(AiQuotaService::class);
+        $check = $quotaService->checkFeature($userId, self::FEATURE);
 
-        if (! $quotaService->check($userId)['allowed']) {
-            return Inertia::render('travel-planner/index', [
+        if (! $check['allowed']) {
+            return $this->page($request, [
                 'result' => null,
-                'error' => 'Kuota AI harian Anda sudah habis. Coba lagi besok.',
+                'error' => $quotaService->denyMessage($check, 'rencana'),
                 'input' => $validated,
             ]);
         }
 
-        $service = app(AiContentService::class);
-        $result = $service->travelPlan(
+        $result = app(AiContentService::class)->travelPlan(
             $wisatas->toArray(),
             $validated['durasi'],
             $validated['budget'],
             $validated['minat'] ?? '',
             $userId,
         );
-        $quotaService->clearCache($userId);
 
         if (! $result) {
-            return Inertia::render('travel-planner/index', [
-                'result' => null,
-                'error' => 'Gagal menghasilkan rencana perjalanan. Coba lagi.',
-            ]);
+            return $this->page($request, ['result' => null, 'error' => 'Gagal menghasilkan rencana perjalanan. Coba lagi.']);
         }
 
-        return Inertia::render('travel-planner/index', [
-            'result' => $result,
-            'error' => null,
-            'input' => $validated,
+        $cache->put(self::FEATURE, $cacheParts, $result);
+
+        return $this->page($request, ['result' => $result, 'error' => null, 'input' => $validated]);
+    }
+
+    /** Render halaman dengan sisa batas harian (null untuk tamu). */
+    private function page(Request $request, array $props): Response
+    {
+        $user = $request->user();
+        $check = $user ? app(AiQuotaService::class)->checkFeature($user->id, self::FEATURE) : null;
+
+        return Inertia::render('travel-planner/index', $props + [
+            'quota' => $check ? ['remaining' => $check['remaining'], 'limit' => $check['limit']] : null,
         ]);
     }
 }

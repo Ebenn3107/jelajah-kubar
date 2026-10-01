@@ -13,6 +13,7 @@ interface Props {
     answer: string | null;
     question: string | null;
     relatedWisatas?: RelatedWisata[];
+    quota?: { remaining: number; limit: number } | null;
 }
 
 const suggestions = [
@@ -22,7 +23,7 @@ const suggestions = [
     'Wisata budaya apa yang bisa dikunjungi?',
 ];
 
-export default function LocalGuideIndex({ answer, question, relatedWisatas }: Props) {
+export default function LocalGuideIndex({ answer, question, relatedWisatas, quota }: Props) {
     const { auth } = usePage<{ auth: Auth }>().props;
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
@@ -143,6 +144,12 @@ export default function LocalGuideIndex({ answer, question, relatedWisatas }: Pr
                         {loading ? <Loader2 className="size-5 animate-spin" aria-hidden="true" /> : <Send className="size-5" aria-hidden="true" />}
                     </button>
                 </form>
+
+                {auth.user && quota && (
+                    <p className="mt-4 text-center text-sm text-ink-muted">
+                        Sisa <strong className="font-semibold text-ink">{quota.remaining}</strong> dari {quota.limit} pertanyaan hari ini. Pertanyaan yang pernah ditanyakan tidak memakai jatah.
+                    </p>
+                )}
 
                 {!auth.user && (
                     <p className="mt-4 text-center text-sm text-ink-muted">

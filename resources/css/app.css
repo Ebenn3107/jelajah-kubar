@@ -66,6 +66,16 @@
     --color-ink: #121c2a;
     --color-ink-muted: #3d4947;
     --color-line: #bcc9c6;
+    --color-outline: #6d7a77;
+    --color-copper: #855300;
+    --color-amber: #fea619;
+    --color-amber-soft: #ffddb8;
+    --color-terra: #924628;
+    --color-surface: #f8f9ff;
+    --color-surface-low: #eff4ff;
+    --color-surface-high: #dee9fc;
+    --color-brand-soft: #89f5e7;
+    --color-brand-deep: #00201d;
 }
 
 :root,

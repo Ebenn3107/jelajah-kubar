@@ -17,7 +17,12 @@ Cara kerja:
 3. Urutan halaman: beranda → `/wisata` (hero, kartu, chips) → detail wisata → Travel Planner / Pemandu Lokal → login/register → admin.
 4. Jadikan token di `resources/css/app.css` (`--color-brand`, dst.) sebagai sumber tunggal; tambahkan token baru di sana, jangan hardcode.
 
-Keputusan yang perlu ditanyakan ke pengguna sebelum mulai: halaman mana yang paling mengganggu, dan apakah mengikuti Stitch persis atau arah baru.
+Progres Tahap 3 (2026-10-02):
+- **Beranda selesai** (`resources/js/pages/welcome.tsx`): hero dua kolom (teks kiri, foto kanan), destinasi pilihan satu besar + dua bertumpuk, dua panel alat bantu (Perencana, Pemandu). Statistik tidak lagi jadi band sendiri, melainkan satu baris di bawah pencarian. Dicek di Chromium pada 320/375/1440 px tanpa overflow horizontal, serta kondisi tanpa destinasi unggulan.
+- Token baru di `resources/css/app.css`: `copper`, `amber`, `amber-soft`, `terra`, `surface`, `surface-low`, `surface-high`, `brand-soft`, `brand-deep`, `outline` (diambil dari `DESIGN.md` Stitch). Pakai token ini, jangan hardcode warna.
+- Keputusan sementara: `DESIGN.md` Stitch jadi dasar palet/tipografi, struktur halaman bebas. Beranda tidak punya layar Stitch. Untuk halaman yang punya (Explore, Detail, Sign-in/up), belum diputuskan apakah mengikuti persis.
+- Berikutnya: `/wisata` (hero, kartu, chips), lalu detail wisata. Navbar/footer (`public-layout.tsx`) belum disentuh.
+- Cara cek visual tanpa backend: vite dev server sementara dengan stub `@inertiajs/react` dan CSS yang menambahkan `@source '../resources/js'`, lalu Playwright (`/opt/node-tools`). Folder harness tidak di-commit.
 
 ## Sisa pekerjaan (kecil)
 Dikerjakan 2026-10-02 (sesi cloud): login/register berbahasa Indonesia, sanitasi prompt (`sanitizeUserInput`), escape LIKE di `wisata/index`, Local Guide via GROUP BY, `heroWisata` orderBy, migrasi indeks `ai_logs(user_id, created_at)` dan `galeris.sort_order` unsigned integer, `WisataSeeder` memakai `firstOrCreate`, hitungan chips hanya wisata aktif, `eslint --fix`.

@@ -15,7 +15,7 @@ class GaleriController extends Controller
 {
     public function index(Request $request): Response
     {
-        $wisataId = $request->get('wisata_id');
+        $wisataId = $request->validate(['wisata_id' => 'nullable|integer'])['wisata_id'] ?? null;
         $wisatas = Wisata::select('id', 'nama_wisata')->orderBy('nama_wisata')->get();
 
         $galeris = collect();
@@ -30,7 +30,7 @@ class GaleriController extends Controller
                 ->map(fn ($g) => [
                     'id' => $g->id,
                     'foto' => $g->foto,
-                    'foto_url' => $g->foto ? Storage::url($g->foto) : null,
+                    'foto_url' => $g->foto_url,
                     'caption' => $g->caption,
                     'is_primary' => $g->is_primary,
                     'sort_order' => $g->sort_order,
@@ -57,6 +57,10 @@ class GaleriController extends Controller
         $path = $request->file('foto')->store('wisata', 'public');
 
         $maxSort = Galeri::where('wisata_id', $validated['wisata_id'])->max('sort_order') ?? 0;
+
+        if ($request->boolean('is_primary')) {
+            Galeri::where('wisata_id', $validated['wisata_id'])->update(['is_primary' => false]);
+        }
 
         Galeri::create([
             'wisata_id' => $validated['wisata_id'],

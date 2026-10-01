@@ -49,15 +49,17 @@ class Wisata extends Model
 
     protected static function booted(): void
     {
+        // Slug tidak diregenerasi saat rename agar URL publik tidak putus
         static::creating(function (Wisata $wisata) {
             if (empty($wisata->slug)) {
-                $wisata->slug = Str::slug($wisata->nama_wisata);
-            }
-        });
+                $base = Str::slug($wisata->nama_wisata) ?: 'wisata';
+                $slug = $base;
 
-        static::updating(function (Wisata $wisata) {
-            if ($wisata->isDirty('nama_wisata') && !$wisata->isDirty('slug')) {
-                $wisata->slug = Str::slug($wisata->nama_wisata);
+                for ($i = 2; static::where('slug', $slug)->exists(); $i++) {
+                    $slug = "{$base}-{$i}";
+                }
+
+                $wisata->slug = $slug;
             }
         });
     }

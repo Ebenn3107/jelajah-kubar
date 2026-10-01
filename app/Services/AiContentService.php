@@ -47,7 +47,7 @@ class AiContentService
         $startTime = hrtime(true);
 
         try {
-            $response = Http::timeout(120)
+            $response = Http::connectTimeout(5)->timeout(120)
                 ->post($baseUrl . '/api/chat', [
                     'model' => $model,
                     'messages' => [
@@ -71,7 +71,7 @@ class AiContentService
 
             $content = $response->json('message.content');
 
-            if (empty($content)) {
+            if (empty($content) || ! is_string($content)) {
                 $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
                 return [];
             }
@@ -79,7 +79,7 @@ class AiContentService
             $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
 
             return $this->parseJsonTolerant($content);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $elapsed = hrtime(true) - $startTime;
             $responseTimeMs = (int) ($elapsed / 1_000_000);
             $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
@@ -496,7 +496,7 @@ PROMPT;
         $userContent = mb_substr($userContent, 0, self::MAX_USER_CONTENT_CHARS);
 
         try {
-            $response = Http::timeout(30)
+            $response = Http::connectTimeout(5)->timeout(30)
                 ->withHeaders([
                     'Authorization' => "Bearer {$apiKey}",
                     'Content-Type' => 'application/json',
@@ -534,8 +534,10 @@ PROMPT;
 
             $content = $data['choices'][0]['message']['content'] ?? '';
 
-            return json_decode($content, true) ?? [];
-        } catch (\Exception $e) {
+            $decoded = json_decode($content, true);
+
+            return is_array($decoded) ? $decoded : [];
+        } catch (\Throwable $e) {
             $elapsed = hrtime(true) - $startTime;
             $responseTimeMs = (int) ($elapsed / 1_000_000);
             $this->log($type, config('ai.deepseek.model'), 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);

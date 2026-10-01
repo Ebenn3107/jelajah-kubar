@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fasilitas;
 use App\Models\Kategori;
 use App\Models\Review;
 use App\Models\Wisata;
@@ -24,6 +25,8 @@ class WisataController extends Controller
         return Inertia::render('welcome', [
             'featured' => $featured,
             'totalWisata' => $totalWisata,
+            'totalKategori' => Kategori::count(),
+            'totalFasilitas' => Fasilitas::count(),
         ]);
     }
 
@@ -73,11 +76,13 @@ class WisataController extends Controller
 
     public function show(Request $request, Wisata $wisata): Response
     {
+        abort_unless($wisata->is_active, 404);
+
         $wisata->load([
             'kategori',
             'galeris' => fn ($q) => $q->orderBy('sort_order'),
             'fasilitas',
-            'reviews' => fn ($q) => $q->with('user')->latest(),
+            'reviews' => fn ($q) => $q->with('user:id,name')->latest(),
         ]);
 
         $userReview = null;

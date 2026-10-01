@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Galeri;
 use App\Models\Kategori;
 use App\Models\Wisata;
 use Inertia\Inertia;
@@ -16,7 +17,7 @@ class DashboardController extends Controller
             'stats' => [
                 'total_wisata' => Wisata::count(),
                 'total_kategori' => Kategori::count(),
-                'total_galeri' => 0, // V1.1
+                'total_galeri' => Galeri::count(),
                 'wisata_aktif' => Wisata::where('is_active', true)->count(),
             ],
         ]);

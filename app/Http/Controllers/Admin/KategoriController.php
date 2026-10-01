@@ -21,10 +21,24 @@ class KategoriController extends Controller
         ]);
     }
 
+    /** Tolak nama yang menghasilkan slug sama dengan kategori lain */
+    private function slugFree(?int $ignoreId = null): \Closure
+    {
+        return function ($attr, $value, $fail) use ($ignoreId) {
+            $taken = Kategori::where('slug', Str::slug($value))
+                ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+                ->exists();
+
+            if ($taken) {
+                $fail('Nama ini menghasilkan slug yang sudah dipakai kategori lain.');
+            }
+        };
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255|unique:kategoris,nama_kategori',
+            'nama_kategori' => ['required', 'string', 'max:255', 'unique:kategoris,nama_kategori', $this->slugFree()],
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -40,7 +54,7 @@ class KategoriController extends Controller
     public function update(Request $request, Kategori $kategori): RedirectResponse
     {
         $validated = $request->validate([
-            'nama_kategori' => 'required|string|max:255|unique:kategoris,nama_kategori,' . $kategori->id,
+            'nama_kategori' => ['required', 'string', 'max:255', 'unique:kategoris,nama_kategori,' . $kategori->id, $this->slugFree($kategori->id)],
             'deskripsi' => 'nullable|string',
         ]);
 

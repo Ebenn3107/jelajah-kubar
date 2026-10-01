@@ -6,6 +6,7 @@ use App\Models\Review;
 use App\Models\Wisata;
 use App\Services\AiContentService;
 use App\Services\AiQuotaService;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,6 +15,8 @@ class ReviewController extends Controller
 {
     public function store(Request $request, Wisata $wisata): RedirectResponse
     {
+        abort_unless($wisata->is_active, 404);
+
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'komentar' => 'nullable|string|min:10|max:1000',
@@ -29,12 +32,19 @@ class ReviewController extends Controller
             return back();
         }
 
-        Review::create([
-            'wisata_id' => $wisata->id,
-            'user_id' => $request->user()->id,
-            'rating' => $validated['rating'],
-            'komentar' => $validated['komentar'],
-        ]);
+        try {
+            Review::create([
+                'wisata_id' => $wisata->id,
+                'user_id' => $request->user()->id,
+                'rating' => $validated['rating'],
+                'komentar' => $validated['komentar'] ?? null,
+            ]);
+        } catch (UniqueConstraintViolationException) {
+            // Double-submit: review sudah dibuat oleh request pertama
+            Inertia::flash('toast', ['type' => 'error', 'message' => 'Kamu sudah mereview wisata ini.']);
+
+            return back();
+        }
 
         $this->refreshReviewSummary($wisata, $request->user()->id);
 
@@ -79,7 +89,13 @@ class ReviewController extends Controller
         return back();
     }
 
+    /** Ringkasan AI dijalankan setelah response terkirim agar request tidak menunggu LLM */
     private function refreshReviewSummary(Wisata $wisata, int $userId): void
+    {
+        app()->terminating(fn () => $this->buildReviewSummary($wisata, $userId));
+    }
+
+    private function buildReviewSummary(Wisata $wisata, int $userId): void
     {
         try {
             $quota = app(AiQuotaService::class)->check($userId);
@@ -87,13 +103,14 @@ class ReviewController extends Controller
                 return;
             }
 
-            $wisata->load(['reviews', 'kategori']);
-            $reviews = $wisata->reviews;
-
-            if ($reviews->isEmpty()) {
+            if (! $wisata->reviews()->exists()) {
                 $wisata->updateQuietly(['review_summary' => null]);
                 return;
             }
+
+            // Batasi 30 review terbaru agar prompt tidak membengkak
+            $reviews = $wisata->reviews()->latest()->limit(30)->get();
+            $wisata->load('kategori');
 
             $service = app(AiContentService::class);
             $summary = $service->reviewSummary(
@@ -108,8 +125,8 @@ class ReviewController extends Controller
             }
 
             app(AiQuotaService::class)->clearCache($userId);
-        } catch (\Exception) {
-            // Silently fail
+        } catch (\Throwable $e) {
+            report($e);
         }
     }
 }

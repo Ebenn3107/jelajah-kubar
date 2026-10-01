@@ -17,7 +17,7 @@ class WisataController extends Controller
     public function index(Request $request): Response
     {
         $wisatas = Wisata::with('kategori')
-            ->when($request->search, fn ($q, $s) => $q->where('nama_wisata', 'like', "%{$s}%"))
+            ->when($request->search, fn ($q, $s) => $q->where('nama_wisata', 'ilike', '%' . addcslashes($s, '%_\\') . '%'))
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -47,12 +47,12 @@ class WisataController extends Controller
 
         $validated = $request->validate([
             'nama_wisata' => 'required|string|max:255',
-            'slug' => 'required|string|unique:wisatas,slug',
+            'slug' => 'required|alpha_dash|max:255|unique:wisatas,slug',
             'kategori_id' => 'nullable|exists:kategoris,id',
             'alamat' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'harga_tiket' => 'nullable|string|max:255',
             'jam_buka' => 'nullable|string|max:255',
             'jam_tutup' => 'nullable|string|max:255',
@@ -89,12 +89,12 @@ class WisataController extends Controller
 
         $rules = [
             'nama_wisata' => 'required|string|max:255',
-            'slug' => 'required|string|unique:wisatas,slug,' . $wisata->id,
+            'slug' => 'required|alpha_dash|max:255|unique:wisatas,slug,' . $wisata->id,
             'kategori_id' => 'nullable|exists:kategoris,id',
             'alamat' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'harga_tiket' => 'nullable|string|max:255',
             'jam_buka' => 'nullable|string|max:255',
             'jam_tutup' => 'nullable|string|max:255',
@@ -102,24 +102,26 @@ class WisataController extends Controller
             'is_active' => 'boolean',
         ];
 
-        // Foto bisa file atau string (path existing)
+        // Foto hanya berubah lewat upload file; tanpa file, foto lama dipertahankan
         if ($request->hasFile('foto')) {
-            $rules['foto'] = 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120';
-        } else {
-            $rules['foto'] = 'nullable|string|max:255';
+            $rules['foto'] = 'image|mimes:jpg,jpeg,png,webp|max:5120';
         }
 
         $validated = $request->validate($rules);
+        unset($validated['foto']);
+
+        $oldFoto = $wisata->foto;
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama
-            if ($wisata->foto && Storage::disk('public')->exists($wisata->foto)) {
-                Storage::disk('public')->delete($wisata->foto);
-            }
             $validated['foto'] = $request->file('foto')->store('wisata', 'public');
         }
 
         $wisata->update($validated);
+
+        // Hapus foto lama setelah yang baru tersimpan
+        if (isset($validated['foto']) && $oldFoto && ! str_starts_with($oldFoto, 'http')) {
+            Storage::disk('public')->delete($oldFoto);
+        }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Wisata berhasil diperbarui.']);
 
@@ -128,11 +130,15 @@ class WisataController extends Controller
 
     public function destroy(Wisata $wisata): RedirectResponse
     {
-        if ($wisata->foto && Storage::disk('public')->exists($wisata->foto)) {
-            Storage::disk('public')->delete($wisata->foto);
-        }
+        $files = $wisata->galeris()->pluck('foto')->push($wisata->foto)->filter();
 
         $wisata->delete();
+
+        foreach ($files as $file) {
+            if (! str_starts_with($file, 'http')) {
+                Storage::disk('public')->delete($file);
+            }
+        }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Wisata berhasil dihapus.']);
 

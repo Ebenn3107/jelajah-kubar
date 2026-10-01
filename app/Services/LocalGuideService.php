@@ -102,6 +102,11 @@ class LocalGuideService
         return $prefix . " (total {$namaList->count()}):\n- " . $namaList->join("\n- ");
     }
 
+    private function escapeLike(string $v): string
+    {
+        return addcslashes($v, '%_\\');
+    }
+
     /** Retrieval berdasarkan intent — query SQL spesifik, bukan semua data */
     public function retrieve(string $question, array $intents): Collection
     {
@@ -113,42 +118,30 @@ class LocalGuideService
 
         $query = Wisata::with(['kategori', 'fasilitas'])->where('is_active', true);
 
-        // Selalu cari keyword di nama/deskripsi
-        if (! empty($keywords)) {
-            $query->where(function ($q) use ($keywords) {
-                foreach ($keywords as $word) {
-                    $q->orWhereRaw('LOWER(nama_wisata) LIKE ?', ['%' . $word . '%'])
-                      ->orWhereRaw('LOWER(deskripsi) LIKE ?', ['%' . $word . '%']);
+        // Keyword + intent digabung (OR) dalam satu grup agar is_active tetap berlaku
+        $query->where(function ($group) use ($keywords, $intents) {
+            $like = fn ($col) => function ($q) use ($col, $keywords) {
+                foreach ($keywords as $w) {
+                    $q->orWhereRaw("LOWER($col) LIKE ?", ['%' . $this->escapeLike($w) . '%']);
                 }
-            });
-        }
-
-        // Intent spesifik → tambah filter SQL yang tepat
-        foreach ($intents as $intent) {
-            match ($intent) {
-                'kategori' => $query->orWhereHas('kategori', function ($q) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $q->whereRaw('LOWER(nama_kategori) LIKE ?', ['%' . $word . '%']);
-                    }
-                }),
-                'fasilitas' => $query->orWhereHas('fasilitas', function ($q) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $q->whereRaw('LOWER(nama_fasilitas) LIKE ?', ['%' . $word . '%']);
-                    }
-                }),
-                'lokasi' => $query->orWhere(function ($q) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $q->orWhereRaw('LOWER(alamat) LIKE ?', ['%' . $word . '%']);
-                    }
-                }),
-                'harga' => $query->orWhere(function ($q) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $q->orWhereRaw('LOWER(harga_tiket) LIKE ?', ['%' . $word . '%']);
-                    }
-                }),
-                default => null,
             };
-        }
+
+            foreach ($keywords as $word) {
+                $pattern = '%' . $this->escapeLike($word) . '%';
+                $group->orWhereRaw('LOWER(nama_wisata) LIKE ?', [$pattern])
+                    ->orWhereRaw('LOWER(deskripsi) LIKE ?', [$pattern]);
+            }
+
+            foreach ($intents as $intent) {
+                match ($intent) {
+                    'kategori' => $group->orWhereHas('kategori', $like('nama_kategori')),
+                    'fasilitas' => $group->orWhereHas('fasilitas', $like('nama_fasilitas')),
+                    'lokasi' => $group->orWhere($like('alamat')),
+                    'harga' => $group->orWhere($like('harga_tiket')),
+                    default => null,
+                };
+            }
+        });
 
         return $query->limit(20)->get();
     }

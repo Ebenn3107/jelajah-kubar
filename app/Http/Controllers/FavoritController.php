@@ -24,6 +24,8 @@ class FavoritController extends Controller
 
     public function toggle(Request $request, Wisata $wisata): RedirectResponse
     {
+        abort_unless($wisata->is_active, 404);
+
         $user = $request->user();
         $exists = $user->favoritWisatas()->where('wisata_id', $wisata->id)->exists();
 

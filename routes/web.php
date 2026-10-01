@@ -23,7 +23,7 @@ Route::get('wisata/{wisata:slug}', [WisataController::class, 'show'])->name('wis
 
 // Auth — verified required
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::redirect('dashboard', '/');
+    Route::redirect('dashboard', '/')->name('dashboard');
 
     // Admin routes
     Route::prefix('admin')->middleware('is_admin')->name('admin.')->group(function () {

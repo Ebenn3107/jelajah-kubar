@@ -46,8 +46,8 @@ class SavedPlanController extends Controller
             'title' => 'nullable|string|max:255',
             'durasi' => 'required|integer|min:1|max:14',
             'budget' => 'required|string|max:255',
-            'minat' => 'nullable|string|max:500',
-            'result' => 'required|string',
+            'minat' => 'nullable|string|max:255',
+            'result' => 'required|json|max:65535',
         ]);
 
         SavedPlan::create([
@@ -55,7 +55,7 @@ class SavedPlanController extends Controller
             'title' => $validated['title'] ?? "{$validated['durasi']} Day Trip - " . now()->format('d M Y'),
             'durasi' => $validated['durasi'],
             'budget' => $validated['budget'],
-            'minat' => $validated['minat'],
+            'minat' => $validated['minat'] ?? null,
             'result' => json_decode($validated['result'], true),
         ]);
 

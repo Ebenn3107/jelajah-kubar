@@ -9,14 +9,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'test@example.com'],
-            [
+        // Akun admin dengan kredensial default hanya untuk lokal
+        if (app()->environment('local')) {
+            $admin = User::firstOrNew(['email' => 'test@example.com']);
+            $admin->forceFill([
                 'name' => 'Test User',
                 'password' => bcrypt('password'),
                 'is_admin' => true,
-            ],
-        );
+            ])->save();
+        }
 
         $this->call([
             KategoriSeeder::class,

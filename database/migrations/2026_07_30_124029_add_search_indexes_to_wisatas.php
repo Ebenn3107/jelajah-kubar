@@ -7,6 +7,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // pg_trgm / GIN hanya ada di PostgreSQL (tes memakai sqlite)
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('CREATE EXTENSION IF NOT EXISTS pg_trgm');
 
         DB::statement('CREATE INDEX IF NOT EXISTS wisatas_nama_trgm_idx ON wisatas USING GIN (nama_wisata gin_trgm_ops)');
@@ -16,6 +21,10 @@ return new class extends Migration
 
     public function down(): void
     {
+        if (DB::getDriverName() !== 'pgsql') {
+            return;
+        }
+
         DB::statement('DROP INDEX IF EXISTS wisatas_nama_trgm_idx');
         DB::statement('DROP INDEX IF EXISTS wisatas_alamat_trgm_idx');
         DB::statement('DROP INDEX IF EXISTS wisatas_is_active_idx');

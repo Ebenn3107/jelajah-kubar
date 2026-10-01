@@ -48,12 +48,8 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('ai', function (Request $request) {
             $user = $request->user();
 
-            if (! $user) {
-                return Limit::none();
-            }
-
-            // Max 10 AI calls per minute per user
-            return Limit::perMinute(10)->by('ai:' . $user->id);
+            // Max 10 AI calls per minute per user, per IP for guests
+            return Limit::perMinute(10)->by($user ? 'ai:' . $user->id : 'ai-ip:' . $request->ip());
         });
 
         RateLimiter::for('review', function (Request $request) {

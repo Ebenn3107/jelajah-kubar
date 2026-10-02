@@ -1,5 +1,6 @@
 import { Form } from '@inertiajs/react';
 import { useRef } from 'react';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
@@ -14,20 +15,19 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 
 export default function DeleteUser() {
     const passwordInput = useRef<HTMLInputElement>(null);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 rounded-3xl border border-red-200 bg-white p-6 md:p-8">
             <Heading
                 variant="small"
                 title="Hapus akun"
                 description="Hapus akun Anda beserta seluruh datanya"
             />
-            <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
-                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
+            <div className="space-y-4 rounded-2xl bg-red-50 p-4">
+                <div className="relative space-y-0.5 text-red-700">
                     <p className="font-medium">Peringatan</p>
                     <p className="text-sm">
                          Lanjutkan dengan hati-hati, tindakan ini tidak dapat dibatalkan.

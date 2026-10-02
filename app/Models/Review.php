@@ -12,7 +12,13 @@ class Review extends Model
         'user_id',
         'rating',
         'komentar',
+        'anonim',
     ];
+
+    protected function casts(): array
+    {
+        return ['anonim' => 'boolean'];
+    }
 
     public function wisata(): BelongsTo
     {

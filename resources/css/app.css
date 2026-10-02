@@ -116,6 +116,27 @@
     --sidebar-ring: oklch(0.87 0 0);
 }
 
+/* Situs publik: komponen shadcn (tombol, input, dialog) mengikuti palet alam, bukan abu-abu/hitam bawaan.
+   body:has(...) agar dialog yang dirender di luar wrapper (portal) ikut. */
+.public-light,
+body:has(.public-light) {
+    color-scheme: light;
+    --foreground: #121c2a;
+    --card-foreground: #121c2a;
+    --popover-foreground: #121c2a;
+    --primary: #00685f;
+    --primary-foreground: #ffffff;
+    --secondary: #eff4ff;
+    --secondary-foreground: #00685f;
+    --muted: #eff4ff;
+    --muted-foreground: #3d4947;
+    --accent: #eff4ff;
+    --accent-foreground: #00685f;
+    --border: #bcc9c6;
+    --input: #bcc9c6;
+    --ring: #00685f;
+}
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);

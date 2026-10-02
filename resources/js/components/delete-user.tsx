@@ -26,21 +26,20 @@ export default function DeleteUser() {
                 title="Hapus akun"
                 description="Hapus akun Anda beserta seluruh datanya"
             />
-            <div className="space-y-4 rounded-2xl bg-red-50 p-4">
-                <div className="relative space-y-0.5 text-red-700">
-                    <p className="font-medium">Peringatan</p>
-                    <p className="text-sm">
-                         Lanjutkan dengan hati-hati, tindakan ini tidak dapat dibatalkan.
-                    </p>
-                </div>
+            <div className="space-y-3">
+                <p className="text-sm text-ink-muted">
+                    Tindakan ini permanen dan tidak dapat dibatalkan. Anda akan diminta memasukkan kata sandi untuk mengonfirmasi.
+                </p>
 
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button
-                            variant="destructive"
+                            variant="outline"
+                            size="sm"
+                            className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-700"
                             data-test="delete-user-button"
                         >
-                            Hapus akun
+                            Hapus akun…
                         </Button>
                     </DialogTrigger>
                     <DialogContent>

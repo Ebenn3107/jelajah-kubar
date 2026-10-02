@@ -1,10 +1,10 @@
 import { router } from '@inertiajs/react';
 import { KeyRound } from 'lucide-react';
+import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegistrationController';
 import Heading from '@/components/heading';
 import PasskeyItem from '@/components/passkey-item';
 import PasskeyRegistration from '@/components/passkey-register';
 import type { Passkey } from '@/types/auth';
-import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegistrationController';
 
 export type Props = {
     canManagePasskeys?: boolean;
@@ -44,14 +44,14 @@ export default function ManagePasskeys(props: Props) {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 rounded-3xl border border-line bg-white p-6 md:p-8">
             <Heading
                 variant="small"
                 title="Passkey"
                 description="Kelola passkey untuk masuk tanpa kata sandi"
             />
 
-            <div className="overflow-hidden rounded-lg border border-border">
+            <div className="overflow-hidden rounded-2xl border border-line">
                 {passkeys.length > 0 ? (
                     passkeys.map((passkey) => (
                         <PasskeyItem

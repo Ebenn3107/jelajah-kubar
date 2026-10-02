@@ -1,9 +1,9 @@
 import { Link, router, usePage } from '@inertiajs/react';
 import { Heart, LogOut, Menu, Settings, Trees, User as UserIcon, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { Auth } from '@/types';
 import { login, register } from '@/routes';
 import { edit } from '@/routes/profile';
+import type { Auth } from '@/types';
 
 interface PublicLayoutProps {
     children: React.ReactNode;
@@ -18,7 +18,8 @@ const navLinks = [
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
     const page = usePage<{ auth: Auth }>();
-    const { auth } = page.props;
+    // Halaman error (mis. 404 di rute yang tidak cocok) bisa tanpa shared props
+    const auth = page.props.auth ?? ({ user: null } as unknown as Auth);
     const currentUrl: string = page.url as string;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);

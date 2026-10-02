@@ -45,7 +45,7 @@ export default function ManageTwoFactor(props: Props) {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 rounded-3xl border border-line bg-white p-6 md:p-8">
             <Heading
                 variant="small"
                 title="Autentikasi dua faktor"
@@ -53,7 +53,7 @@ export default function ManageTwoFactor(props: Props) {
             />
             {twoFactorEnabled ? (
                 <div className="flex flex-col items-start justify-start space-y-4">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-ink-muted">
                          Anda akan diminta memasukkan PIN acak saat masuk, yang bisa diambil dari aplikasi autentikator (TOTP) di ponsel Anda.
                     </p>
 
@@ -79,7 +79,7 @@ export default function ManageTwoFactor(props: Props) {
                 </div>
             ) : (
                 <div className="flex flex-col items-start justify-start space-y-4">
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-ink-muted">
                          Saat autentikasi dua faktor aktif, Anda akan diminta memasukkan PIN saat masuk. PIN diambil dari aplikasi autentikator (TOTP) di ponsel Anda.
                     </p>
 

@@ -263,6 +263,7 @@ test('jawaban AI yang gagal tidak di-cache dan tidak memotong batas', function (
             ->where('answer', fn ($v) => str_contains($v, 'belum bisa menjawab'))
             ->where('quota.remaining', 15));
 
+    Http::swap(new \Illuminate\Http\Client\Factory);
     fakeDeepSeek(['answer' => 'Tiket masuk Kersik Luway Orchid Forest Rp 10.000.']);
 
     $this->actingAs($user)

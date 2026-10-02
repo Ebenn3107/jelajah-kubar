@@ -89,6 +89,15 @@ class WisataController extends Controller
             'reviews' => fn ($q) => $q->with('user:id,name')->latest(),
         ]);
 
+        // Nama hanya dikirim untuk ulasan non-anonim; user_id tidak pernah dikirim
+        $wisata->setRelation('reviews', $wisata->reviews->map(fn ($r) => [
+            'id' => $r->id,
+            'rating' => $r->rating,
+            'komentar' => $r->komentar,
+            'created_at' => $r->created_at,
+            'user' => $r->anonim ? null : ['name' => $r->user->name],
+        ]));
+
         $userReview = null;
         $isFavorited = false;
 

@@ -23,7 +23,8 @@ interface ReviewItem {
     id: number;
     rating: number;
     komentar: string | null;
-    user: { id: number; name: string };
+    user: { name: string } | null;
+    anonim?: boolean;
     created_at: string;
 }
 
@@ -102,6 +103,7 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
     const [lightboxIndex, setLightboxIndex] = useState(0);
     const [reviewRating, setReviewRating] = useState(userReview?.rating || 0);
     const [reviewKomentar, setReviewKomentar] = useState(userReview?.komentar || '');
+    const [reviewAnonim, setReviewAnonim] = useState(userReview?.anonim ?? true);
     const [editing, setEditing] = useState(false);
     const [reviewProcessing, setReviewProcessing] = useState(false);
     const [reviewErrors, setReviewErrors] = useState<Record<string, string>>({});
@@ -131,7 +133,7 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
 
     const handleReviewSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        router.post(`/wisata/${wisata.id}/review`, { rating: reviewRating, komentar: reviewKomentar }, reviewOptions());
+        router.post(`/wisata/${wisata.id}/review`, { rating: reviewRating, komentar: reviewKomentar, anonim: reviewAnonim }, reviewOptions());
     };
 
     const handleReviewUpdate = (e: React.FormEvent) => {
@@ -141,7 +143,7 @@ export default function WisataShow({ wisata, userReview, isFavorited }: Props) {
 return;
 }
 
-        router.put(`/review/${userReview.id}`, { rating: reviewRating, komentar: reviewKomentar }, reviewOptions(() => setEditing(false)));
+        router.put(`/review/${userReview.id}`, { rating: reviewRating, komentar: reviewKomentar, anonim: reviewAnonim }, reviewOptions(() => setEditing(false)));
     };
 
     const handleReviewDelete = () => {
@@ -359,6 +361,7 @@ return;
                                                         setEditing(true);
                                                         setReviewRating(userReview.rating);
                                                         setReviewKomentar(userReview.komentar || '');
+                                                        setReviewAnonim(userReview.anonim ?? true);
                                                     }}
                                                     className="text-sm font-semibold text-brand hover:underline"
                                                 >
@@ -381,6 +384,18 @@ return;
                                             aria-label="Komentar ulasan"
                                             className="mt-3 w-full rounded-xl border border-line px-4 py-3 text-sm text-ink placeholder:text-outline focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/15"
                                         />
+                                        <label className="mt-3 flex items-start gap-2 text-sm text-ink">
+                                            <input
+                                                type="checkbox"
+                                                checked={!reviewAnonim}
+                                                onChange={(e) => setReviewAnonim(!e.target.checked)}
+                                                className="mt-0.5 size-4 accent-brand"
+                                            />
+                                            <span>
+                                                Tampilkan nama saya
+                                                <span className="block text-xs text-ink-muted">Jika tidak dicentang, ulasan tampil sebagai Pengguna anonim</span>
+                                            </span>
+                                        </label>
                                         {Object.values(reviewErrors).map((msg) => (
                                             <p key={msg} role="alert" className="mt-2 text-sm text-red-600">{msg}</p>
                                         ))}
@@ -410,7 +425,7 @@ return;
                                         <li key={r.id} className="py-5 first:pt-0">
                                             <div className="flex items-center justify-between gap-4">
                                                 <div className="min-w-0">
-                                                    <p className="truncate font-semibold text-ink">{r.user.name}</p>
+                                                    <p className="truncate font-semibold text-ink">{r.user?.name ?? 'Pengguna anonim'}</p>
                                                     {r.created_at && (
                                                         <p className="text-xs text-ink-muted">{new Date(r.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                                     )}

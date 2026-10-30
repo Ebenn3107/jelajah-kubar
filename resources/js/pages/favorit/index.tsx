@@ -16,20 +16,39 @@ interface WisataItem {
     kategori: { nama_kategori: string } | null;
 }
 
-export default function FavoritIndex({ wisatas }: { wisatas: PaginatedData<WisataItem> }) {
+export default function FavoritIndex({
+    wisatas,
+}: {
+    wisatas: PaginatedData<WisataItem>;
+}) {
     return (
         <>
             <Head title="Favorit Saya" />
 
-            <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
-                <PageHeader eyebrow="Favorit" title="Favorit Saya" description={`${wisatas.total} destinasi tersimpan`} />
+            <div className="mx-auto max-w-7xl px-5 pt-8 pb-20 md:px-16 md:pt-12">
+                <PageHeader
+                    eyebrow="Favorit"
+                    title="Favorit Saya"
+                    description={`${wisatas.total} destinasi tersimpan`}
+                />
 
                 {wisatas.data.length === 0 ? (
                     <div className="mx-auto flex max-w-lg flex-col items-center py-16 text-center">
-                        <Heart className="mb-5 size-14 text-outline" aria-hidden="true" />
-                        <h2 className="text-xl font-bold text-ink">Belum ada destinasi favorit</h2>
-                        <p className="mt-2 text-ink-muted">Buka sebuah destinasi dan tekan tombol simpan untuk menaruhnya di sini.</p>
-                        <Link href="/wisata" className="mt-8 rounded-full bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover">
+                        <Heart
+                            className="mb-5 size-14 text-outline"
+                            aria-hidden="true"
+                        />
+                        <h2 className="text-xl font-bold text-ink">
+                            Belum ada destinasi favorit
+                        </h2>
+                        <p className="mt-2 text-ink-muted">
+                            Buka sebuah destinasi dan tekan tombol simpan untuk
+                            menaruhnya di sini.
+                        </p>
+                        <Link
+                            href="/wisata"
+                            className="mt-8 rounded-full bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover"
+                        >
                             Jelajahi destinasi
                         </Link>
                     </div>

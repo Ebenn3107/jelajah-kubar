@@ -1,6 +1,11 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
 interface GaleriLightboxProps {
     images: { foto_url: string | null; caption: string | null }[];
@@ -9,7 +14,12 @@ interface GaleriLightboxProps {
     onOpenChange: (open: boolean) => void;
 }
 
-export function GaleriLightbox({ images, startIndex, open, onOpenChange }: GaleriLightboxProps) {
+export function GaleriLightbox({
+    images,
+    startIndex,
+    open,
+    onOpenChange,
+}: GaleriLightboxProps) {
     const [idx, setIdx] = useState(startIndex);
     const [wasOpen, setWasOpen] = useState(open);
 
@@ -48,20 +58,36 @@ export function GaleriLightbox({ images, startIndex, open, onOpenChange }: Galer
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-4xl border-zinc-800 bg-zinc-950 p-0 sm:max-w-[90vw]">
                 <DialogTitle className="sr-only">Galeri foto</DialogTitle>
-                <DialogDescription className="sr-only">Gunakan tombol panah kiri dan kanan untuk berpindah foto.</DialogDescription>
+                <DialogDescription className="sr-only">
+                    Gunakan tombol panah kiri dan kanan untuk berpindah foto.
+                </DialogDescription>
                 <div className="relative flex h-[80vh] items-center justify-center">
                     {current?.foto_url ? (
-                        <img src={current.foto_url} alt={current.caption || ''} className="max-h-full max-w-full object-contain" />
+                        <img
+                            src={current.foto_url}
+                            alt={current.caption || ''}
+                            className="max-h-full max-w-full object-contain"
+                        />
                     ) : (
                         <p className="text-zinc-400">Tidak ada gambar</p>
                     )}
 
                     {images.length > 1 && (
                         <>
-                            <button type="button" onClick={prev} aria-label="Foto sebelumnya" className="absolute left-2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70">
+                            <button
+                                type="button"
+                                onClick={prev}
+                                aria-label="Foto sebelumnya"
+                                className="absolute left-2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                            >
                                 <ChevronLeft className="size-6" />
                             </button>
-                            <button type="button" onClick={next} aria-label="Foto berikutnya" className="absolute right-2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70">
+                            <button
+                                type="button"
+                                onClick={next}
+                                aria-label="Foto berikutnya"
+                                className="absolute right-2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                            >
                                 <ChevronRight className="size-6" />
                             </button>
                         </>

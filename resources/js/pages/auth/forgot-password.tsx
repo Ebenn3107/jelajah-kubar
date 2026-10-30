@@ -16,7 +16,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title="Lupa kata sandi" />
 
             {status && (
-                <div className="mb-4 text-center rounded-lg bg-green-50 px-4 py-3 text-center text-sm font-medium text-green-700">
+                <div className="mb-4 rounded-lg bg-green-50 px-4 py-3 text-center text-sm font-medium text-green-700">
                     {status}
                 </div>
             )}
@@ -26,7 +26,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="email" className={authLabel}>Alamat email</Label>
+                                <Label htmlFor="email" className={authLabel}>
+                                    Alamat email
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -58,7 +60,12 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                 <div className="space-x-1 text-center text-sm text-muted-foreground">
                     <span>Atau kembali ke</span>
-                    <TextLink href={login()} className="font-semibold text-brand no-underline hover:underline">halaman masuk</TextLink>
+                    <TextLink
+                        href={login()}
+                        className="font-semibold text-brand no-underline hover:underline"
+                    >
+                        halaman masuk
+                    </TextLink>
                 </div>
             </div>
         </>
@@ -67,5 +74,6 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
 ForgotPassword.layout = {
     title: 'Lupa kata sandi',
-    description: 'Masukkan email Anda, kami kirimkan tautan untuk mengatur ulang kata sandi.',
+    description:
+        'Masukkan email Anda, kami kirimkan tautan untuk mengatur ulang kata sandi.',
 };

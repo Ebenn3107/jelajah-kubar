@@ -7,7 +7,12 @@ interface WisataMapProps {
     className?: string;
 }
 
-export function WisataMap({ latitude, longitude, nama, className }: WisataMapProps) {
+export function WisataMap({
+    latitude,
+    longitude,
+    nama,
+    className,
+}: WisataMapProps) {
     const mapRef = useRef<HTMLDivElement>(null);
     const instanceRef = useRef<{ remove: () => void } | null>(null);
 
@@ -22,11 +27,13 @@ export function WisataMap({ latitude, longitude, nama, className }: WisataMapPro
             import('leaflet/dist/images/marker-shadow.png'),
         ]).then(([L, icon, icon2x, shadow]) => {
             if (destroyed || !mapRef.current || instanceRef.current) {
-return;
-}
+                return;
+            }
 
             // Vite tidak men-resolve path ikon default Leaflet → arahkan ke asset hasil bundle
-            delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
+            delete (
+                L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown }
+            )._getIconUrl;
             L.Icon.Default.mergeOptions({
                 iconUrl: icon.default,
                 iconRetinaUrl: icon2x.default,
@@ -40,13 +47,12 @@ return;
             });
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
                 maxZoom: 19,
             }).addTo(map);
 
-            L.marker([latitude, longitude])
-                .addTo(map)
-                .bindPopup(nama);
+            L.marker([latitude, longitude]).addTo(map).bindPopup(nama);
 
             instanceRef.current = map;
 
@@ -73,7 +79,10 @@ return;
     return (
         <div
             ref={mapRef}
-            className={className ?? 'h-[400px] w-full rounded-2xl overflow-hidden border border-neutral-200/30 shadow-sm'}
+            className={
+                className ??
+                'h-[400px] w-full overflow-hidden rounded-2xl border border-neutral-200/30 shadow-sm'
+            }
             style={{ position: 'relative', zIndex: 0, isolation: 'isolate' }}
         />
     );

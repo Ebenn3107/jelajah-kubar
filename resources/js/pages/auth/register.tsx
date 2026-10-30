@@ -33,7 +33,7 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="name"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
                                     Nama lengkap
                                 </Label>
@@ -59,7 +59,7 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="email"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
                                     Alamat email
                                 </Label>
@@ -84,7 +84,7 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="password"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
                                     Kata sandi
                                 </Label>
@@ -109,7 +109,7 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="password_confirmation"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
                                     Konfirmasi kata sandi
                                 </Label>
@@ -137,7 +137,7 @@ export default function Register({ passwordRules }: Props) {
                                         id="terms"
                                         name="terms"
                                         tabIndex={5}
-                                        className="h-4 w-4 rounded border-line bg-white text-brand data-[state=checked]:border-brand data-[state=checked]:bg-brand focus-visible:border-brand focus-visible:ring-brand/20"
+                                        className="h-4 w-4 rounded border-line bg-white text-brand focus-visible:border-brand focus-visible:ring-brand/20 data-[state=checked]:border-brand data-[state=checked]:bg-brand"
                                     />
                                 </div>
                                 <div className="ml-3">
@@ -197,5 +197,6 @@ Register.layout = {
     description: 'Mulai merencanakan petualangan budaya Anda.',
     image: '/images/auth/sign-up-bg.png',
     sideTitle: 'Temukan Jantung Borneo',
-    sideDescription: 'Bergabunglah dengan Jelajah Kubar dan mulai perjalanan autentik Anda.',
+    sideDescription:
+        'Bergabunglah dengan Jelajah Kubar dan mulai perjalanan autentik Anda.',
 };

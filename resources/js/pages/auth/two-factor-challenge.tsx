@@ -33,8 +33,7 @@ export default function TwoFactorChallenge() {
 
         return {
             title: 'Kode autentikasi',
-            description:
-                'Masukkan kode dari aplikasi autentikator Anda.',
+            description: 'Masukkan kode dari aplikasi autentikator Anda.',
             toggleText: 'masuk dengan kode pemulihan',
         };
     }, [showRecoveryInput]);

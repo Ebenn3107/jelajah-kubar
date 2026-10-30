@@ -8,7 +8,12 @@ interface SearchBarProps {
     placeholder?: string;
 }
 
-export function SearchBar({ onSearch, initialValue = '', loading, placeholder = 'Cari nama, kategori, atau fasilitas' }: SearchBarProps) {
+export function SearchBar({
+    onSearch,
+    initialValue = '',
+    loading,
+    placeholder = 'Cari nama, kategori, atau fasilitas',
+}: SearchBarProps) {
     const [value, setValue] = useState(initialValue);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,9 +33,15 @@ export function SearchBar({ onSearch, initialValue = '', loading, placeholder = 
             className="flex w-full items-center rounded-full border border-line bg-white px-4 shadow-[0_4px_20px_rgba(18,28,42,0.05)] focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/15"
         >
             {loading ? (
-                <Loader2 className="size-5 shrink-0 animate-spin text-ink-muted" aria-hidden="true" />
+                <Loader2
+                    className="size-5 shrink-0 animate-spin text-ink-muted"
+                    aria-hidden="true"
+                />
             ) : (
-                <Search className="size-5 shrink-0 text-ink-muted" aria-hidden="true" />
+                <Search
+                    className="size-5 shrink-0 text-ink-muted"
+                    aria-hidden="true"
+                />
             )}
             <input
                 ref={inputRef}

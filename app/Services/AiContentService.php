@@ -488,7 +488,7 @@ PROMPT;
 
     private function narrativePrompt(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
 Kamu adalah asisten konten wisata untuk Jelajah Kubar.
 Tugasmu hanya menulis ulang dan menyusun informasi berdasarkan data faktual yang diberikan.
 JANGAN menambahkan fakta, sejarah, angka, atau informasi apapun yang tidak ada di data.
@@ -508,7 +508,7 @@ PROMPT;
 
     private function metadataPrompt(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
 Kamu adalah asisten konten wisata untuk Jelajah Kubar.
 Tugasmu hanya menulis ulang dan menyusun informasi berdasarkan data faktual yang diberikan.
 JANGAN menambahkan fakta, sejarah, angka, atau informasi apapun yang tidak ada di data.

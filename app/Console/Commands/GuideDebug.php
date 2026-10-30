@@ -42,7 +42,7 @@ class GuideDebug extends Command
         $this->info('Jalur        : AI dengan konteks Top-'.$ranked->count());
         $this->table(
             ['Skor', 'Destinasi', 'Kategori', 'Tiket'],
-            $ranked->map(fn ($w) => [$w->relevance_score, $w->nama_wisata, $w->kategori?->nama_kategori, $w->harga_tiket ?: '-'])->all(),
+            $ranked->map(fn ($w) => [$w->getAttribute('relevance_score'), $w->nama_wisata, $w->kategori?->nama_kategori, $w->harga_tiket ?: '-'])->all(),
         );
 
         if (! $this->option('ask')) {

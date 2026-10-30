@@ -44,8 +44,10 @@ class AiCacheService
 
     private function dataVersion(): string
     {
-        $row = Wisata::where('is_active', true)->selectRaw('COUNT(*) as total, MAX(updated_at) as terakhir')->first();
+        $aktif = Wisata::where('is_active', true);
+        $total = (clone $aktif)->count();
+        $terakhir = (string) $aktif->max('updated_at');
 
-        return substr(sha1(($row->total ?? 0).'|'.($row->terakhir ?? '')), 0, 12);
+        return substr(sha1($total.'|'.$terakhir), 0, 12);
     }
 }

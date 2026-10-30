@@ -315,11 +315,11 @@ class LocalGuideService
                     $score += 100;
                 }
 
-                $w->relevance_score = round($score, 1);
+                $w->setAttribute('relevance_score', round($score, 1));
 
                 return $w;
             })
-            ->filter(fn ($w) => $w->relevance_score > 0)
+            ->filter(fn ($w) => $w->getAttribute('relevance_score') > 0)
             ->sortByDesc('relevance_score')
             ->take(self::TOP_K)
             ->values();

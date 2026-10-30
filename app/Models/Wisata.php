@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,12 +39,13 @@ class Wisata extends Model
 
     protected $appends = ['foto_url'];
 
-    /** @return Attribute<string|null, never> */
-    protected function fotoUrl(): Attribute
+    public function getFotoUrlAttribute(): ?string
     {
-        return Attribute::get(fn (): ?string => $this->foto
-            ? (str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto))
-            : null);
+        if (! $this->foto) {
+            return null;
+        }
+
+        return str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto);
     }
 
     protected static function booted(): void

@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Http;
 class AiContentService
 {
     const PRICE_INPUT_PER_1M = 0.14;
+
     const PRICE_OUTPUT_PER_1M = 0.28;
+
     const MAX_USER_CONTENT_CHARS = 12000;
+
     const MAX_SYSTEM_PROMPT_CHARS = 4000;
 
     /** Router — pilih provider berdasarkan runtime config (AiProviderService) */
@@ -33,6 +36,7 @@ class AiContentService
             if (empty($result)) {
                 $result = $this->callDeepSeek($systemPrompt, $userContent, $type, $userId);
             }
+
             return $result;
         }
 
@@ -48,7 +52,7 @@ class AiContentService
 
         try {
             $response = Http::connectTimeout(5)->timeout(120)
-                ->post($baseUrl . '/api/chat', [
+                ->post($baseUrl.'/api/chat', [
                     'model' => $model,
                     'messages' => [
                         ['role' => 'system', 'content' => $systemPrompt],
@@ -65,24 +69,26 @@ class AiContentService
             $responseTimeMs = (int) ($elapsed / 1_000_000);
 
             if ($response->failed()) {
-                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+                $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+
                 return [];
             }
 
             $content = $response->json('message.content');
 
             if (empty($content) || ! is_string($content)) {
-                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
+                $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
+
                 return [];
             }
 
-            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
+            $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
 
             return $this->parseJsonTolerant($content);
         } catch (\Throwable $e) {
             $elapsed = hrtime(true) - $startTime;
             $responseTimeMs = (int) ($elapsed / 1_000_000);
-            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
+            $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
 
             return [];
         }
@@ -208,10 +214,10 @@ PROMPT;
 
             $context .= "- {$w['nama_wisata']} ({$kat})\n";
             $context .= "  Alamat: {$w['alamat']}\n";
-            $context .= "  Deskripsi: " . substr($w['deskripsi'] ?? '', 0, 200) . "\n";
-            $context .= "  Harga: " . ($w['harga_tiket'] ?: 'Informasi belum tersedia') . "\n";
+            $context .= '  Deskripsi: '.substr($w['deskripsi'] ?? '', 0, 200)."\n";
+            $context .= '  Harga: '.($w['harga_tiket'] ?: 'Informasi belum tersedia')."\n";
             $context .= "  Jam: {$w['jam_buka']} - {$w['jam_tutup']}\n";
-            $context .= "  Fasilitas: " . ($fasList ?: 'Informasi belum tersedia') . "\n\n";
+            $context .= '  Fasilitas: '.($fasList ?: 'Informasi belum tersedia')."\n\n";
         }
 
         $prompt = <<<PROMPT
@@ -463,14 +469,14 @@ PROMPT;
         $data = "Nama Wisata: {$wisata->nama_wisata}\n";
         $data .= "Kategori: {$wisata->kategori?->nama_kategori}\n";
         $data .= "Alamat: {$wisata->alamat}\n";
-        $data .= "Harga Tiket: " . ($wisata->harga_tiket ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Jam Buka: " . ($wisata->jam_buka ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Jam Tutup: " . ($wisata->jam_tutup ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Kontak: " . ($wisata->kontak ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Koordinat: " . ($wisata->latitude ? "{$wisata->latitude}, {$wisata->longitude}" : 'Informasi belum tersedia') . "\n";
+        $data .= 'Harga Tiket: '.($wisata->harga_tiket ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Jam Buka: '.($wisata->jam_buka ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Jam Tutup: '.($wisata->jam_tutup ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Kontak: '.($wisata->kontak ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Koordinat: '.($wisata->latitude ? "{$wisata->latitude}, {$wisata->longitude}" : 'Informasi belum tersedia')."\n";
 
         if ($wisata->relationLoaded('fasilitas') && $wisata->fasilitas->isNotEmpty()) {
-            $data .= "Fasilitas: " . $wisata->fasilitas->pluck('nama_fasilitas')->join(', ') . "\n";
+            $data .= 'Fasilitas: '.$wisata->fasilitas->pluck('nama_fasilitas')->join(', ')."\n";
         }
 
         if ($wisata->deskripsi) {
@@ -524,8 +530,9 @@ PROMPT;
         $apiKey = config('ai.deepseek.api_key');
         $startTime = hrtime(true);
 
-        if (!$apiKey) {
+        if (! $apiKey) {
             $this->log($type, 'no_api_key', 0, 0, 0, 0, false, 'API key not configured', $userId);
+
             return [];
         }
 
@@ -554,6 +561,7 @@ PROMPT;
 
             if ($response->failed()) {
                 $this->log($type, config('ai.deepseek.model'), 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+
                 return [];
             }
 

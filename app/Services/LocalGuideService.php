@@ -43,7 +43,7 @@ class LocalGuideService
 
     private function hasWord(string $haystackLower, string $needleLower): bool
     {
-        return (bool) preg_match('/(?<![\p{L}\p{N}])' . preg_quote($needleLower, '/') . '(?![\p{L}\p{N}])/u', $haystackLower);
+        return (bool) preg_match('/(?<![\p{L}\p{N}])'.preg_quote($needleLower, '/').'(?![\p{L}\p{N}])/u', $haystackLower);
     }
 
     /** @return string[] */
@@ -167,7 +167,7 @@ class LocalGuideService
             $bagian = $perKategori->map(fn ($c, $k) => "{$k}: {$c}")->join(', ');
 
             return "Saat ini ada {$total} destinasi wisata di Kabupaten Kutai Barat. "
-                . "Rincian per kategori: {$bagian}.";
+                ."Rincian per kategori: {$bagian}.";
         }
 
         // daftar — filter kategori sesuai nama kategori di database yang disebut dalam pertanyaan
@@ -189,7 +189,7 @@ class LocalGuideService
             if ($kataKategori) {
                 $query->where(function ($q) use ($kataKategori) {
                     foreach ($kataKategori as $k) {
-                        $pattern = '%' . $this->escapeLike($k) . '%';
+                        $pattern = '%'.$this->escapeLike($k).'%';
                         $q->orWhereRaw('LOWER(nama_wisata) LIKE ?', [$pattern])
                             ->orWhereRaw('LOWER(deskripsi) LIKE ?', [$pattern]);
                     }
@@ -206,7 +206,7 @@ class LocalGuideService
 
         $prefix = $kategoriFilter ? "Berikut daftar wisata {$kategoriFilter} di Kutai Barat" : 'Berikut daftar destinasi wisata di Kutai Barat';
 
-        return $prefix . " (total {$namaList->count()}):\n- " . $namaList->join("\n- ");
+        return $prefix." (total {$namaList->count()}):\n- ".$namaList->join("\n- ");
     }
 
     /** Jumlah wisata aktif per kategori, dihitung di database (tanpa memuat model) */
@@ -238,12 +238,12 @@ class LocalGuideService
         $query->where(function ($group) use ($keywords, $intents, $mentioned) {
             $like = fn ($col) => function ($q) use ($col, $keywords) {
                 foreach ($keywords as $w) {
-                    $q->orWhereRaw("LOWER($col) LIKE ?", ['%' . $this->escapeLike($w) . '%']);
+                    $q->orWhereRaw("LOWER($col) LIKE ?", ['%'.$this->escapeLike($w).'%']);
                 }
             };
 
             foreach ($keywords as $word) {
-                $pattern = '%' . $this->escapeLike($word) . '%';
+                $pattern = '%'.$this->escapeLike($word).'%';
                 $group->orWhereRaw('LOWER(nama_wisata) LIKE ?', [$pattern])
                     ->orWhereRaw('LOWER(deskripsi) LIKE ?', [$pattern]);
             }
@@ -334,6 +334,6 @@ class LocalGuideService
             ->join(', ');
 
         return "TOTAL_DESTINASI_TERSEDIA: {$total}\n"
-            . "DISTRIBUSI_KATEGORI: {$perKategori}\n";
+            ."DISTRIBUSI_KATEGORI: {$perKategori}\n";
     }
 }

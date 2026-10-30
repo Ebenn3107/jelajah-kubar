@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
             $user = $request->user();
 
             // Max 10 AI calls per minute per user, per IP for guests
-            return Limit::perMinute(10)->by($user ? 'ai:' . $user->id : 'ai-ip:' . $request->ip());
+            return Limit::perMinute(10)->by($user ? 'ai:'.$user->id : 'ai-ip:'.$request->ip());
         });
 
         RateLimiter::for('review', function (Request $request) {
@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             // Max 5 reviews per hour per user
-            return Limit::perHour(5)->by('review:' . $user->id);
+            return Limit::perHour(5)->by('review:'.$user->id);
         });
     }
 }

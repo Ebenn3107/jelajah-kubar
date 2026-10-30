@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 class AiProviderService
 {
     const CACHE_PROVIDER = 'ai_provider';
+
     const CACHE_LOCAL_ENABLED = 'ai_local_enabled';
 
     /** Baca provider aktif (local | deepseek | auto), fallback ke config */

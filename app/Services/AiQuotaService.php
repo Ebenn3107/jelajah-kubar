@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\Cache;
 class AiQuotaService
 {
     const DAILY_TOKEN_LIMIT = 50000;
+
     const DAILY_COST_LIMIT = 0.10; // USD
 
     public function check(int $userId): array
     {
         $today = now()->startOfDay();
 
-        $usage = Cache::remember("ai_quota:{$userId}:" . now()->toDateString(), 60, function () use ($userId, $today) {
+        $usage = Cache::remember("ai_quota:{$userId}:".now()->toDateString(), 60, function () use ($userId, $today) {
             return [
                 'total_tokens' => AiLog::where('user_id', $userId)
                     ->where('created_at', '>=', $today)
@@ -53,7 +54,7 @@ class AiQuotaService
         $limit = (int) config("ai.limits.{$feature}_per_day", 0);
 
         $used = AiLog::where('user_id', $userId)
-            ->whereIn('type', [$feature, 'ollama_' . $feature])
+            ->whereIn('type', [$feature, 'ollama_'.$feature])
             ->where('success', true)
             ->where('created_at', '>=', now()->startOfDay())
             ->count();
@@ -80,7 +81,7 @@ class AiQuotaService
             return false;
         }
 
-        $spent = Cache::remember('ai_budget:' . now()->toDateString(), 60, fn () => (float) AiLog::where('success', true)
+        $spent = Cache::remember('ai_budget:'.now()->toDateString(), 60, fn () => (float) AiLog::where('success', true)
             ->where('created_at', '>=', now()->startOfDay())
             ->sum('cost'));
 
@@ -99,7 +100,7 @@ class AiQuotaService
 
     public function clearCache(int $userId): void
     {
-        Cache::forget("ai_quota:{$userId}:" . now()->toDateString());
-        Cache::forget('ai_budget:' . now()->toDateString());
+        Cache::forget("ai_quota:{$userId}:".now()->toDateString());
+        Cache::forget('ai_budget:'.now()->toDateString());
     }
 }

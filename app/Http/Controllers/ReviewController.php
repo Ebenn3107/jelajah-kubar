@@ -105,6 +105,7 @@ class ReviewController extends Controller
 
             if (! $wisata->reviews()->exists()) {
                 $wisata->updateQuietly(['review_summary' => null]);
+
                 return;
             }
 

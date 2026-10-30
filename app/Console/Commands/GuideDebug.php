@@ -17,11 +17,11 @@ class GuideDebug extends Command
         $question = (string) $this->argument('question');
         $intents = $guide->detectIntent($question);
 
-        $this->line('Intent       : ' . implode(', ', $intents));
-        $this->line('Kata kunci   : ' . (implode(', ', $guide->contentKeywords($question)) ?: '(tidak ada)'));
+        $this->line('Intent       : '.implode(', ', $intents));
+        $this->line('Kata kunci   : '.(implode(', ', $guide->contentKeywords($question)) ?: '(tidak ada)'));
 
         $mentioned = $guide->findMentioned($question);
-        $this->line('Disebut      : ' . ($mentioned->isEmpty() ? '(tidak ada destinasi yang disebut langsung)' : 'id ' . $mentioned->implode(', ')));
+        $this->line('Disebut      : '.($mentioned->isEmpty() ? '(tidak ada destinasi yang disebut langsung)' : 'id '.$mentioned->implode(', ')));
 
         if ($guide->isFactual($question, $intents)) {
             $this->info('Jalur        : FAKTUAL (dijawab dari database tanpa AI)');
@@ -39,7 +39,7 @@ class GuideDebug extends Command
             return self::SUCCESS;
         }
 
-        $this->info('Jalur        : AI dengan konteks Top-' . $ranked->count());
+        $this->info('Jalur        : AI dengan konteks Top-'.$ranked->count());
         $this->table(
             ['Skor', 'Destinasi', 'Kategori', 'Tiket'],
             $ranked->map(fn ($w) => [$w->relevance_score, $w->nama_wisata, $w->kategori?->nama_kategori, $w->harga_tiket ?: '-'])->all(),
@@ -53,8 +53,8 @@ class GuideDebug extends Command
 
         $raw = $ai->localGuideAnswer($question, $ranked->toArray());
         $this->newLine();
-        $this->line('Jawaban mentah     : ' . ($raw ?? '(gagal/kosong)'));
-        $this->line('Setelah validasi   : ' . $ai->validateLocalGuideAnswer($raw, $ranked));
+        $this->line('Jawaban mentah     : '.($raw ?? '(gagal/kosong)'));
+        $this->line('Setelah validasi   : '.$ai->validateLocalGuideAnswer($raw, $ranked));
 
         return self::SUCCESS;
     }

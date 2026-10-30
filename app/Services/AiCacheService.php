@@ -39,13 +39,13 @@ class AiCacheService
 
     private function key(string $namespace, array $parts): string
     {
-        return 'ai_cache:' . $namespace . ':' . sha1(json_encode($parts)) . ':' . $this->dataVersion();
+        return 'ai_cache:'.$namespace.':'.sha1(json_encode($parts)).':'.$this->dataVersion();
     }
 
     private function dataVersion(): string
     {
         $row = Wisata::where('is_active', true)->selectRaw('COUNT(*) as total, MAX(updated_at) as terakhir')->first();
 
-        return substr(sha1(($row->total ?? 0) . '|' . ($row->terakhir ?? '')), 0, 12);
+        return substr(sha1(($row->total ?? 0).'|'.($row->terakhir ?? '')), 0, 12);
     }
 }

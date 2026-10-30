@@ -52,7 +52,7 @@ class SavedPlanController extends Controller
 
         SavedPlan::create([
             'user_id' => $request->user()->id,
-            'title' => $validated['title'] ?? "{$validated['durasi']} Day Trip - " . now()->format('d M Y'),
+            'title' => $validated['title'] ?? "{$validated['durasi']} Day Trip - ".now()->format('d M Y'),
             'durasi' => $validated['durasi'],
             'budget' => $validated['budget'],
             'minat' => $validated['minat'] ?? null,

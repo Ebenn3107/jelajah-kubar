@@ -107,3 +107,19 @@ test('daftar wisata mengirim rata-rata rating untuk kartu', function () {
             ->component('wisata/index')
             ->where('wisatas.data.0.reviews_avg_rating', fn ($v) => (float) $v === 4.5));
 });
+
+test('pencarian wisata berjalan dan meng-escape karakter wildcard LIKE', function () {
+    makeWisata(['nama_wisata' => 'Air Terjun Tes']);
+    makeWisata(['nama_wisata' => 'Danau Lain', 'alamat' => 'Jl. Lain']);
+
+    $this->get(route('wisata.index', ['search' => 'terjun']))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('wisatas.total', 1)
+            ->where('wisatas.data.0.nama_wisata', 'Air Terjun Tes'));
+
+    // "%" harus dicari sebagai karakter biasa, bukan wildcard yang cocok dengan semua baris
+    $this->get(route('wisata.index', ['search' => '%%']))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page->where('wisatas.total', 0));
+});

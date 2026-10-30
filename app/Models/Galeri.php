@@ -22,7 +22,7 @@ class Galeri extends Model
     /** @return Attribute<string|null, never> */
     protected function fotoUrl(): Attribute
     {
-        return Attribute::get(fn () => $this->foto
+        return Attribute::get(fn (): ?string => $this->foto
             ? (str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto))
             : null);
     }

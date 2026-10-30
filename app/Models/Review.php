@@ -14,11 +14,13 @@ class Review extends Model
         'komentar',
     ];
 
+    /** @return BelongsTo<Wisata, $this> */
     public function wisata(): BelongsTo
     {
         return $this->belongsTo(Wisata::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

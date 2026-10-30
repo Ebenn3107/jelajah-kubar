@@ -24,8 +24,8 @@ class AiLogController extends Controller
             'successful' => AiLog::where('success', true)->count(),
             'failed' => AiLog::where('success', false)->count(),
             'total_tokens' => AiLog::sum('total_tokens'),
-            'total_cost' => round(AiLog::sum('cost'), 6),
-            'avg_response_ms' => round(AiLog::avg('response_time_ms') ?? 0),
+            'total_cost' => round((float) AiLog::sum('cost'), 6),
+            'avg_response_ms' => round((float) (AiLog::avg('response_time_ms') ?? 0)),
         ];
 
         $providerService = app(AiProviderService::class);

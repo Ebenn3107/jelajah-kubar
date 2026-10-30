@@ -16,7 +16,11 @@ class AiContentService
 
     const MAX_SYSTEM_PROMPT_CHARS = 4000;
 
-    /** Router — pilih provider berdasarkan runtime config (AiProviderService) */
+    /**
+     * Router — pilih provider berdasarkan runtime config (AiProviderService)
+     *
+     * @return array<string, mixed>
+     */
     private function callAi(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $providerService = app(AiProviderService::class);
@@ -44,6 +48,7 @@ class AiContentService
         return $this->callOllama($systemPrompt, $userContent, $type, $userId);
     }
 
+    /** @return array<string, mixed> */
     private function callOllama(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $baseUrl = rtrim((string) config('ai.ollama.base_url'), '/');
@@ -94,7 +99,11 @@ class AiContentService
         }
     }
 
-    /** Parsing JSON toleran — model kecil sering output JSON dengan teks di sekitarnya */
+    /**
+     * Parsing JSON toleran — model kecil sering output JSON dengan teks di sekitarnya
+     *
+     * @return array<string, mixed>
+     */
     private function parseJsonTolerant(string $content): array
     {
         // 1. Coba decode langsung
@@ -130,6 +139,7 @@ class AiContentService
         return [];
     }
 
+    /** @return array<string, mixed> */
     public function generate(Wisata $wisata): array
     {
         $factualData = $this->buildFactualData($wisata);
@@ -149,6 +159,7 @@ class AiContentService
         ];
     }
 
+    /** @param  iterable<int, \App\Models\Review>  $reviews */
     public function reviewSummary(string $wisataNama, string $kategori, $reviews, ?int $userId = null): ?string
     {
         $reviews = collect($reviews);
@@ -193,6 +204,7 @@ PROMPT;
         return mb_substr(trim($text), 0, $maxLength);
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     public function localGuideAnswer(string $question, array $wisatas, ?int $userId = null): ?string
     {
         if (empty($wisatas)) {
@@ -258,6 +270,8 @@ PROMPT;
      * konteks (mis. "Pantai Benangaq" padahal tidak ada di data). Kalimat biasa yang memuat kata
      * berhuruf kapital (Gratis, Dayak, Mahakam) dipertahankan. Jika semua kalimat terbuang,
      * kembalikan pesan aman — bukan jawaban mentah yang berpotensi mengarang.
+     *
+     * @param  iterable<int, mixed>  $wisatas
      */
     public function validateLocalGuideAnswer(?string $answer, $wisatas): string
     {
@@ -288,7 +302,7 @@ PROMPT;
         $kept = array_filter($sentences, function ($sentence) use ($pattern, $allowedTokenSets) {
             preg_match_all($pattern, $sentence, $matches);
 
-            foreach ($matches[0] ?? [] as $candidate) {
+            foreach ($matches[0] as $candidate) {
                 $tokens = $this->nameTokens($candidate);
 
                 if (empty($tokens)) {
@@ -325,7 +339,11 @@ PROMPT;
             : $fallback;
     }
 
-    /** Token pembeda sebuah nama tempat (huruf kecil, tanpa kata generik seperti air/terjun/danau/lake). */
+    /**
+     * Token pembeda sebuah nama tempat (huruf kecil, tanpa kata generik seperti air/terjun/danau/lake).
+     *
+     * @return list<string>
+     */
     private function nameTokens(string $name): array
     {
         $generic = ['air', 'terjun', 'danau', 'lake', 'waterfall', 'pantai', 'bukit', 'gunung', 'hutan', 'forest', 'taman', 'desa', 'kampung', 'sungai', 'pulau', 'goa', 'gua', 'park', 'beach', 'mountain', 'museum', 'curug', 'telaga', 'rawa', 'candi', 'pura', 'masjid', 'lamin', 'wisata'];
@@ -334,6 +352,7 @@ PROMPT;
         return array_values(array_unique(array_diff($tokens, $generic)));
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     public function travelPlan(array $wisatas, int $durasi, string $budget, string $minat, ?int $userId = null): ?string
     {
         // Batasi jumlah destinasi yang dikirim ke model (hemat token),
@@ -351,12 +370,15 @@ PROMPT;
 
         $result = $this->callAi($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner', $userId);
 
-        return $result ? json_encode($result) : null;
+        return $result ? (json_encode($result) ?: null) : null;
     }
 
     /**
      * Pilih destinasi paling relevan dengan minat pengguna.
      * Jika tidak ada kata kunci yang cocok, ambil destinasi pertama sejumlah limit.
+     *
+     * @param  array<int, array<string, mixed>>  $wisatas
+     * @return array<int, array<string, mixed>>
      */
     private function selectRelevantDestinations(array $wisatas, string $minat, int $limit): array
     {
@@ -400,6 +422,7 @@ PROMPT;
         return array_slice(array_map(fn ($item) => $item['wisata'], $scored), 0, $limit);
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     private function buildTravelPlanPrompt(array $wisatas, int $durasi, string $budget, string $minat): string
     {
         $budget = $this->sanitizeUserInput($budget, 255);
@@ -525,6 +548,7 @@ Respond dengan JSON:
 PROMPT;
     }
 
+    /** @return array<string, mixed> */
     private function callDeepSeek(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $apiKey = config('ai.deepseek.api_key');

@@ -19,6 +19,7 @@ class Galeri extends Model
 
     protected $appends = ['foto_url'];
 
+    /** @return Attribute<string|null, never> */
     protected function fotoUrl(): Attribute
     {
         return Attribute::get(fn () => $this->foto
@@ -26,6 +27,7 @@ class Galeri extends Model
             : null);
     }
 
+    /** @return BelongsTo<Wisata, $this> */
     public function wisata(): BelongsTo
     {
         return $this->belongsTo(Wisata::class);

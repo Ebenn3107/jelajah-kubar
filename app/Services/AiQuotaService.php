@@ -11,6 +11,7 @@ class AiQuotaService
 
     const DAILY_COST_LIMIT = 0.10; // USD
 
+    /** @return array<string, mixed> */
     public function check(int $userId): array
     {
         $today = now()->startOfDay();
@@ -88,7 +89,11 @@ class AiQuotaService
         return $spent >= $budget;
     }
 
-    /** Pesan untuk pengguna saat fitur AI ditolak oleh checkFeature(). */
+    /**
+     * Pesan untuk pengguna saat fitur AI ditolak oleh checkFeature().
+     *
+     * @param  array{allowed: bool, reason: string|null, remaining: int, limit: int}  $check
+     */
     public function denyMessage(array $check, string $label): string
     {
         if (($check['reason'] ?? null) === 'budget') {

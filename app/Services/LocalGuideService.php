@@ -10,7 +10,11 @@ class LocalGuideService
 {
     const TOP_K = 5;
 
-    /** Keyword map per intent — dicocokkan sebagai KATA UTUH (bukan potongan kata) */
+    /**
+     * Keyword map per intent — dicocokkan sebagai KATA UTUH (bukan potongan kata)
+     *
+     * @var array<string, list<string>>
+     */
     private array $intentKeywords = [
         'count' => ['berapa total', 'berapa banyak', 'jumlah wisata', 'total wisata', 'berapa jumlah', 'total destinasi', 'jumlah destinasi', 'berapa destinasi'],
         'daftar' => ['sebutkan semua', 'apa saja', 'daftar', 'list', 'semua wisata', 'semua destinasi'],
@@ -38,7 +42,11 @@ class LocalGuideService
         'taman', 'desa', 'kampung', 'sungai', 'pulau', 'goa', 'gua', 'park', 'beach', 'mountain', 'river',
     ];
 
-    /** Cache per-instance: destinasi yang disebut langsung, per pertanyaan */
+    /**
+     * Cache per-instance: id destinasi yang disebut langsung, per pertanyaan
+     *
+     * @var array<string, Collection<int, int>>
+     */
     private array $mentionedCache = [];
 
     private function hasWord(string $haystackLower, string $needleLower): bool
@@ -46,13 +54,17 @@ class LocalGuideService
         return (bool) preg_match('/(?<![\p{L}\p{N}])'.preg_quote($needleLower, '/').'(?![\p{L}\p{N}])/u', $haystackLower);
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     private function tokenize(string $textLower): array
     {
         return preg_split('/[^\p{L}\p{N}]+/u', $textLower, -1, PREG_SPLIT_NO_EMPTY) ?: [];
     }
 
-    /** Kata kunci isi: token >= 3 huruf yang bukan kata umum */
+    /**
+     * Kata kunci isi: token >= 3 huruf yang bukan kata umum
+     *
+     * @return list<string>
+     */
     public function contentKeywords(string $question): array
     {
         return array_values(array_unique(array_filter(
@@ -61,7 +73,11 @@ class LocalGuideService
         )));
     }
 
-    /** Deteksi intent dari pertanyaan (kata utuh) */
+    /**
+     * Deteksi intent dari pertanyaan (kata utuh)
+     *
+     * @return list<string>
+     */
     public function detectIntent(string $question): array
     {
         $lower = mb_strtolower($question);
@@ -88,6 +104,8 @@ class LocalGuideService
      * Destinasi aktif yang disebut langsung dalam pertanyaan.
      * Cocok bila token pembeda nama (di luar kata generik) muncul: token yang unik milik satu
      * destinasi (>= 5 huruf) cukup; selain itu minimal separuh token pembeda harus muncul.
+     *
+     * @return Collection<int, int>
      */
     public function findMentioned(string $question): Collection
     {
@@ -136,6 +154,8 @@ class LocalGuideService
      * Apakah pertanyaan bisa dijawab langsung dari DB tanpa LLM?
      * Hitung total selalu faktual. Pertanyaan "daftar" hanya faktual bila generik: tidak menyebut
      * destinasi tertentu dan tidak menanyakan harga/fasilitas/lokasi/aktivitas (itu butuh detail).
+     *
+     * @param  list<string>  $intents
      */
     public function isFactual(string $question, array $intents): bool
     {
@@ -156,7 +176,11 @@ class LocalGuideService
         return $this->findMentioned($question)->isEmpty();
     }
 
-    /** Jawaban faktual langsung dari database (tanpa LLM) */
+    /**
+     * Jawaban faktual langsung dari database (tanpa LLM)
+     *
+     * @param  list<string>  $intents
+     */
     public function answerFactual(string $question, array $intents): ?string
     {
         $lower = mb_strtolower($question);
@@ -209,7 +233,11 @@ class LocalGuideService
         return $prefix." (total {$namaList->count()}):\n- ".$namaList->join("\n- ");
     }
 
-    /** Jumlah wisata aktif per kategori, dihitung di database (tanpa memuat model) */
+    /**
+     * Jumlah wisata aktif per kategori, dihitung di database (tanpa memuat model)
+     *
+     * @return Collection<string, int>
+     */
     private function countPerKategori(): Collection
     {
         return Wisata::where('wisatas.is_active', true)
@@ -226,7 +254,12 @@ class LocalGuideService
         return addcslashes($v, '%_\\');
     }
 
-    /** Retrieval berdasarkan intent — query SQL spesifik, bukan semua data */
+    /**
+     * Retrieval berdasarkan intent — query SQL spesifik, bukan semua data
+     *
+     * @param  list<string>  $intents
+     * @return Collection<int, Wisata>
+     */
     public function retrieve(string $question, array $intents): Collection
     {
         $keywords = $this->contentKeywords($question);
@@ -266,7 +299,13 @@ class LocalGuideService
         return $query->limit(20)->get();
     }
 
-    /** Ranking — skor berdasarkan kecocokan intent, ambil Top-K. Destinasi yang disebut langsung selalu di atas. */
+    /**
+     * Ranking — skor berdasarkan kecocokan intent, ambil Top-K. Destinasi yang disebut langsung selalu di atas.
+     *
+     * @param  list<string>  $intents
+     * @param  Collection<int, Wisata>  $wisatas
+     * @return Collection<int, Wisata>
+     */
     public function rank(string $question, array $intents, Collection $wisatas): Collection
     {
         $keywords = $this->contentKeywords($question);
@@ -278,7 +317,7 @@ class LocalGuideService
                 $nama = mb_strtolower($w->nama_wisata);
                 $deskripsi = mb_strtolower($w->deskripsi ?? '');
                 $alamat = mb_strtolower($w->alamat ?? '');
-                $kategori = mb_strtolower($w->kategori?->nama_kategori ?? '');
+                $kategori = mb_strtolower($w->kategori->nama_kategori ?? '');
                 $fasilitas = mb_strtolower($w->fasilitas->pluck('nama_fasilitas')->implode(' '));
 
                 foreach ($keywords as $word) {

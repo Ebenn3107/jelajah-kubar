@@ -40,6 +40,7 @@ class Wisata extends Model
 
     protected $appends = ['foto_url'];
 
+    /** @return Attribute<string|null, never> */
     protected function fotoUrl(): Attribute
     {
         return Attribute::get(fn () => $this->foto
@@ -64,26 +65,31 @@ class Wisata extends Model
         });
     }
 
+    /** @return BelongsTo<Kategori, $this> */
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(Kategori::class);
     }
 
+    /** @return HasMany<Galeri, $this> */
     public function galeris(): HasMany
     {
         return $this->hasMany(Galeri::class);
     }
 
+    /** @return BelongsToMany<Fasilitas, $this> */
     public function fasilitas(): BelongsToMany
     {
         return $this->belongsToMany(Fasilitas::class, 'fasilitas_wisata');
     }
 
+    /** @return BelongsToMany<User, $this> */
     public function favoritedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'wisata_user_favorit');
     }
 
+    /** @return HasMany<Review, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);

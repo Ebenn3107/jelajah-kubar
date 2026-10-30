@@ -13,6 +13,23 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
+    # `composer setup` menjalankan `migrate --force` dengan .env.example (pgsql di 127.0.0.1:5432).
+    # Tes Pest sendiri memakai SQLite in-memory (phpunit.xml).
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: jelajah-kubar
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

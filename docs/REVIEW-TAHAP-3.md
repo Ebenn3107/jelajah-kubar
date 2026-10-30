@@ -8,7 +8,7 @@ git fetch origin claude/rencana-selanjutnya-5nmhko && git checkout claude/rencan
 composer install && npm ci
 php artisan migrate        # ada 2 migrasi baru (indeks ai_logs, sort_order galeri)
 composer dev               # atau: php artisan serve + npm run dev
-composer test              # BELUM pernah dijalankan (lihat "Belum diverifikasi")
+composer test              # lulus di CI PR #3 (68 tes)
 ```
 
 ## Halaman yang didesain ulang (urutan saran review)
@@ -39,14 +39,12 @@ Keputusan 1, 2, dan 3 diterima; untuk 3, tata letak admin **tidak dirombak**.
 4. **Halaman admin tidak ditata ulang**, hanya konsistensi warna dan bahasa. Beri tahu kalau ingin dirombak.
 5. Admin tetap mengikuti tema terang/gelap; halaman publik dipaksa terang (`.public-light`).
 
-## Belum diverifikasi (sesi cloud tidak punya PHP 8.4 / vendor)
-- `composer test`, `php artisan migrate`, dan semua perubahan PHP hanya lolos `php -l`.
-- Tampilan di Laravel sungguhan (data nyata, font Instrument Sans dari Bunny, tile peta OSM). Pratinjau saya memakai harness Vite + data contoh di Chromium 320/375/1280/1440 px: tanpa error konsol dan tanpa scroll horizontal.
-- Halaman admin (wisata/kategori/galeri/fasilitas/log AI), pengaturan, login/register, dan 2FA hanya dicek lewat lint + tipe, bukan visual (kecuali dashboard admin dan halaman auth sederhana).
-- `npm run build` / `build:ssr` (butuh `php artisan wayfinder:generate`).
-- ESLint (`npx eslint resources/js`) dan `tsc` bersih; Pint belum dijalankan.
+## Status verifikasi (CI PR #3, PHP 8.4 + PostgreSQL 16)
+- Lulus: ESLint, Prettier, TypeScript, Pint, PHPStan level 7, build Vite, migrasi di PostgreSQL, dan `php artisan test` (68 tes).
+- CI menemukan dan PR ini memperbaiki: pencarian `/wisata` yang selalu error (variabel closure tidak di-`use`), CI yang tidak pernah bisa berjalan (tidak ada PostgreSQL saat `composer setup`), serta 70 error PHPStan dan pelanggaran Pint/Prettier lama.
+- Belum diverifikasi: tampilan di Laravel sungguhan dengan data nyata dan tile peta OSM; halaman admin selain dashboard, pengaturan, login/register, dan 2FA hanya dicek lewat lint, tipe, dan tes, bukan visual.
 
 ## Catatan teknis
-- Rating di kartu `/wisata` kini berasal dari `withAvg('reviews', 'rating')` di `WisataController@index` (tes baru di `tests/Feature/AccessControlTest.php`, belum pernah dijalankan). Halaman Favorit belum menghitung rating.
+- Rating di kartu `/wisata` kini berasal dari `withAvg('reviews', 'rating')` di `WisataController@index` (dicakup tes di `tests/Feature/AccessControlTest.php`). Halaman Favorit belum menghitung rating.
 - `components/search-hero.tsx` sudah dihapus (tidak dipakai lagi).
 - Warna `teal-*` untuk badge status di admin sengaja dibiarkan.

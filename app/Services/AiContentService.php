@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AiLog;
+use App\Models\Review;
 use App\Models\Wisata;
 use Illuminate\Support\Facades\Http;
 
@@ -159,7 +160,7 @@ class AiContentService
         ];
     }
 
-    /** @param  iterable<int, \App\Models\Review>  $reviews */
+    /** @param  iterable<int, Review>  $reviews */
     public function reviewSummary(string $wisataNama, string $kategori, $reviews, ?int $userId = null): ?string
     {
         $reviews = collect($reviews);

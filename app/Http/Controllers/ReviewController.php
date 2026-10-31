@@ -20,6 +20,7 @@ class ReviewController extends Controller
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'komentar' => 'nullable|string|min:10|max:1000',
+            'anonim' => 'sometimes|boolean',
         ]);
 
         $existing = Review::where('wisata_id', $wisata->id)
@@ -38,6 +39,7 @@ class ReviewController extends Controller
                 'user_id' => $request->user()->id,
                 'rating' => $validated['rating'],
                 'komentar' => $validated['komentar'] ?? null,
+                'anonim' => $validated['anonim'] ?? true,
             ]);
         } catch (UniqueConstraintViolationException) {
             // Double-submit: review sudah dibuat oleh request pertama
@@ -62,6 +64,7 @@ class ReviewController extends Controller
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
             'komentar' => 'nullable|string|min:10|max:1000',
+            'anonim' => 'sometimes|boolean',
         ]);
 
         $review->update($validated);
@@ -105,6 +108,7 @@ class ReviewController extends Controller
 
             if (! $wisata->reviews()->exists()) {
                 $wisata->updateQuietly(['review_summary' => null]);
+
                 return;
             }
 
@@ -115,7 +119,7 @@ class ReviewController extends Controller
             $service = app(AiContentService::class);
             $summary = $service->reviewSummary(
                 $wisata->nama_wisata,
-                $wisata->kategori?->nama_kategori ?? 'Umum',
+                $wisata->kategori->nama_kategori ?? 'Umum',
                 $reviews,
                 $userId,
             );

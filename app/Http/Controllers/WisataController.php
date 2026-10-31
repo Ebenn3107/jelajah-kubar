@@ -32,16 +32,19 @@ class WisataController extends Controller
 
     public function index(Request $request): Response
     {
-        $search = $request->search;
+        $search = is_string($request->search) ? $request->search : null;
+        $like = '%'.addcslashes(strtolower((string) $search), '%_\\').'%';
+        $prefix = addcslashes(strtolower((string) $search), '%_\\').'%';
 
         $wisatas = Wisata::with('kategori')
+            ->withAvg('reviews', 'rating')
             ->where('is_active', true)
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($sub) use ($search) {
-                    $sub->whereRaw('LOWER(nama_wisata) LIKE ?', ['%' . strtolower($search) . '%'])
-                        ->orWhereRaw('LOWER(alamat) LIKE ?', ['%' . strtolower($search) . '%'])
-                        ->orWhereHas('kategori', fn ($k) => $k->whereRaw('LOWER(nama_kategori) LIKE ?', ['%' . strtolower($search) . '%']))
-                        ->orWhereHas('fasilitas', fn ($f) => $f->whereRaw('LOWER(nama_fasilitas) LIKE ?', ['%' . strtolower($search) . '%']));
+            ->when($search, function ($q) use ($search, $like, $prefix) {
+                $q->where(function ($sub) use ($like) {
+                    $sub->whereRaw('LOWER(nama_wisata) LIKE ?', [$like])
+                        ->orWhereRaw('LOWER(alamat) LIKE ?', [$like])
+                        ->orWhereHas('kategori', fn ($k) => $k->whereRaw('LOWER(nama_kategori) LIKE ?', [$like]))
+                        ->orWhereHas('fasilitas', fn ($f) => $f->whereRaw('LOWER(nama_fasilitas) LIKE ?', [$like]));
                 });
 
                 $q->orderByRaw('
@@ -50,18 +53,19 @@ class WisataController extends Controller
                         WHEN LOWER(nama_wisata) LIKE ? THEN 1
                         ELSE 2
                     END
-                ', [strtolower($search), strtolower($search) . '%']);
+                ', [strtolower($search), $prefix]);
             })
             ->when($request->kategori, fn ($q, $k) => $q->whereHas('kategori', fn ($q) => $q->where('slug', $k)))
             ->orderBy('nama_wisata')
             ->paginate(10)
             ->withQueryString();
 
-        $kategoris = Kategori::withCount('wisatas')->get();
+        $kategoris = Kategori::withCount(['wisatas' => fn ($q) => $q->where('is_active', true)])->get();
 
         // Foto hero dari wisata pertama yang punya foto
         $heroWisata = Wisata::where('is_active', true)
             ->whereNotNull('foto')
+            ->orderBy('nama_wisata')
             ->first();
 
         return Inertia::render('wisata/index', [
@@ -84,6 +88,15 @@ class WisataController extends Controller
             'fasilitas',
             'reviews' => fn ($q) => $q->with('user:id,name')->latest(),
         ]);
+
+        // Nama hanya dikirim untuk ulasan non-anonim; user_id tidak pernah dikirim
+        $wisata->setRelation('reviews', $wisata->reviews->map(fn ($r) => [
+            'id' => $r->id,
+            'rating' => $r->rating,
+            'komentar' => $r->komentar,
+            'created_at' => $r->created_at,
+            'user' => $r->anonim ? null : ['name' => $r->user->name],
+        ]));
 
         $userReview = null;
         $isFavorited = false;

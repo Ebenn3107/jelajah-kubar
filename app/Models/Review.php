@@ -12,13 +12,21 @@ class Review extends Model
         'user_id',
         'rating',
         'komentar',
+        'anonim',
     ];
 
+    protected function casts(): array
+    {
+        return ['anonim' => 'boolean'];
+    }
+
+    /** @return BelongsTo<Wisata, $this> */
     public function wisata(): BelongsTo
     {
         return $this->belongsTo(Wisata::class);
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

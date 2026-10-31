@@ -24,7 +24,7 @@ class AiContentController extends Controller
                 'wisata' => $wisata,
                 'kategoris' => $kategoris,
                 'ai_content' => null,
-                'errors' => ['ai_error' => 'Daily AI quota exceeded. Tokens used today: ' . $quota['total_tokens_today']],
+                'errors' => ['ai_error' => 'Daily AI quota exceeded. Tokens used today: '.$quota['total_tokens_today']],
             ]);
         }
 

@@ -7,6 +7,14 @@ use Laravel\Fortify\Features;
 
 abstract class TestCase extends BaseTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // SSR memanggil HTTP ke server Node; Http::fake() akan ikut merekamnya
+        config(['inertia.ssr.enabled' => false]);
+    }
+
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void
     {
         if (! Features::enabled($feature)) {

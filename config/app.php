@@ -15,6 +15,10 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Akun admin awal untuk produksi, dipakai DatabaseSeeder
+    'admin_email' => env('ADMIN_EMAIL'),
+    'admin_password' => env('ADMIN_PASSWORD'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -78,7 +82,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'id'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

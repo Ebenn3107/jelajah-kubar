@@ -17,7 +17,7 @@ class WisataController extends Controller
     public function index(Request $request): Response
     {
         $wisatas = Wisata::with('kategori')
-            ->when($request->search, fn ($q, $s) => $q->where('nama_wisata', 'ilike', '%' . addcslashes($s, '%_\\') . '%'))
+            ->when($request->search, fn ($q, $s) => $q->whereRaw('LOWER(nama_wisata) LIKE ?', ['%'.addcslashes(mb_strtolower($s), '%_\\').'%']))
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -89,7 +89,7 @@ class WisataController extends Controller
 
         $rules = [
             'nama_wisata' => 'required|string|max:255',
-            'slug' => 'required|alpha_dash|max:255|unique:wisatas,slug,' . $wisata->id,
+            'slug' => 'required|alpha_dash|max:255|unique:wisatas,slug,'.$wisata->id,
             'kategori_id' => 'nullable|exists:kategoris,id',
             'alamat' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',

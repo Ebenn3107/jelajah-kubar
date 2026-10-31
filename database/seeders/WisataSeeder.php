@@ -13,13 +13,14 @@ class WisataSeeder extends Seeder
 {
     public function run(): void
     {
-        $json = json_decode(file_get_contents(database_path('data/data-wisata.json')), true);
+        $json = json_decode((string) file_get_contents(database_path('data/data-wisata.json')), true);
 
         foreach ($json['wisata'] as $item) {
             $this->seedWisata($item);
         }
     }
 
+    /** @param  array<string, mixed>  $item */
     private function seedWisata(array $item): void
     {
         $kategori = Kategori::where('nama_kategori', $item['kategori'])->first();
@@ -45,7 +46,8 @@ class WisataSeeder extends Seeder
             $data['foto'] = $item['foto'];
         }
 
-        $wisata = Wisata::updateOrCreate(['slug' => $slug], $data);
+        // firstOrCreate: seed ulang tidak boleh menimpa hasil edit admin
+        $wisata = Wisata::firstOrCreate(['slug' => $slug], $data);
 
         // Fasilitas
         if (! empty($item['fasilitas'])) {
@@ -59,7 +61,7 @@ class WisataSeeder extends Seeder
         if (! empty($item['galeri'])) {
             $sort = 0;
             foreach ($item['galeri'] as $g) {
-                Galeri::updateOrCreate(
+                Galeri::firstOrCreate(
                     ['wisata_id' => $wisata->id, 'foto' => $g['foto']],
                     [
                         'caption' => $g['caption'] ?? null,

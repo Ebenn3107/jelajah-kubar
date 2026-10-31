@@ -54,7 +54,7 @@ class KategoriController extends Controller
     public function update(Request $request, Kategori $kategori): RedirectResponse
     {
         $validated = $request->validate([
-            'nama_kategori' => ['required', 'string', 'max:255', 'unique:kategoris,nama_kategori,' . $kategori->id, $this->slugFree($kategori->id)],
+            'nama_kategori' => ['required', 'string', 'max:255', 'unique:kategoris,nama_kategori,'.$kategori->id, $this->slugFree($kategori->id)],
             'deskripsi' => 'nullable|string',
         ]);
 

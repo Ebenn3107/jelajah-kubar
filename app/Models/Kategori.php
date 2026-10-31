@@ -13,6 +13,7 @@ class Kategori extends Model
         'deskripsi',
     ];
 
+    /** @return HasMany<Wisata, $this> */
     public function wisatas(): HasMany
     {
         return $this->hasMany(Wisata::class);

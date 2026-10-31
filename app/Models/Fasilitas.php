@@ -12,6 +12,7 @@ class Fasilitas extends Model
         'ikon',
     ];
 
+    /** @return BelongsToMany<Wisata, $this> */
     public function wisatas(): BelongsToMany
     {
         return $this->belongsToMany(Wisata::class, 'fasilitas_wisata');

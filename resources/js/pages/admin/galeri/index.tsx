@@ -19,18 +19,29 @@ interface Props {
     filters: { wisata_id?: string };
 }
 
-export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, filters }: Props) {
+export default function AdminGaleriIndex({
+    galeris,
+    wisatas,
+    selectedWisata,
+    filters,
+}: Props) {
     const [file, setFile] = useState<File | null>(null);
     const [caption, setCaption] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!filters.wisata_id || !file) return;
+
+        if (!filters.wisata_id || !file) {
+            return;
+        }
 
         const formData = new FormData();
         formData.append('wisata_id', filters.wisata_id);
         formData.append('foto', file);
-        if (caption) formData.append('caption', caption);
+
+        if (caption) {
+            formData.append('caption', caption);
+        }
 
         router.post('/admin/galeri', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -51,24 +62,45 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
 
             <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl bg-background p-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-foreground">Kelola Galeri</h1>
-                    <p className="text-sm text-muted-foreground">Manage destination photos</p>
+                    <h1 className="text-2xl font-bold text-foreground">
+                        Kelola Galeri
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        Kelola foto destinasi
+                    </p>
                 </div>
 
                 {/* Select Wisata */}
                 <div className="flex flex-wrap items-center gap-3">
-                    <label className="text-sm font-medium text-foreground">Pilih Wisata:</label>
+                    <label className="text-sm font-medium text-foreground">
+                        Pilih Wisata:
+                    </label>
                     <select
                         value={filters.wisata_id || ''}
-                        onChange={(e) => router.get('/admin/galeri', { wisata_id: e.target.value })}
-                        className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                        onChange={(e) =>
+                            router.get('/admin/galeri', {
+                                wisata_id: e.target.value,
+                            })
+                        }
+                        className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
                     >
-                        <option value="" className="bg-background">— Pilih —</option>
+                        <option value="" className="bg-background">
+                            — Pilih —
+                        </option>
                         {wisatas.map((w) => (
-                            <option key={w.id} value={w.id} className="bg-background">{w.nama_wisata}</option>
+                            <option
+                                key={w.id}
+                                value={w.id}
+                                className="bg-background"
+                            >
+                                {w.nama_wisata}
+                            </option>
                         ))}
                     </select>
-                    <Link href="/admin/wisata/create" className="rounded-lg border border-input px-4 py-2 text-sm font-semibold text-foreground/80 hover:bg-accent">
+                    <Link
+                        href="/admin/wisata/create"
+                        className="rounded-lg border border-input px-4 py-2 text-sm font-semibold text-foreground/80 hover:bg-accent"
+                    >
                         + Buat Wisata Baru
                     </Link>
                 </div>
@@ -76,7 +108,10 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
                 {selectedWisata && (
                     <>
                         {/* Upload Form */}
-                        <form onSubmit={handleSubmit} className="rounded-xl border border-border bg-card p-6 shadow-sm shadow-black/20">
+                        <form
+                            onSubmit={handleSubmit}
+                            className="rounded-xl border border-border bg-card p-6 shadow-sm shadow-black/20"
+                        >
                             <div className="grid gap-4 md:grid-cols-3">
                                 <div className="md:col-span-2">
                                     <FileUpload
@@ -86,18 +121,22 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
                                 </div>
                                 <div className="flex flex-col justify-end gap-3">
                                     <div>
-                                        <label className="mb-1 block text-xs font-medium text-foreground">Caption</label>
+                                        <label className="mb-1 block text-xs font-medium text-foreground">
+                                            Caption
+                                        </label>
                                         <input
                                             value={caption}
-                                            onChange={(e) => setCaption(e.target.value)}
-                                            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-teal-500 focus:outline-none"
+                                            onChange={(e) =>
+                                                setCaption(e.target.value)
+                                            }
+                                            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none"
                                             placeholder="Deskripsi foto"
                                         />
                                     </div>
                                     <button
                                         type="submit"
                                         disabled={!file}
-                                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50"
+                                        className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover disabled:opacity-50"
                                     >
                                         Upload
                                     </button>
@@ -109,29 +148,47 @@ export default function AdminGaleriIndex({ galeris, wisatas, selectedWisata, fil
                         {galeris.length === 0 ? (
                             <div className="flex flex-col items-center gap-3 py-20 text-muted-foreground">
                                 <ImageIcon className="size-12 text-muted-foreground" />
-                                <p>Belum ada foto untuk "{selectedWisata.nama_wisata}"</p>
+                                <p>
+                                    Belum ada foto untuk "
+                                    {selectedWisata.nama_wisata}"
+                                </p>
                             </div>
                         ) : (
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                                 {galeris.map((g) => (
-                                    <div key={g.id} className="group relative overflow-hidden rounded-xl border border-border">
+                                    <div
+                                        key={g.id}
+                                        className="group relative overflow-hidden rounded-xl border border-border"
+                                    >
                                         {g.foto_url ? (
-                                            <img src={g.foto_url} alt={g.caption || ''} className="aspect-square w-full object-cover" />
+                                            <img
+                                                src={g.foto_url}
+                                                alt={g.caption || ''}
+                                                className="aspect-square w-full object-cover"
+                                            />
                                         ) : (
                                             <div className="flex aspect-square items-center justify-center bg-muted text-muted-foreground">
                                                 <ImageIcon className="size-16" />
                                             </div>
                                         )}
                                         <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
-                                            <button onClick={() => handleDelete(g.id)} className="rounded-md bg-red-600 p-2 text-white hover:bg-red-700">
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(g.id)
+                                                }
+                                                className="rounded-md bg-red-600 p-2 text-white hover:bg-red-700"
+                                            >
                                                 <Trash2 className="size-4" />
                                             </button>
                                         </div>
-                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                                            <p className="text-xs text-white/80">{g.caption || '—'}</p>
+                                        <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                                            <p className="text-xs text-white/80">
+                                                {g.caption || '—'}
+                                            </p>
                                             {g.is_primary && (
-                                                <span className="mt-1 inline-flex items-center gap-1 rounded bg-teal-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-                                                    <Star className="size-2.5" /> Primary
+                                                <span className="mt-1 inline-flex items-center gap-1 rounded bg-brand px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                                                    <Star className="size-2.5" />{' '}
+                                                    Primary
                                                 </span>
                                             )}
                                         </div>

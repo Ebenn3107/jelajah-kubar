@@ -79,10 +79,47 @@ test('saved plan menolak result yang bukan JSON', function () {
         ->assertSessionHasErrors('result');
 });
 
-test('endpoint AI dibatasi per IP untuk tamu', function () {
+test('endpoint AI wajib login', function () {
+    $this->post(route('local-guide.ask'), ['question' => 'Apa saja wisata air terjun?'])->assertRedirect(route('login'));
+    $this->post(route('travel-planner.plan'), ['durasi' => 2, 'budget' => '1jt'])->assertRedirect(route('login'));
+});
+
+test('endpoint AI dibatasi per pengguna', function () {
+    $this->actingAs(User::factory()->create());
+
     foreach (range(1, 10) as $i) {
         $this->post(route('local-guide.ask'), [])->assertStatus(302);
     }
 
     $this->post(route('local-guide.ask'), [])->assertStatus(429);
+});
+
+test('daftar wisata mengirim rata-rata rating untuk kartu', function () {
+    $wisata = makeWisata();
+    $a = User::factory()->create();
+    $b = User::factory()->create();
+    Review::create(['wisata_id' => $wisata->id, 'user_id' => $a->id, 'rating' => 5, 'komentar' => 'Bagus sekali tempatnya']);
+    Review::create(['wisata_id' => $wisata->id, 'user_id' => $b->id, 'rating' => 4, 'komentar' => 'Cukup bagus tempatnya']);
+
+    $this->get(route('wisata.index'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->component('wisata/index')
+            ->where('wisatas.data.0.reviews_avg_rating', fn ($v) => (float) $v === 4.5));
+});
+
+test('pencarian wisata berjalan dan meng-escape karakter wildcard LIKE', function () {
+    makeWisata(['nama_wisata' => 'Air Terjun Tes']);
+    makeWisata(['nama_wisata' => 'Danau Lain', 'alamat' => 'Jl. Lain']);
+
+    $this->get(route('wisata.index', ['search' => 'terjun']))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('wisatas.total', 1)
+            ->where('wisatas.data.0.nama_wisata', 'Air Terjun Tes'));
+
+    // "%" harus dicari sebagai karakter biasa, bukan wildcard yang cocok dengan semua baris
+    $this->get(route('wisata.index', ['search' => '%%']))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page->where('wisatas.total', 0));
 });

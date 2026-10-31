@@ -20,7 +20,7 @@ const inputClassName =
 export default function Register({ passwordRules }: Props) {
     return (
         <>
-            <Head title="Register" />
+            <Head title="Daftar" />
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -33,9 +33,9 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="name"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
-                                    Full Name
+                                    Nama lengkap
                                 </Label>
                                 <div className="mt-2">
                                     <Input
@@ -46,7 +46,7 @@ export default function Register({ passwordRules }: Props) {
                                         tabIndex={1}
                                         autoComplete="name"
                                         name="name"
-                                        placeholder="e.g. John Doe"
+                                        placeholder="mis. Budi Santoso"
                                         className={inputClassName}
                                     />
                                     <InputError
@@ -59,9 +59,9 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="email"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
-                                    Email address
+                                    Alamat email
                                 </Label>
                                 <div className="mt-2">
                                     <Input
@@ -71,7 +71,7 @@ export default function Register({ passwordRules }: Props) {
                                         tabIndex={2}
                                         autoComplete="email"
                                         name="email"
-                                        placeholder="you@example.com"
+                                        placeholder="anda@contoh.com"
                                         className={inputClassName}
                                     />
                                     <InputError
@@ -84,9 +84,9 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="password"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
-                                    Password
+                                    Kata sandi
                                 </Label>
                                 <div className="mt-2">
                                     <PasswordInput
@@ -109,9 +109,9 @@ export default function Register({ passwordRules }: Props) {
                             <div>
                                 <Label
                                     htmlFor="password_confirmation"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
-                                    Confirm Password
+                                    Konfirmasi kata sandi
                                 </Label>
                                 <div className="mt-2">
                                     <PasswordInput
@@ -137,7 +137,7 @@ export default function Register({ passwordRules }: Props) {
                                         id="terms"
                                         name="terms"
                                         tabIndex={5}
-                                        className="h-4 w-4 rounded border-line bg-white text-brand data-[state=checked]:border-brand data-[state=checked]:bg-brand focus-visible:border-brand focus-visible:ring-brand/20"
+                                        className="h-4 w-4 rounded border-line bg-white text-brand focus-visible:border-brand focus-visible:ring-brand/20 data-[state=checked]:border-brand data-[state=checked]:bg-brand"
                                     />
                                 </div>
                                 <div className="ml-3">
@@ -145,19 +145,19 @@ export default function Register({ passwordRules }: Props) {
                                         htmlFor="terms"
                                         className="text-xs leading-5 font-medium text-ink-muted"
                                     >
-                                        I agree to the{' '}
+                                        Saya menyetujui{' '}
                                         <a
                                             href="#"
                                             className="text-brand hover:underline"
                                         >
-                                            Terms of Service
+                                            Syarat Layanan
                                         </a>{' '}
-                                        and{' '}
+                                        serta{' '}
                                         <a
                                             href="#"
                                             className="text-brand hover:underline"
                                         >
-                                            Privacy Policy
+                                            Kebijakan Privasi
                                         </a>
                                         .
                                     </Label>
@@ -171,7 +171,7 @@ export default function Register({ passwordRules }: Props) {
                                 className="h-auto w-full rounded-lg bg-brand px-3 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-hover focus-visible:border-brand focus-visible:ring-brand/30 active:scale-[0.98]"
                             >
                                 {processing && <Spinner />}
-                                Sign Up
+                                Daftar
                             </Button>
                         </div>
                     </>
@@ -179,13 +179,13 @@ export default function Register({ passwordRules }: Props) {
             </Form>
 
             <p className="mt-10 text-center text-sm leading-6 text-ink-muted">
-                Already have an account?{' '}
+                Sudah punya akun?{' '}
                 <TextLink
                     href={login()}
                     tabIndex={7}
                     className="font-semibold text-brand no-underline hover:text-brand-hover hover:underline"
                 >
-                    Sign in here
+                    Masuk di sini
                 </TextLink>
             </p>
         </>
@@ -193,9 +193,10 @@ export default function Register({ passwordRules }: Props) {
 }
 
 Register.layout = {
-    title: 'Create an account',
-    description: 'Start planning your cultural adventure.',
+    title: 'Buat Akun',
+    description: 'Mulai merencanakan petualangan budaya Anda.',
     image: '/images/auth/sign-up-bg.png',
-    sideTitle: 'Discover the Heart of Borneo',
-    sideDescription: 'Join Jelajah Kubar and start your authentic journey.',
+    sideTitle: 'Temukan Jantung Borneo',
+    sideDescription:
+        'Bergabunglah dengan Jelajah Kubar dan mulai perjalanan autentik Anda.',
 };

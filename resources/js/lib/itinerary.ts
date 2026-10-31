@@ -37,8 +37,14 @@ export function formatItinerary(plan: PlanResult, meta: PlanMeta): string {
     return text;
 }
 
-export function downloadItinerary(plan: PlanResult, meta: PlanMeta, filename: string): void {
-    const blob = new Blob([formatItinerary(plan, meta)], { type: 'text/plain' });
+export function downloadItinerary(
+    plan: PlanResult,
+    meta: PlanMeta,
+    filename: string,
+): void {
+    const blob = new Blob([formatItinerary(plan, meta)], {
+        type: 'text/plain',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;

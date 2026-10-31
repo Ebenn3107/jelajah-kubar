@@ -1,8 +1,22 @@
 <?php
 
 return [
-    // local | deepseek | auto (local dulu, fallback deepseek)
-    'provider' => env('AI_PROVIDER', 'local'),
+    // deepseek | local | auto (local dulu, fallback deepseek). Ollama hanya opsi; produksi memakai deepseek.
+    'provider' => env('AI_PROVIDER', 'deepseek'),
+
+    // Batas pemakaian fitur AI untuk pengguna. Jawaban dari cache tidak dihitung.
+    'limits' => [
+        'travel_planner_per_day' => (int) env('AI_LIMIT_PLANNER_PER_DAY', 3),
+        'local_guide_per_day' => (int) env('AI_LIMIT_GUIDE_PER_DAY', 15),
+        // Pagar anggaran global (USD/hari). Terlampaui = fitur AI berhenti sampai besok.
+        'daily_budget_usd' => (float) env('AI_DAILY_BUDGET_USD', 1.0),
+    ],
+
+    // Lama cache jawaban identik (hari)
+    'cache_days' => [
+        'local_guide' => (int) env('AI_CACHE_GUIDE_DAYS', 7),
+        'travel_planner' => (int) env('AI_CACHE_PLANNER_DAYS', 1),
+    ],
 
     'deepseek' => [
         'api_key' => env('DEEPSEEK_API_KEY'),

@@ -22,7 +22,7 @@ const inputClassName =
 export default function Login({ status, canResetPassword }: Props) {
     return (
         <>
-            <Head title="Log in" />
+            <Head title="Masuk" />
 
             {status && (
                 <div className="mb-6 rounded-lg bg-green-50 px-4 py-3 text-center text-sm font-medium text-green-700">
@@ -41,9 +41,9 @@ export default function Login({ status, canResetPassword }: Props) {
                             <div>
                                 <Label
                                     htmlFor="email"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
-                                    Email address
+                                    Alamat email
                                 </Label>
                                 <div className="mt-2">
                                     <Input
@@ -54,7 +54,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                         autoFocus
                                         tabIndex={1}
                                         autoComplete="email"
-                                        placeholder="email@example.com"
+                                        placeholder="email@contoh.com"
                                         className={inputClassName}
                                     />
                                     <InputError
@@ -68,9 +68,9 @@ export default function Login({ status, canResetPassword }: Props) {
                                 <div className="flex items-center justify-between">
                                     <Label
                                         htmlFor="password"
-                                        className="text-sm font-semibold leading-5 text-ink"
+                                        className="text-sm leading-5 font-semibold text-ink"
                                     >
-                                        Password
+                                        Kata sandi
                                     </Label>
                                     {canResetPassword && (
                                         <TextLink
@@ -78,7 +78,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                             tabIndex={5}
                                             className="text-sm font-semibold text-brand no-underline hover:text-brand-hover"
                                         >
-                                            Forgot password?
+                                            Lupa kata sandi?
                                         </TextLink>
                                     )}
                                 </div>
@@ -104,13 +104,13 @@ export default function Login({ status, canResetPassword }: Props) {
                                     id="remember"
                                     name="remember"
                                     tabIndex={3}
-                                    className="h-4 w-4 rounded border-line bg-white text-brand data-[state=checked]:border-brand data-[state=checked]:bg-brand focus-visible:border-brand focus-visible:ring-brand/20"
+                                    className="h-4 w-4 rounded border-line bg-white text-brand focus-visible:border-brand focus-visible:ring-brand/20 data-[state=checked]:border-brand data-[state=checked]:bg-brand"
                                 />
                                 <Label
                                     htmlFor="remember"
                                     className="ml-3 text-sm text-ink-muted"
                                 >
-                                    Remember me
+                                    Ingat saya
                                 </Label>
                             </div>
 
@@ -122,7 +122,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 className="h-auto w-full rounded-lg bg-brand px-3 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-brand-hover focus-visible:border-brand focus-visible:ring-brand/30 active:scale-[0.98]"
                             >
                                 {processing && <Spinner />}
-                                Sign in
+                                Masuk
                             </Button>
                         </div>
                     </>
@@ -130,13 +130,13 @@ export default function Login({ status, canResetPassword }: Props) {
             </Form>
 
             <p className="mt-10 text-center text-sm leading-6 text-ink-muted">
-                Don't have an account?{' '}
+                Belum punya akun?{' '}
                 <TextLink
                     href={register()}
                     tabIndex={6}
                     className="font-semibold text-brand no-underline hover:text-brand-hover hover:underline"
                 >
-                    Sign up
+                    Daftar
                 </TextLink>
             </p>
         </>
@@ -144,10 +144,10 @@ export default function Login({ status, canResetPassword }: Props) {
 }
 
 Login.layout = {
-    title: 'Welcome Back',
-    description: 'Sign in to your account to continue planning your journey.',
+    title: 'Selamat Datang Kembali',
+    description: 'Masuk ke akun Anda untuk melanjutkan perencanaan perjalanan.',
     image: '/images/auth/sign-in-bg.png',
-    sideTitle: 'Discover the Heart of Borneo.',
+    sideTitle: 'Temukan Jantung Borneo.',
     sideDescription:
-        'Immerse yourself in authentic cultural experiences and breathtaking landscapes.',
+        'Rasakan budaya yang autentik dan lanskap alam yang memukau.',
 };

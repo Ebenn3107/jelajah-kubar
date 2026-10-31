@@ -37,7 +37,8 @@ APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://domain-anda.com
 APP_LOCALE=id
-APP_FALLBACK_LOCALE=id
+# Cadangan tetap en: lang/id belum punya pagination.php, dan label paginasi perlu teks bawaan Laravel
+APP_FALLBACK_LOCALE=en
 APP_FAKER_LOCALE=id_ID
 
 INERTIA_SSR_ENABLED=false

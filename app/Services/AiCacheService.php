@@ -21,11 +21,13 @@ class AiCacheService
         return trim(preg_replace('/\s+/u', ' ', $text) ?? '');
     }
 
+    /** @param  array<string, mixed>  $parts */
     public function get(string $namespace, array $parts): mixed
     {
         return Cache::get($this->key($namespace, $parts));
     }
 
+    /** @param  array<string, mixed>  $parts */
     public function put(string $namespace, array $parts, mixed $value): void
     {
         if ($value === null || $value === '' || $value === []) {
@@ -37,15 +39,18 @@ class AiCacheService
         Cache::put($this->key($namespace, $parts), $value, now()->addDays($days));
     }
 
+    /** @param  array<string, mixed>  $parts */
     private function key(string $namespace, array $parts): string
     {
-        return 'ai_cache:' . $namespace . ':' . sha1(json_encode($parts)) . ':' . $this->dataVersion();
+        return 'ai_cache:'.$namespace.':'.sha1((string) json_encode($parts)).':'.$this->dataVersion();
     }
 
     private function dataVersion(): string
     {
-        $row = Wisata::where('is_active', true)->selectRaw('COUNT(*) as total, MAX(updated_at) as terakhir')->first();
+        $aktif = Wisata::where('is_active', true);
+        $total = (clone $aktif)->count();
+        $terakhir = (string) $aktif->max('updated_at');
 
-        return substr(sha1(($row->total ?? 0) . '|' . ($row->terakhir ?? '')), 0, 12);
+        return substr(sha1($total.'|'.$terakhir), 0, 12);
     }
 }

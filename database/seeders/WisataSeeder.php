@@ -13,13 +13,14 @@ class WisataSeeder extends Seeder
 {
     public function run(): void
     {
-        $json = json_decode(file_get_contents(database_path('data/data-wisata.json')), true);
+        $json = json_decode((string) file_get_contents(database_path('data/data-wisata.json')), true);
 
         foreach ($json['wisata'] as $item) {
             $this->seedWisata($item);
         }
     }
 
+    /** @param  array<string, mixed>  $item */
     private function seedWisata(array $item): void
     {
         $kategori = Kategori::where('nama_kategori', $item['kategori'])->first();

@@ -41,7 +41,7 @@ export default function Login({ status, canResetPassword }: Props) {
                             <div>
                                 <Label
                                     htmlFor="email"
-                                    className="text-sm font-semibold leading-5 text-ink"
+                                    className="text-sm leading-5 font-semibold text-ink"
                                 >
                                     Alamat email
                                 </Label>
@@ -68,7 +68,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                 <div className="flex items-center justify-between">
                                     <Label
                                         htmlFor="password"
-                                        className="text-sm font-semibold leading-5 text-ink"
+                                        className="text-sm leading-5 font-semibold text-ink"
                                     >
                                         Kata sandi
                                     </Label>
@@ -104,7 +104,7 @@ export default function Login({ status, canResetPassword }: Props) {
                                     id="remember"
                                     name="remember"
                                     tabIndex={3}
-                                    className="h-4 w-4 rounded border-line bg-white text-brand data-[state=checked]:border-brand data-[state=checked]:bg-brand focus-visible:border-brand focus-visible:ring-brand/20"
+                                    className="h-4 w-4 rounded border-line bg-white text-brand focus-visible:border-brand focus-visible:ring-brand/20 data-[state=checked]:border-brand data-[state=checked]:bg-brand"
                                 />
                                 <Label
                                     htmlFor="remember"

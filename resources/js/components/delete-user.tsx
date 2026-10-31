@@ -28,7 +28,8 @@ export default function DeleteUser() {
             />
             <div className="space-y-3">
                 <p className="text-sm text-ink-muted">
-                    Tindakan ini permanen dan tidak dapat dibatalkan. Anda akan diminta memasukkan kata sandi untuk mengonfirmasi.
+                    Tindakan ini permanen dan tidak dapat dibatalkan. Anda akan
+                    diminta memasukkan kata sandi untuk mengonfirmasi.
                 </p>
 
                 <Dialog>
@@ -44,10 +45,12 @@ export default function DeleteUser() {
                     </DialogTrigger>
                     <DialogContent>
                         <DialogTitle>
-                             Yakin ingin menghapus akun Anda?
+                            Yakin ingin menghapus akun Anda?
                         </DialogTitle>
                         <DialogDescription>
-                             Setelah akun dihapus, seluruh data Anda ikut terhapus permanen. Masukkan kata sandi untuk mengonfirmasi penghapusan akun.
+                            Setelah akun dihapus, seluruh data Anda ikut
+                            terhapus permanen. Masukkan kata sandi untuk
+                            mengonfirmasi penghapusan akun.
                         </DialogDescription>
 
                         <Form
@@ -88,7 +91,7 @@ export default function DeleteUser() {
                                                     resetAndClearErrors()
                                                 }
                                             >
-                                                 Batal
+                                                Batal
                                             </Button>
                                         </DialogClose>
 

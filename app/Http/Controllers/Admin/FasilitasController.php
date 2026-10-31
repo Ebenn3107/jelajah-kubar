@@ -37,7 +37,7 @@ class FasilitasController extends Controller
     public function update(Request $request, Fasilitas $fasilitas): RedirectResponse
     {
         $validated = $request->validate([
-            'nama_fasilitas' => 'required|string|max:255|unique:fasilitas,nama_fasilitas,' . $fasilitas->id,
+            'nama_fasilitas' => 'required|string|max:255|unique:fasilitas,nama_fasilitas,'.$fasilitas->id,
             'ikon' => 'nullable|string|max:255',
         ]);
 

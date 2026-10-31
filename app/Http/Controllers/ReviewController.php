@@ -108,6 +108,7 @@ class ReviewController extends Controller
 
             if (! $wisata->reviews()->exists()) {
                 $wisata->updateQuietly(['review_summary' => null]);
+
                 return;
             }
 
@@ -118,7 +119,7 @@ class ReviewController extends Controller
             $service = app(AiContentService::class);
             $summary = $service->reviewSummary(
                 $wisata->nama_wisata,
-                $wisata->kategori?->nama_kategori ?? 'Umum',
+                $wisata->kategori->nama_kategori ?? 'Umum',
                 $reviews,
                 $userId,
             );

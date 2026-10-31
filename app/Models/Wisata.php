@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,11 +39,13 @@ class Wisata extends Model
 
     protected $appends = ['foto_url'];
 
-    protected function fotoUrl(): Attribute
+    public function getFotoUrlAttribute(): ?string
     {
-        return Attribute::get(fn () => $this->foto
-            ? (str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto))
-            : null);
+        if (! $this->foto) {
+            return null;
+        }
+
+        return str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto);
     }
 
     protected static function booted(): void
@@ -64,26 +65,31 @@ class Wisata extends Model
         });
     }
 
+    /** @return BelongsTo<Kategori, $this> */
     public function kategori(): BelongsTo
     {
         return $this->belongsTo(Kategori::class);
     }
 
+    /** @return HasMany<Galeri, $this> */
     public function galeris(): HasMany
     {
         return $this->hasMany(Galeri::class);
     }
 
+    /** @return BelongsToMany<Fasilitas, $this> */
     public function fasilitas(): BelongsToMany
     {
         return $this->belongsToMany(Fasilitas::class, 'fasilitas_wisata');
     }
 
+    /** @return BelongsToMany<User, $this> */
     public function favoritedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'wisata_user_favorit');
     }
 
+    /** @return HasMany<Review, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);

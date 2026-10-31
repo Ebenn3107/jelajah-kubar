@@ -44,11 +44,13 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /** @return HasMany<Review, $this> */
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
     }
 
+    /** @return BelongsToMany<Wisata, $this> */
     public function favoritWisatas(): BelongsToMany
     {
         return $this->belongsToMany(Wisata::class, 'wisata_user_favorit');

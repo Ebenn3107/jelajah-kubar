@@ -42,15 +42,24 @@ function seedGuideCatalog(): array
     return compact('inar', 'jempang', 'kersik');
 }
 
-/** Respons DeepSeek palsu berisi JSON {"answer": ...} atau JSON bebas. */
+/**
+ * Isi respons DeepSeek palsu berisi JSON {"answer": ...} atau JSON bebas.
+ *
+ * @param  array<string, mixed>|string  $content
+ * @return array<string, mixed>
+ */
+function deepSeekBody(array|string $content, int $tokens = 500): array
+{
+    return [
+        'choices' => [['message' => ['content' => is_string($content) ? $content : json_encode($content)]]],
+        'usage' => ['prompt_tokens' => $tokens, 'completion_tokens' => 100, 'total_tokens' => $tokens + 100],
+    ];
+}
+
+/** @param  array<string, mixed>|string  $content */
 function fakeDeepSeek(array|string $content, int $tokens = 500): void
 {
-    Http::fake([
-        'api.deepseek.com/*' => Http::response([
-            'choices' => [['message' => ['content' => is_string($content) ? $content : json_encode($content)]]],
-            'usage' => ['prompt_tokens' => $tokens, 'completion_tokens' => 100, 'total_tokens' => $tokens + 100],
-        ]),
-    ]);
+    Http::fake(['api.deepseek.com/*' => Http::response(deepSeekBody($content, $tokens))]);
 }
 
 beforeEach(function () {
@@ -255,7 +264,11 @@ test('pagar anggaran global menghentikan fitur AI untuk semua pengguna', functio
 test('jawaban AI yang gagal tidak di-cache dan tidak memotong batas', function () {
     seedGuideCatalog();
     $user = User::factory()->create();
-    Http::fake(['api.deepseek.com/*' => Http::response([], 500)]);
+    // Panggilan pertama gagal (500), panggilan kedua berhasil. Satu fake dengan urutan,
+    // karena Http::fake() kedua tidak menggantikan stub pertama yang cocok.
+    Http::fake(['api.deepseek.com/*' => Http::sequence()
+        ->push([], 500)
+        ->push(deepSeekBody(['answer' => 'Tiket masuk Kersik Luway Orchid Forest Rp 10.000.']))]);
 
     $this->actingAs($user)
         ->post(route('local-guide.ask'), ['question' => 'Berapa harga tiket Kersik Luway?'])
@@ -263,12 +276,14 @@ test('jawaban AI yang gagal tidak di-cache dan tidak memotong batas', function (
             ->where('answer', fn ($v) => str_contains($v, 'belum bisa menjawab'))
             ->where('quota.remaining', 15));
 
-    Http::swap(new \Illuminate\Http\Client\Factory);
-    fakeDeepSeek(['answer' => 'Tiket masuk Kersik Luway Orchid Forest Rp 10.000.']);
-
+    // Bila kegagalan tadi ter-cache, AI tidak akan dipanggil lagi dan pesan gagal yang kembali
     $this->actingAs($user)
         ->post(route('local-guide.ask'), ['question' => 'Berapa harga tiket Kersik Luway?'])
-        ->assertInertia(fn ($page) => $page->where('answer', 'Tiket masuk Kersik Luway Orchid Forest Rp 10.000.'));
+        ->assertInertia(fn ($page) => $page
+            ->where('answer', 'Tiket masuk Kersik Luway Orchid Forest Rp 10.000.')
+            ->where('quota.remaining', 14));
+
+    Http::assertSentCount(2);
 });
 
 test('pertanyaan di luar topik tidak memanggil AI', function () {

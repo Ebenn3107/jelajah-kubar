@@ -78,7 +78,11 @@ class TravelPlannerController extends Controller
         return $this->page($request, ['result' => $result, 'error' => null, 'input' => $validated]);
     }
 
-    /** Render halaman dengan sisa batas harian (null untuk tamu). */
+    /**
+     * Render halaman dengan sisa batas harian (null untuk tamu).
+     *
+     * @param  array<string, mixed>  $props
+     */
     private function page(Request $request, array $props): Response
     {
         $user = $request->user();

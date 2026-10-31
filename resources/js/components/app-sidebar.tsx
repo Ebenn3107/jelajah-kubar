@@ -1,5 +1,18 @@
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Bot, ClipboardList, Compass, Globe, FolderTree, Heart, ImageIcon, LayoutDashboard, MapPin, Route, Sofa } from 'lucide-react';
+import {
+    Activity,
+    Bot,
+    ClipboardList,
+    Compass,
+    Globe,
+    FolderTree,
+    Heart,
+    ImageIcon,
+    LayoutDashboard,
+    MapPin,
+    Route,
+    Sofa,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';

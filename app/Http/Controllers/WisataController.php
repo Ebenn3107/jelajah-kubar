@@ -33,14 +33,14 @@ class WisataController extends Controller
     public function index(Request $request): Response
     {
         $search = is_string($request->search) ? $request->search : null;
-        $like = '%' . addcslashes(strtolower((string) $search), '%_\\') . '%';
-        $prefix = addcslashes(strtolower((string) $search), '%_\\') . '%';
+        $like = '%'.addcslashes(strtolower((string) $search), '%_\\').'%';
+        $prefix = addcslashes(strtolower((string) $search), '%_\\').'%';
 
         $wisatas = Wisata::with('kategori')
             ->withAvg('reviews', 'rating')
             ->where('is_active', true)
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($sub) use ($search) {
+            ->when($search, function ($q) use ($search, $like, $prefix) {
+                $q->where(function ($sub) use ($like) {
                     $sub->whereRaw('LOWER(nama_wisata) LIKE ?', [$like])
                         ->orWhereRaw('LOWER(alamat) LIKE ?', [$like])
                         ->orWhereHas('kategori', fn ($k) => $k->whereRaw('LOWER(nama_kategori) LIKE ?', [$like]))

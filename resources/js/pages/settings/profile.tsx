@@ -33,8 +33,12 @@ export default function Profile({
                     {initial}
                 </div>
                 <div className="min-w-0">
-                    <p className="truncate text-lg font-bold text-ink">{auth.user.name}</p>
-                    <p className="truncate text-sm text-ink-muted">{auth.user.email}</p>
+                    <p className="truncate text-lg font-bold text-ink">
+                        {auth.user.name}
+                    </p>
+                    <p className="truncate text-sm text-ink-muted">
+                        {auth.user.email}
+                    </p>
                 </div>
             </div>
 
@@ -53,7 +57,10 @@ export default function Profile({
                     {({ processing, errors }) => (
                         <>
                             <div>
-                                <label htmlFor="name" className="text-sm font-semibold text-ink">
+                                <label
+                                    htmlFor="name"
+                                    className="text-sm font-semibold text-ink"
+                                >
                                     Nama
                                 </label>
                                 <input
@@ -65,11 +72,17 @@ export default function Profile({
                                     autoComplete="name"
                                     placeholder="Nama lengkap"
                                 />
-                                <InputError className="mt-2" message={errors.name} />
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.name}
+                                />
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="text-sm font-semibold text-ink">
+                                <label
+                                    htmlFor="email"
+                                    className="text-sm font-semibold text-ink"
+                                >
                                     Alamat email
                                 </label>
                                 <input
@@ -82,7 +95,10 @@ export default function Profile({
                                     autoComplete="username"
                                     placeholder="nama@email.com"
                                 />
-                                <InputError className="mt-2" message={errors.email} />
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.email}
+                                />
                             </div>
 
                             {unverified && (
@@ -98,8 +114,12 @@ export default function Profile({
                                         </Link>
                                     </p>
                                     {status === 'verification-link-sent' && (
-                                        <p className="mt-2 font-semibold text-brand" role="status">
-                                            Tautan verifikasi baru sudah dikirim ke email Anda.
+                                        <p
+                                            className="mt-2 font-semibold text-brand"
+                                            role="status"
+                                        >
+                                            Tautan verifikasi baru sudah dikirim
+                                            ke email Anda.
                                         </p>
                                     )}
                                 </div>

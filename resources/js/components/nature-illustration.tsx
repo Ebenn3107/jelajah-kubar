@@ -1,7 +1,12 @@
 /** Ilustrasi lanskap hutan Kubar untuk halaman kosong/error. Warna dari token tema. */
 export function NatureIllustration({ className }: { className?: string }) {
     return (
-        <svg viewBox="0 0 640 320" className={className} role="img" aria-hidden="true">
+        <svg
+            viewBox="0 0 640 320"
+            className={className}
+            role="img"
+            aria-hidden="true"
+        >
             <defs>
                 <linearGradient id="nat-sky" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stopColor="#ffddb8" />
@@ -21,14 +26,28 @@ export function NatureIllustration({ className }: { className?: string }) {
             </g>
 
             {/* pegunungan berlapis */}
-            <path d="M0 220 L90 130 L150 180 L240 100 L340 200 L430 140 L520 210 L640 150 V320 H0 Z" fill="#89f5e7" opacity="0.55" />
-            <path d="M0 250 L110 170 L190 225 L290 150 L390 235 L490 175 L580 240 L640 215 V320 H0 Z" fill="#00685f" opacity="0.55" />
+            <path
+                d="M0 220 L90 130 L150 180 L240 100 L340 200 L430 140 L520 210 L640 150 V320 H0 Z"
+                fill="#89f5e7"
+                opacity="0.55"
+            />
+            <path
+                d="M0 250 L110 170 L190 225 L290 150 L390 235 L490 175 L580 240 L640 215 V320 H0 Z"
+                fill="#00685f"
+                opacity="0.55"
+            />
 
             {/* sungai */}
-            <path d="M360 320 C 380 290, 330 275, 350 250 C 365 232, 400 240, 410 222 L 440 224 C 425 250, 385 250, 390 270 C 396 292, 430 300, 440 320 Z" fill="#89f5e7" />
+            <path
+                d="M360 320 C 380 290, 330 275, 350 250 C 365 232, 400 240, 410 222 L 440 224 C 425 250, 385 250, 390 270 C 396 292, 430 300, 440 320 Z"
+                fill="#89f5e7"
+            />
 
             {/* hutan depan */}
-            <path d="M0 270 C 120 250, 220 285, 330 268 C 440 252, 540 282, 640 262 V320 H0 Z" fill="#00201d" />
+            <path
+                d="M0 270 C 120 250, 220 285, 330 268 C 440 252, 540 282, 640 262 V320 H0 Z"
+                fill="#00201d"
+            />
             <g fill="#00201d">
                 <path d="M60 272 L84 206 L108 272 Z" />
                 <path d="M78 272 L108 188 L138 272 Z" />
@@ -42,7 +61,14 @@ export function NatureIllustration({ className }: { className?: string }) {
             </g>
 
             {/* jalur setapak menuju hutan */}
-            <path d="M250 320 C 262 296, 300 288, 296 268 C 293 254, 262 252, 258 238" fill="none" stroke="#ffddb8" strokeWidth="9" strokeLinecap="round" strokeDasharray="2 16" />
+            <path
+                d="M250 320 C 262 296, 300 288, 296 268 C 293 254, 262 252, 258 238"
+                fill="none"
+                stroke="#ffddb8"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeDasharray="2 16"
+            />
         </svg>
     );
 }

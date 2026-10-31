@@ -27,7 +27,9 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="email" className={authLabel}>Email</Label>
+                            <Label htmlFor="email" className={authLabel}>
+                                Email
+                            </Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -44,7 +46,9 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password" className={authLabel}>Kata sandi baru</Label>
+                            <Label htmlFor="password" className={authLabel}>
+                                Kata sandi baru
+                            </Label>
                             <PasswordInput
                                 id="password"
                                 name="password"
@@ -58,7 +62,10 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation" className={authLabel}>
+                            <Label
+                                htmlFor="password_confirmation"
+                                className={authLabel}
+                            >
                                 Konfirmasi kata sandi
                             </Label>
                             <PasswordInput

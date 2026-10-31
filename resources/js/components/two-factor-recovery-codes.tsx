@@ -57,10 +57,12 @@ export default function TwoFactorRecoveryCodes({
             <CardHeader>
                 <CardTitle className="flex gap-3">
                     <LockKeyhole className="size-4" aria-hidden="true" />
-                     Kode pemulihan 2FA
+                    Kode pemulihan 2FA
                 </CardTitle>
                 <CardDescription>
-                     Kode pemulihan memungkinkan Anda masuk kembali jika perangkat 2FA hilang. Simpan di pengelola kata sandi yang aman.
+                    Kode pemulihan memungkinkan Anda masuk kembali jika
+                    perangkat 2FA hilang. Simpan di pengelola kata sandi yang
+                    aman.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -75,7 +77,8 @@ export default function TwoFactorRecoveryCodes({
                             className="size-4"
                             aria-hidden="true"
                         />
-                        {codesAreVisible ? 'Sembunyikan' : 'Tampilkan'} kode pemulihan
+                        {codesAreVisible ? 'Sembunyikan' : 'Tampilkan'} kode
+                        pemulihan
                     </Button>
 
                     {canRegenerateCodes && (
@@ -144,7 +147,10 @@ export default function TwoFactorRecoveryCodes({
 
                                 <div className="text-xs text-muted-foreground select-none">
                                     <p id="regenerate-warning">
-                                         Setiap kode pemulihan hanya bisa dipakai sekali untuk mengakses akun dan akan dihapus setelah dipakai. Jika butuh lebih, klik{' '}
+                                        Setiap kode pemulihan hanya bisa dipakai
+                                        sekali untuk mengakses akun dan akan
+                                        dihapus setelah dipakai. Jika butuh
+                                        lebih, klik{' '}
                                         <span className="font-bold">
                                             Buat ulang kode
                                         </span>{' '}

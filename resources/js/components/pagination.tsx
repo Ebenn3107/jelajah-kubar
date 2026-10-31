@@ -12,10 +12,14 @@ export function Pagination({ links }: { links: PaginationLink[] }) {
         return null;
     }
 
-    const base = 'rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-brand';
+    const base =
+        'rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-brand';
 
     return (
-        <nav aria-label="Paginasi" className="mt-12 flex flex-wrap justify-center gap-2">
+        <nav
+            aria-label="Paginasi"
+            className="mt-12 flex flex-wrap justify-center gap-2"
+        >
             {links.map((link, i) => {
                 const label = LABELS[link.label] ?? link.label;
 
@@ -31,7 +35,11 @@ export function Pagination({ links }: { links: PaginationLink[] }) {
                         {label}
                     </Link>
                 ) : (
-                    <span key={i} aria-disabled="true" className={`${base} cursor-not-allowed text-outline`}>
+                    <span
+                        key={i}
+                        aria-disabled="true"
+                        className={`${base} cursor-not-allowed text-outline`}
+                    >
                         {label}
                     </span>
                 );

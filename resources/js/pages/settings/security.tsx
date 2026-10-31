@@ -15,7 +15,8 @@ type Props = {
 } & ManagePasskeysProps &
     ManageTwoFactorProps;
 
-const inputClass = 'mt-1.5 h-auto rounded-xl border-line bg-white px-4 py-3 text-ink';
+const inputClass =
+    'mt-1.5 h-auto rounded-xl border-line bg-white px-4 py-3 text-ink';
 const labelClass = 'text-sm font-semibold text-ink';
 
 export default function Security(props: Props) {
@@ -38,7 +39,11 @@ export default function Security(props: Props) {
                 <Form
                     {...SecurityController.update.form()}
                     options={{ preserveScroll: true }}
-                    resetOnError={['password', 'password_confirmation', 'current_password']}
+                    resetOnError={[
+                        'password',
+                        'password_confirmation',
+                        'current_password',
+                    ]}
                     resetOnSuccess
                     onError={(errors) => {
                         if (errors.password) {
@@ -54,7 +59,10 @@ export default function Security(props: Props) {
                     {({ errors, processing }) => (
                         <>
                             <div>
-                                <label htmlFor="current_password" className={labelClass}>
+                                <label
+                                    htmlFor="current_password"
+                                    className={labelClass}
+                                >
                                     Kata sandi saat ini
                                 </label>
                                 <PasswordInput
@@ -64,13 +72,21 @@ export default function Security(props: Props) {
                                     className={inputClass}
                                     autoComplete="current-password"
                                     placeholder="Kata sandi saat ini"
-                                    aria-invalid={Boolean(errors.current_password)}
+                                    aria-invalid={Boolean(
+                                        errors.current_password,
+                                    )}
                                 />
-                                <InputError className="mt-2" message={errors.current_password} />
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.current_password}
+                                />
                             </div>
 
                             <div>
-                                <label htmlFor="password" className={labelClass}>
+                                <label
+                                    htmlFor="password"
+                                    className={labelClass}
+                                >
                                     Kata sandi baru
                                 </label>
                                 <PasswordInput
@@ -83,11 +99,17 @@ export default function Security(props: Props) {
                                     passwordrules={props.passwordRules}
                                     aria-invalid={Boolean(errors.password)}
                                 />
-                                <InputError className="mt-2" message={errors.password} />
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.password}
+                                />
                             </div>
 
                             <div>
-                                <label htmlFor="password_confirmation" className={labelClass}>
+                                <label
+                                    htmlFor="password_confirmation"
+                                    className={labelClass}
+                                >
                                     Konfirmasi kata sandi baru
                                 </label>
                                 <PasswordInput
@@ -97,9 +119,14 @@ export default function Security(props: Props) {
                                     autoComplete="new-password"
                                     placeholder="Ulangi kata sandi baru"
                                     passwordrules={props.passwordRules}
-                                    aria-invalid={Boolean(errors.password_confirmation)}
+                                    aria-invalid={Boolean(
+                                        errors.password_confirmation,
+                                    )}
                                 />
-                                <InputError className="mt-2" message={errors.password_confirmation} />
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.password_confirmation}
+                                />
                             </div>
 
                             <button
@@ -108,7 +135,9 @@ export default function Security(props: Props) {
                                 data-test="update-password-button"
                                 className="rounded-full bg-brand px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand disabled:opacity-50"
                             >
-                                {processing ? 'Menyimpan…' : 'Perbarui kata sandi'}
+                                {processing
+                                    ? 'Menyimpan…'
+                                    : 'Perbarui kata sandi'}
                             </button>
                         </>
                     )}

@@ -54,7 +54,9 @@ export default function ManageTwoFactor(props: Props) {
             {twoFactorEnabled ? (
                 <div className="flex flex-col items-start justify-start space-y-4">
                     <p className="text-sm text-ink-muted">
-                         Anda akan diminta memasukkan PIN acak saat masuk, yang bisa diambil dari aplikasi autentikator (TOTP) di ponsel Anda.
+                        Anda akan diminta memasukkan PIN acak saat masuk, yang
+                        bisa diambil dari aplikasi autentikator (TOTP) di ponsel
+                        Anda.
                     </p>
 
                     <div className="relative inline">
@@ -65,7 +67,7 @@ export default function ManageTwoFactor(props: Props) {
                                     type="submit"
                                     disabled={processing}
                                 >
-                                     Nonaktifkan 2FA
+                                    Nonaktifkan 2FA
                                 </Button>
                             )}
                         </Form>
@@ -80,7 +82,9 @@ export default function ManageTwoFactor(props: Props) {
             ) : (
                 <div className="flex flex-col items-start justify-start space-y-4">
                     <p className="text-sm text-ink-muted">
-                         Saat autentikasi dua faktor aktif, Anda akan diminta memasukkan PIN saat masuk. PIN diambil dari aplikasi autentikator (TOTP) di ponsel Anda.
+                        Saat autentikasi dua faktor aktif, Anda akan diminta
+                        memasukkan PIN saat masuk. PIN diambil dari aplikasi
+                        autentikator (TOTP) di ponsel Anda.
                     </p>
 
                     <div>
@@ -96,7 +100,7 @@ export default function ManageTwoFactor(props: Props) {
                             >
                                 {({ processing }) => (
                                     <Button type="submit" disabled={processing}>
-                                         Aktifkan 2FA
+                                        Aktifkan 2FA
                                     </Button>
                                 )}
                             </Form>

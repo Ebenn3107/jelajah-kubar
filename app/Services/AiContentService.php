@@ -3,17 +3,25 @@
 namespace App\Services;
 
 use App\Models\AiLog;
+use App\Models\Review;
 use App\Models\Wisata;
 use Illuminate\Support\Facades\Http;
 
 class AiContentService
 {
     const PRICE_INPUT_PER_1M = 0.14;
+
     const PRICE_OUTPUT_PER_1M = 0.28;
+
     const MAX_USER_CONTENT_CHARS = 12000;
+
     const MAX_SYSTEM_PROMPT_CHARS = 4000;
 
-    /** Router — pilih provider berdasarkan runtime config (AiProviderService) */
+    /**
+     * Router — pilih provider berdasarkan runtime config (AiProviderService)
+     *
+     * @return array<string, mixed>
+     */
     private function callAi(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $providerService = app(AiProviderService::class);
@@ -33,6 +41,7 @@ class AiContentService
             if (empty($result)) {
                 $result = $this->callDeepSeek($systemPrompt, $userContent, $type, $userId);
             }
+
             return $result;
         }
 
@@ -40,6 +49,7 @@ class AiContentService
         return $this->callOllama($systemPrompt, $userContent, $type, $userId);
     }
 
+    /** @return array<string, mixed> */
     private function callOllama(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $baseUrl = rtrim((string) config('ai.ollama.base_url'), '/');
@@ -48,7 +58,7 @@ class AiContentService
 
         try {
             $response = Http::connectTimeout(5)->timeout(120)
-                ->post($baseUrl . '/api/chat', [
+                ->post($baseUrl.'/api/chat', [
                     'model' => $model,
                     'messages' => [
                         ['role' => 'system', 'content' => $systemPrompt],
@@ -65,30 +75,36 @@ class AiContentService
             $responseTimeMs = (int) ($elapsed / 1_000_000);
 
             if ($response->failed()) {
-                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+                $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+
                 return [];
             }
 
             $content = $response->json('message.content');
 
             if (empty($content) || ! is_string($content)) {
-                $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
+                $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, 'Empty response', $userId);
+
                 return [];
             }
 
-            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
+            $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, true, null, $userId);
 
             return $this->parseJsonTolerant($content);
         } catch (\Throwable $e) {
             $elapsed = hrtime(true) - $startTime;
             $responseTimeMs = (int) ($elapsed / 1_000_000);
-            $this->log('ollama_' . $type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
+            $this->log('ollama_'.$type, $model, 0, 0, 0, $responseTimeMs, false, $e->getMessage(), $userId);
 
             return [];
         }
     }
 
-    /** Parsing JSON toleran — model kecil sering output JSON dengan teks di sekitarnya */
+    /**
+     * Parsing JSON toleran — model kecil sering output JSON dengan teks di sekitarnya
+     *
+     * @return array<string, mixed>
+     */
     private function parseJsonTolerant(string $content): array
     {
         // 1. Coba decode langsung
@@ -124,6 +140,7 @@ class AiContentService
         return [];
     }
 
+    /** @return array<string, mixed> */
     public function generate(Wisata $wisata): array
     {
         $factualData = $this->buildFactualData($wisata);
@@ -143,6 +160,7 @@ class AiContentService
         ];
     }
 
+    /** @param  iterable<int, Review>  $reviews */
     public function reviewSummary(string $wisataNama, string $kategori, $reviews, ?int $userId = null): ?string
     {
         $reviews = collect($reviews);
@@ -187,6 +205,7 @@ PROMPT;
         return mb_substr(trim($text), 0, $maxLength);
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     public function localGuideAnswer(string $question, array $wisatas, ?int $userId = null): ?string
     {
         if (empty($wisatas)) {
@@ -208,10 +227,10 @@ PROMPT;
 
             $context .= "- {$w['nama_wisata']} ({$kat})\n";
             $context .= "  Alamat: {$w['alamat']}\n";
-            $context .= "  Deskripsi: " . substr($w['deskripsi'] ?? '', 0, 200) . "\n";
-            $context .= "  Harga: " . ($w['harga_tiket'] ?: 'Informasi belum tersedia') . "\n";
+            $context .= '  Deskripsi: '.substr($w['deskripsi'] ?? '', 0, 200)."\n";
+            $context .= '  Harga: '.($w['harga_tiket'] ?: 'Informasi belum tersedia')."\n";
             $context .= "  Jam: {$w['jam_buka']} - {$w['jam_tutup']}\n";
-            $context .= "  Fasilitas: " . ($fasList ?: 'Informasi belum tersedia') . "\n\n";
+            $context .= '  Fasilitas: '.($fasList ?: 'Informasi belum tersedia')."\n\n";
         }
 
         $prompt = <<<PROMPT
@@ -252,6 +271,8 @@ PROMPT;
      * konteks (mis. "Pantai Benangaq" padahal tidak ada di data). Kalimat biasa yang memuat kata
      * berhuruf kapital (Gratis, Dayak, Mahakam) dipertahankan. Jika semua kalimat terbuang,
      * kembalikan pesan aman — bukan jawaban mentah yang berpotensi mengarang.
+     *
+     * @param  iterable<int, mixed>  $wisatas
      */
     public function validateLocalGuideAnswer(?string $answer, $wisatas): string
     {
@@ -282,7 +303,7 @@ PROMPT;
         $kept = array_filter($sentences, function ($sentence) use ($pattern, $allowedTokenSets) {
             preg_match_all($pattern, $sentence, $matches);
 
-            foreach ($matches[0] ?? [] as $candidate) {
+            foreach ($matches[0] as $candidate) {
                 $tokens = $this->nameTokens($candidate);
 
                 if (empty($tokens)) {
@@ -319,7 +340,11 @@ PROMPT;
             : $fallback;
     }
 
-    /** Token pembeda sebuah nama tempat (huruf kecil, tanpa kata generik seperti air/terjun/danau/lake). */
+    /**
+     * Token pembeda sebuah nama tempat (huruf kecil, tanpa kata generik seperti air/terjun/danau/lake).
+     *
+     * @return list<string>
+     */
     private function nameTokens(string $name): array
     {
         $generic = ['air', 'terjun', 'danau', 'lake', 'waterfall', 'pantai', 'bukit', 'gunung', 'hutan', 'forest', 'taman', 'desa', 'kampung', 'sungai', 'pulau', 'goa', 'gua', 'park', 'beach', 'mountain', 'museum', 'curug', 'telaga', 'rawa', 'candi', 'pura', 'masjid', 'lamin', 'wisata'];
@@ -328,6 +353,7 @@ PROMPT;
         return array_values(array_unique(array_diff($tokens, $generic)));
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     public function travelPlan(array $wisatas, int $durasi, string $budget, string $minat, ?int $userId = null): ?string
     {
         // Batasi jumlah destinasi yang dikirim ke model (hemat token),
@@ -345,12 +371,15 @@ PROMPT;
 
         $result = $this->callAi($prompt, "Buat itinerary {$durasi} hari di Kutai Barat dengan budget {$budget}", 'travel_planner', $userId);
 
-        return $result ? json_encode($result) : null;
+        return $result ? (json_encode($result) ?: null) : null;
     }
 
     /**
      * Pilih destinasi paling relevan dengan minat pengguna.
      * Jika tidak ada kata kunci yang cocok, ambil destinasi pertama sejumlah limit.
+     *
+     * @param  array<int, array<string, mixed>>  $wisatas
+     * @return array<int, array<string, mixed>>
      */
     private function selectRelevantDestinations(array $wisatas, string $minat, int $limit): array
     {
@@ -394,6 +423,7 @@ PROMPT;
         return array_slice(array_map(fn ($item) => $item['wisata'], $scored), 0, $limit);
     }
 
+    /** @param  array<int, array<string, mixed>>  $wisatas */
     private function buildTravelPlanPrompt(array $wisatas, int $durasi, string $budget, string $minat): string
     {
         $budget = $this->sanitizeUserInput($budget, 255);
@@ -463,14 +493,14 @@ PROMPT;
         $data = "Nama Wisata: {$wisata->nama_wisata}\n";
         $data .= "Kategori: {$wisata->kategori?->nama_kategori}\n";
         $data .= "Alamat: {$wisata->alamat}\n";
-        $data .= "Harga Tiket: " . ($wisata->harga_tiket ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Jam Buka: " . ($wisata->jam_buka ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Jam Tutup: " . ($wisata->jam_tutup ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Kontak: " . ($wisata->kontak ?: 'Informasi belum tersedia') . "\n";
-        $data .= "Koordinat: " . ($wisata->latitude ? "{$wisata->latitude}, {$wisata->longitude}" : 'Informasi belum tersedia') . "\n";
+        $data .= 'Harga Tiket: '.($wisata->harga_tiket ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Jam Buka: '.($wisata->jam_buka ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Jam Tutup: '.($wisata->jam_tutup ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Kontak: '.($wisata->kontak ?: 'Informasi belum tersedia')."\n";
+        $data .= 'Koordinat: '.($wisata->latitude ? "{$wisata->latitude}, {$wisata->longitude}" : 'Informasi belum tersedia')."\n";
 
         if ($wisata->relationLoaded('fasilitas') && $wisata->fasilitas->isNotEmpty()) {
-            $data .= "Fasilitas: " . $wisata->fasilitas->pluck('nama_fasilitas')->join(', ') . "\n";
+            $data .= 'Fasilitas: '.$wisata->fasilitas->pluck('nama_fasilitas')->join(', ')."\n";
         }
 
         if ($wisata->deskripsi) {
@@ -482,7 +512,7 @@ PROMPT;
 
     private function narrativePrompt(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
 Kamu adalah asisten konten wisata untuk Jelajah Kubar.
 Tugasmu hanya menulis ulang dan menyusun informasi berdasarkan data faktual yang diberikan.
 JANGAN menambahkan fakta, sejarah, angka, atau informasi apapun yang tidak ada di data.
@@ -502,7 +532,7 @@ PROMPT;
 
     private function metadataPrompt(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
 Kamu adalah asisten konten wisata untuk Jelajah Kubar.
 Tugasmu hanya menulis ulang dan menyusun informasi berdasarkan data faktual yang diberikan.
 JANGAN menambahkan fakta, sejarah, angka, atau informasi apapun yang tidak ada di data.
@@ -519,13 +549,15 @@ Respond dengan JSON:
 PROMPT;
     }
 
+    /** @return array<string, mixed> */
     private function callDeepSeek(string $systemPrompt, string $userContent, string $type = 'ai_general', ?int $userId = null): array
     {
         $apiKey = config('ai.deepseek.api_key');
         $startTime = hrtime(true);
 
-        if (!$apiKey) {
+        if (! $apiKey) {
             $this->log($type, 'no_api_key', 0, 0, 0, 0, false, 'API key not configured', $userId);
+
             return [];
         }
 
@@ -554,6 +586,7 @@ PROMPT;
 
             if ($response->failed()) {
                 $this->log($type, config('ai.deepseek.model'), 0, 0, 0, $responseTimeMs, false, "HTTP {$response->status()}", $userId);
+
                 return [];
             }
 

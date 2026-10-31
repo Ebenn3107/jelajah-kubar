@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
@@ -19,13 +18,16 @@ class Galeri extends Model
 
     protected $appends = ['foto_url'];
 
-    protected function fotoUrl(): Attribute
+    public function getFotoUrlAttribute(): ?string
     {
-        return Attribute::get(fn () => $this->foto
-            ? (str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto))
-            : null);
+        if (! $this->foto) {
+            return null;
+        }
+
+        return str_starts_with($this->foto, 'http') ? $this->foto : Storage::url($this->foto);
     }
 
+    /** @return BelongsTo<Wisata, $this> */
     public function wisata(): BelongsTo
     {
         return $this->belongsTo(Wisata::class);

@@ -19,10 +19,12 @@ const sidebarNavItems: (NavItem & { admin?: boolean })[] = [
 export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
     const { auth } = usePage<{ auth: Auth }>().props;
-    const items = sidebarNavItems.filter((item) => !item.admin || auth.user?.is_admin);
+    const items = sidebarNavItems.filter(
+        (item) => !item.admin || auth.user?.is_admin,
+    );
 
     return (
-        <div className="mx-auto max-w-7xl px-5 pb-20 pt-8 md:px-16 md:pt-12">
+        <div className="mx-auto max-w-7xl px-5 pt-8 pb-20 md:px-16 md:pt-12">
             <PageHeader
                 eyebrow="Akun"
                 title="Pengaturan"
@@ -49,7 +51,12 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                         : 'text-ink-muted hover:bg-surface-low hover:text-brand',
                                 )}
                             >
-                                {item.icon && <item.icon className="size-4" aria-hidden="true" />}
+                                {item.icon && (
+                                    <item.icon
+                                        className="size-4"
+                                        aria-hidden="true"
+                                    />
+                                )}
                                 {item.title}
                             </Link>
                         );
